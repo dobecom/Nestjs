@@ -7,11 +7,11 @@ export class SchedulerService {
   constructor(private readonly alimtalkTask: AlimtalkTask) {}
   private readonly logger = new Logger(SchedulerService.name);
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
-  test() {
-    this.logger.log('HIT : EVERY_10_SECONDS');
-    this.alimtalkTask.updateTransferResult();
-  }
+//   @Cron(CronExpression.EVERY_10_SECONDS)
+//   test() {
+//     this.logger.log('HIT : EVERY_10_SECONDS');
+//     this.alimtalkTask.updateTransferResult();
+//   }
 
 
   //   @Cron('45 * * * * *')
