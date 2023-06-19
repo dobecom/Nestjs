@@ -15,11 +15,12 @@ const schedule_1 = require("@nestjs/schedule");
 const scheduler_module_1 = require("./scheduler/scheduler.module");
 const auth_module_1 = require("./api/auth/auth.module");
 const prisma_module_1 = require("./prisma/prisma.module");
+const books_module_1 = require("./api/books/books.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [users_module_1.UsersModule, schedule_1.ScheduleModule.forRoot(), scheduler_module_1.SchedulerModule, auth_module_1.AuthModule, prisma_module_1.PrismaModule],
+        imports: [users_module_1.UsersModule, schedule_1.ScheduleModule.forRoot(), scheduler_module_1.SchedulerModule, auth_module_1.AuthModule, prisma_module_1.PrismaModule, books_module_1.BooksModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
