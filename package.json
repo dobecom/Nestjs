@@ -21,7 +21,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@liaoliaots/nestjs-redis": "^9.0.5",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^9.0.0",
@@ -29,9 +28,9 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/schedule": "^2.2.3",
     "@prisma/client": "^4.15.0",
-    "ioredis": "^5.3.2",
     "module": "^1.2.5",
     "passport-oauth2": "^1.7.0",
+    "redis": "^4.6.7",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
