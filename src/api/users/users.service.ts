@@ -6,15 +6,15 @@ import { UserRepository } from './repositories/user.repository';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private readonly userRepo: UserRepository,
-    private readonly cacheService: CacheService
-  ) {}
+  constructor(private readonly userRepo: UserRepository,
+    private readonly cacheService: CacheService) {}
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
 
   async findAllUsers() {
+    // const res = await this.cacheService.set('test-key', 'test-value', 30);
+    // console.log(res);
     return this.userRepo.findAll();
   }
 
