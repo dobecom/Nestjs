@@ -1,16 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import { CacheService } from 'src/cache/cache.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from './repositories/user.repository';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly userRepo: UserRepository) {}
+  constructor(
+    private readonly userRepo: UserRepository,
+    private readonly cacheService: CacheService
+  ) {}
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
 
-  findAllUsers() {
+  async findAllUsers() {
     return this.userRepo.findAll();
   }
 
