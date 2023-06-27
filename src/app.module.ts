@@ -5,6 +5,7 @@ import { AuthModule } from './api/auth/auth.module';
 import { PrismaModule } from './db/prisma/prisma.module';
 import { BooksModule } from './api/books/books.module';
 import { RedisModule } from './redis/redis.module';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { RedisModule } from './redis/redis.module';
     PrismaModule,
     BooksModule,
     RedisModule,
+    PassportModule.register({ session: true }),
   ],
 })
 export class AppModule {}
