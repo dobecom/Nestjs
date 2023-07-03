@@ -14,13 +14,13 @@ export class AuthController {
   @UseGuards(GoogleOauthGuard)
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   auth() {
-    console.log('in')
     return { msg: 'Google Authentication' };
   }
 
   @Get('google/redirect')
   @UseGuards(GoogleOauthGuard)
   async handleRedirect(@Req() req, @Res() res: Response) {
+    console.log('redirect in')
     const token = await this.authService.signIn(req.user);
 
     res.cookie('access_token', token, {
