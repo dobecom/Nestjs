@@ -1,11 +1,5 @@
-// import * as dayjs from 'dayjs';
-// import { QUnitType } from 'dayjs';
-import 'dayjs/locale/ko';
-
-// dayjs.locale('ko');
-
-export class DateUtils {
-  public static findDayOfWeek(dayOfWeekNumber: string): string {
+export class DateLibService {
+  findDayOfWeek(dayOfWeekNumber: string): string {
     let dayOfWeek = '';
     switch (dayOfWeekNumber) {
       case '1':
@@ -42,16 +36,4 @@ export class DateUtils {
 
     return dayOfWeek;
   }
-
-  // public static getFormatTime(time: Date, format: string) {
-  //   return dayjs(time).format(format);
-  // }
-
-  // public static diffTime(
-  //   mainTime: string,
-  //   subStractTime: string,
-  //   unit: QUnitType,
-  // ) {
-  //   return dayjs(mainTime).diff(subStractTime, unit);
-  // }
 }
