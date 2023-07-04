@@ -18,6 +18,7 @@ async function bootstrap() {
   );
   app.use(passport.initialize());
   app.use(passport.session());
-  await app.listen(3333);
+  await app.listen(process.env.API_PORT);
+  console.log(`====== Application is running on: ${await app.getUrl()} as ${process.env.STAGE} ======`)
 }
 bootstrap();
