@@ -8,8 +8,10 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "build:scheduler": "nest build scheduler",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start swc",
+    "start:scheduler": "nest start scheduler swc",
     "start:dev": "nest start --watch swc",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/main/main",
