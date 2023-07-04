@@ -1,18 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression, Interval, Timeout } from '@nestjs/schedule';
-import { AlimtalkTask } from './alimtalk/alimtalk.task';
+import { SchedulerRepository } from './scheduler.repository';
 
 @Injectable()
 export class SchedulerService {
-  constructor(private readonly alimtalkTask: AlimtalkTask) {}
+  constructor(private readonly schedulerRepo: SchedulerRepository) {}
   private readonly logger = new Logger(SchedulerService.name);
 
   @Cron(CronExpression.EVERY_10_SECONDS)
-  test() {
+  async test() {
     this.logger.log('HIT : EVERY_10_SECONDS');
-    this.alimtalkTask.updateTransferResult();
+    const res = await this.schedulerRepo.findOne(1);
+    this.logger.log(`data : ${res.email}`);
   }
-
 
   //   @Cron('45 * * * * *')
   //   handleCron() {
