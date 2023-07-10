@@ -1,7 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
@@ -15,55 +12,40 @@ export class AuthService {
   ) {}
 
   generateJwt(payload) {
-    return this.jwtService.sign(payload);
+    return this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '7d',
+    });
   }
 
   async signIn(user) {
-    if (!user) {
-      throw new BadRequestException('Unauthenticated');
+    try {
+      if (!user) {
+        throw new BadRequestException('Unauthenticated');
+      }
+
+      const userExists = await this.userRepo.findUserByEmail(user.email);
+
+      if (!userExists) {
+        this.userRepo.registerUser(user);
+        return this.generateJwt({
+          sub: user.providerId,
+          email: user.email,
+        });
+      }
+      return this.generateJwt({
+        sub: userExists.id,
+        email: userExists.email,
+      });
+    } catch (err) {
+      console.log('err');
+      console.log(err);
     }
-
-    const userExists = await this.userRepo.findUserByEmail(user.email);
-
-    if (!userExists) {
-      return this.userRepo.registerUser(user);
-    }
-
-    return this.generateJwt({
-      sub: userExists.id,
-      email: userExists.email,
-    });
-    // return this.generateJwt({
-    //   sub: 'id',
-    //   email: 'email',
-    // });
   }
 
-  // async registerUser(user: RegisterUserDto) {
-  //   try {
-  //     const newUser = this.userRepository.create(user);
-  //     newUser.username = generateFromEmail(user.email, 5);
-
-  //     await this.userRepository.save(newUser);
-
-  //     return this.generateJwt({
-  //       sub: newUser.id,
-  //       email: newUser.email,
-  //     });
-  //   } catch {
-  //     throw new InternalServerErrorException();
-  //   }
-  // }
-
-  // async findUserByEmail(email) {
-  //   const user = await this.userRepository.findOne({ email });
-
-  //   if (!user) {
-  //     return null;
-  //   }
-
-  //   return user;
-  // }
+  async findUser(id: number) {
+    return await this.userRepo.findOne(id);
+  }
 
   create(createAuthDto: CreateAuthDto) {
     return 'This action adds a new auth';

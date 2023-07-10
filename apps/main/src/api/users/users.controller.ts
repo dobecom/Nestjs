@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -24,6 +25,7 @@ export class UsersController {
 
   @Get()
   findAll() {
+    // console.log(req.headers.cookie)
     return this.usersService.findAllUsers();
   }
 

@@ -1,10 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { GoogleOauthGuard } from './guards/google-oauth.guard';
 import { Response } from 'express';
-
 
 @Controller('auth')
 export class AuthController {
@@ -19,10 +29,8 @@ export class AuthController {
 
   @Get('google/redirect')
   @UseGuards(GoogleOauthGuard)
-  async handleRedirect(@Req() req, @Res() res: Response) {
-    console.log('redirect in')
+  async handleRedirect(@Req() req, @Res({ passthrough: true }) res: Response) {
     const token = await this.authService.signIn(req.user);
-
     res.cookie('access_token', token, {
       maxAge: 2592000000,
       sameSite: true,

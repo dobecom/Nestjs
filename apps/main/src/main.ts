@@ -14,11 +14,29 @@ async function bootstrap() {
       cookie: {
         maxAge: 60000,
       },
-    }),
-  ); 
+    })
+  );
   app.use(passport.initialize());
   app.use(passport.session());
+
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser((id: string, done) => {
+    done(null, id);
+  });
+  app.enableCors({
+    origin: [
+      'http://localhost:4000',
+    ],
+    credentials: true,
+  });
   await app.listen(process.env.API_PORT);
-  console.log(`====== Application is running on: ${await app.getUrl()} as ${process.env.STAGE} ======`)
+  console.log(
+    `====== Application is running on: ${await app.getUrl()} as ${
+      process.env.STAGE
+    } ======`
+  );
 }
 bootstrap();

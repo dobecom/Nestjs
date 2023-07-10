@@ -15,7 +15,12 @@ export class UserRepository {
 
   registerUser(user: any) {
     return this.prisma.user.create({
-      data: user,
+      data: {
+        email: user.email,
+        type: 'google',
+        hash: '',
+        name: user.name,
+      },
     });
   }
 
