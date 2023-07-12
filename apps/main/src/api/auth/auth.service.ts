@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import axios from 'axios';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { UserRepository } from './repositories/user.repository';
@@ -12,10 +13,41 @@ export class AuthService {
   ) {}
 
   generateJwt(payload) {
-    return this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET,
-      expiresIn: '7d',
-    });
+    return this.jwtService.signAsync(payload);
+  }
+
+  async signInGoogle(token: string) {
+    try {
+      const res = await axios.get(
+        `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`
+      );
+      const user = {
+        id: res.data.id,
+        email: res.data.email,
+        name: res.data.name,
+        picture: res.data.picture,
+      };
+
+      if (!user) {
+        throw new BadRequestException('Unauthenticated');
+      }
+
+      const userExists = await this.userRepo.findUserByEmail(user.email);
+      if (!userExists) {
+        const createUser = await this.userRepo.registerUser(user);
+        return await this.generateJwt({
+          sub: createUser.id,
+          email: user.email,
+        });
+      }
+      return this.generateJwt({
+        sub: userExists.id,
+        email: userExists.email,
+      });
+    } catch (err) {
+      console.log('err');
+      console.log(err);
+    }
   }
 
   async signIn(user) {

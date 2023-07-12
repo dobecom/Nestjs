@@ -7,8 +7,14 @@ import { UserRepository } from './repositories/user.repository';
 import { SessionSerializer } from './auth.serialize';
 
 @Module({
-  imports: [JwtModule],
+  imports: [
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '7d' },
+    }),
+  ],
   controllers: [AuthController],
-  providers: [GoogleStrategy, AuthService, UserRepository, SessionSerializer]
+  providers: [GoogleStrategy, AuthService, UserRepository, SessionSerializer],
 })
 export class AuthModule {}

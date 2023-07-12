@@ -20,6 +20,13 @@ import { Response } from 'express';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Post('login')
+  async authLogin(@Body() req) {
+    const result = await this.authService.signInGoogle(req.data.access_token);
+
+    return result;
+  }
+
   @Get('google/login')
   @UseGuards(GoogleOauthGuard)
   // eslint-disable-next-line @typescript-eslint/no-empty-function
