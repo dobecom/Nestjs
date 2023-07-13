@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import axios from 'axios';
+import { ClsService } from 'nestjs-cls';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { UserRepository } from './repositories/user.repository';
@@ -9,7 +10,8 @@ import { UserRepository } from './repositories/user.repository';
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    private userRepo: UserRepository
+    private userRepo: UserRepository,
+    private readonly cls: ClsService
   ) {}
 
   generateJwt(payload) {
@@ -21,13 +23,16 @@ export class AuthService {
       const res = await axios.get(
         `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`
       );
+
+      // console.log(res.data)
       const user = {
         id: res.data.id,
         email: res.data.email,
         name: res.data.name,
         picture: res.data.picture,
+        userIp: this.cls.get('ip'),
       };
-
+      console.log(user);
       if (!user) {
         throw new BadRequestException('Unauthenticated');
       }

@@ -10,7 +10,7 @@ export class UsersService {
   constructor(
     private readonly userRepo: UserRepository,
     private readonly redisService: RedisService,
-    private readonly dateService: DateLibService
+    private readonly dateService: DateLibService,
   ) {}
 
   create(createUserDto: CreateUserDto) {

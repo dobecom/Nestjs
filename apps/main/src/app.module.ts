@@ -5,6 +5,9 @@ import { PrismaModule } from './db/prisma/prisma.module';
 import { BooksModule } from './api/books/books.module';
 import { RedisModule } from './redis/redis.module';
 import { PassportModule } from '@nestjs/passport';
+import { ClsModule } from 'nestjs-cls';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ClsInterceptor } from './interceptors/cls.interceptor';
 
 @Module({
   imports: [
@@ -14,6 +17,15 @@ import { PassportModule } from '@nestjs/passport';
     BooksModule,
     RedisModule,
     PassportModule.register({ session: true }),
+    ClsModule.forRoot({
+      interceptor: { mount: false },
+    }),
   ],
+  providers:[
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClsInterceptor
+    }
+  ]
 })
 export class AppModule {}
