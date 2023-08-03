@@ -20,10 +20,17 @@ import { Response } from 'express';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  // 1. AccessToken으로 정보 조회
   @Post('login')
   async authLogin(@Body() req) {
     const result = await this.authService.signInGoogle(req.data.access_token);
+    return result;
+  }
 
+  // 2. redirect -> code -> idToken
+  @Post('login/server')
+  async authLoginServer(@Body() req) {
+    const result = await this.authService.signInGoogle(req.data.access_token);
     return result;
   }
 
