@@ -3,12 +3,33 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
+// const serializeUser = () => {
+//   passport.serializeUser((user, done) => {
+//     done(null, user.id);
+//   });
+
+//   passport.deserializeUser((id: string, done) => {
+//     done(null, id);
+//   });
+// }
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const config = new DocumentBuilder()
+    .setTitle('NestJS API')
+    // .setDescription('NestJS 1.0')
+    // .setVersion('1.0')
+    // .addTag('NestJS API Specification')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, document);
+
   app.use(
     session({
-      secret: 'mySecretKey',
+      secret: process.env.SESSION_SECRET,
       saveUninitialized: false,
       resave: false,
       cookie: {
@@ -19,17 +40,13 @@ async function bootstrap() {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  passport.serializeUser((user, done) => {
-    done(null, user.id);
-  });
-
-  passport.deserializeUser((id: string, done) => {
-    done(null, id);
-  });
+  // Google Auth Guard Redirect
+  // serializeUser();
   app.enableCors({
     origin: ['http://localhost:4000'],
     credentials: true,
   });
+
   await app.listen(process.env.API_PORT);
   console.log(
     `====== Application is running on: ${await app.getUrl()} as ${
