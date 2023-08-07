@@ -22,7 +22,7 @@ export class AuthController {
   }
 
 
-  // 2. 
+  // 2. using passport-google-oauth to authenticate user
   @Get('google/login')
   @UseGuards(GoogleOauthGuard)
   auth() {
