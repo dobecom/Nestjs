@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import * as session from 'express-session';
 import * as passport from 'passport';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 
 // const serializeUser = () => {
 //   passport.serializeUser((user, done) => {
@@ -37,17 +38,22 @@ async function bootstrap() {
       },
     })
   );
+
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+  
   app.use(passport.initialize());
   app.use(passport.session());
 
   // Google Auth Guard Redirect
   // serializeUser();
+
   app.enableCors({
     origin: ['http://localhost:4000'],
     credentials: true,
   });
 
   await app.listen(process.env.API_PORT);
+
   console.log(
     `====== Application is running on: ${await app.getUrl()} as ${
       process.env.STAGE

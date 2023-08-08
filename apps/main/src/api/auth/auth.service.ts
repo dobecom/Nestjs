@@ -30,9 +30,10 @@ export class AuthService {
         email: res.data.email,
         name: res.data.name,
         picture: res.data.picture,
+        // Use Continuous Local Storage data
         userIp: this.cls.get('ip'),
       };
-      console.log(user);
+      // console.log(user);
       if (!user) {
         throw new BadRequestException('Unauthenticated');
       }
