@@ -8,6 +8,7 @@ import { PassportModule } from '@nestjs/passport';
 import { ClsModule } from 'nestjs-cls';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ClsInterceptor } from './interceptors/cls.interceptor';
+import { BlockchainModule } from './blockchain/blockchain.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ClsInterceptor } from './interceptors/cls.interceptor';
     ClsModule.forRoot({
       interceptor: { mount: false },
     }),
+    BlockchainModule,
   ],
   providers:[
     {

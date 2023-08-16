@@ -6,6 +6,7 @@ import * as passport from 'passport';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 
+// serializing for using passport-google-oauth to authenticate user
 // const serializeUser = () => {
 //   passport.serializeUser((user, done) => {
 //     done(null, user.id);
