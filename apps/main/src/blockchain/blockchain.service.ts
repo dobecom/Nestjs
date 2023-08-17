@@ -1,10 +1,7 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import Web3 from 'web3';
 import { StorageContractAbi } from './abis/storage-contract.abi';
-import { ContractRequest } from './dto/contract.request.dto';
+import { ContractRequest } from './dto/request/contract.request.dto';
 
 @Injectable()
 export class BlockchainService {
@@ -30,9 +27,11 @@ export class BlockchainService {
         this.storageContractAbi.getAbi(),
         process.env.BLOCKCHAIN_CONTRACT_ADDRESS
       );
+
       const functionData = await contract.methods
         .store(request.value)
         .encodeABI();
+
       const txObject = {
         from: account.address,
         to: process.env.BLOCKCHAIN_CONTRACT_ADDRESS,
@@ -50,10 +49,12 @@ export class BlockchainService {
       const receipt = await this.web3.eth.sendSignedTransaction(
         signedTx.rawTransaction
       );
-      console.log('Transaction receipt:', receipt);
+
+      // console.log('Transaction receipt:', receipt);
+
       return { transactionHash: receipt.transactionHash };
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   }
 
@@ -63,31 +64,26 @@ export class BlockchainService {
         await this.storageContractAbi.getAbi(),
         process.env.BLOCKCHAIN_CONTRACT_ADDRESS
       );
+      // example 1 for exception filter & swagger
       if (!contract) {
         throw new InternalServerErrorException({
           errorCode: 'Err1501',
-          message: 'failed to get the contract',
+          message: 'Failed to get the contract',
         });
       }
 
       const resultData = await contract.methods['retrieve']().call();
+      // example 2 for exception filter & swagger
       if (!resultData) {
         throw new InternalServerErrorException({
           errorCode: 'Err1502',
-          message: 'failed to call the contract method',
+          message: 'Failed to call the contract method',
         });
       }
 
       return +resultData.toString();
     } catch (err) {
-      if (err.status === 500) {
-        throw new InternalServerErrorException({
-          errorCode: err.response.errorCode ? err.response.errorCode : 'invalid error',
-          message: err.message,
-        });
-      } else {
-        throw err;
-      }
+      throw err;
     }
   }
 }

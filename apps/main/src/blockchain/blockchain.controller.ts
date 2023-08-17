@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Post} from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BlockchainService } from './blockchain.service';
-import { ContractRequest } from './dto/contract.request.dto';
-import { RetrieveContractResponse } from './dto/retrieve-contract.response';
+import { ContractRequest } from './dto/request/contract.request.dto';
+import { SetContractResponse } from './dto/response/set-contract.response';
 
 @ApiTags('Blockchain')
 @Controller('blockchain')
@@ -15,17 +15,23 @@ export class BlockchainController {
   @ApiResponse({
     status: 200,
     description: 'Success',
-    type: RetrieveContractResponse,
+    schema: { type: 'number', example: 10 },
   })
   @ApiResponse({
     status: 500,
     content: {
       'application/json': {
         examples: {
-          INTERNAL_SERVER_ERROR: {
+          GET_CONTRACT_ERR: {
             value: {
-              errorCode: 'E11',
-              message: 'Internal Server Error : Error Message',
+              errorCode: 'Err1501',
+              message: 'Failed to get the contract',
+            },
+          },
+          CALL_CONTRACT_ERR: {
+            value: {
+              errorCode: 'Err1502',
+              message: 'Failed to call the contract method',
             },
           },
         },
@@ -44,7 +50,7 @@ export class BlockchainController {
   @ApiResponse({
     status: 200,
     description: 'Success',
-    type: RetrieveContractResponse,
+    type: SetContractResponse,
   })
   @ApiResponse({
     status: 500,
@@ -62,7 +68,7 @@ export class BlockchainController {
     },
   })
   @Post('contract')
-  async setContractData(@Body() value: ContractRequest){
+  async setContractData(@Body() value: ContractRequest) {
     // set contract data
     return this.blockchainService.callStoreFunction(value);
   }
