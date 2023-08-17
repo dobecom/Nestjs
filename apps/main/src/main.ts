@@ -5,6 +5,7 @@ import * as session from 'express-session';
 import * as passport from 'passport';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 // serializing for using passport-google-oauth to authenticate user
 // const serializeUser = () => {
@@ -41,7 +42,9 @@ async function bootstrap() {
   );
 
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
-  
+
+  app.useGlobalFilters(new HttpExceptionFilter());
+
   app.use(passport.initialize());
   app.use(passport.session());
 

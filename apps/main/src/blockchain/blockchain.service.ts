@@ -1,4 +1,7 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import Web3 from 'web3';
 import { StorageContractAbi } from './abis/storage-contract.abi';
 import { ContractRequest } from './dto/contract.request.dto';
@@ -56,17 +59,35 @@ export class BlockchainService {
 
   async callRetrieveFunction() {
     try {
-      const result = await new this.web3.eth.Contract(
-        this.storageContractAbi.getAbi(),
+      const contract = await new this.web3.eth.Contract(
+        await this.storageContractAbi.getAbi(),
         process.env.BLOCKCHAIN_CONTRACT_ADDRESS
       );
-      const resultData = await result.methods['retrieve']().call();
-      return { value: resultData };
+      if (!contract) {
+        throw new InternalServerErrorException({
+          errorCode: 'Err1501',
+          message: 'failed to get the contract',
+        });
+      }
+
+      const resultData = await contract.methods['retrieve']().call();
+      if (!resultData) {
+        throw new InternalServerErrorException({
+          errorCode: 'Err1502',
+          message: 'failed to call the contract method',
+        });
+      }
+
+      return +resultData.toString();
     } catch (err) {
-      throw new InternalServerErrorException({
-        errorCode: 'E01',
-        message: `Internal Server Error : ${err.message}`,
-      });
+      if (err.status === 500) {
+        throw new InternalServerErrorException({
+          errorCode: err.response.errorCode ? err.response.errorCode : 'invalid error',
+          message: err.message,
+        });
+      } else {
+        throw err;
+      }
     }
   }
 }
