@@ -1,4 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConfigEnvService } from 'libs/common/src/config/config-env.service';
 import Web3 from 'web3';
 import { StorageContractAbi } from './abis/storage-contract.abi';
 import { ContractRequest } from './dto/request/contract.request.dto';
@@ -6,8 +7,13 @@ import { ContractRequest } from './dto/request/contract.request.dto';
 @Injectable()
 export class BlockchainService {
   private web3: Web3;
-  constructor(private readonly storageContractAbi: StorageContractAbi) {
-    const nodeUrl = `https://sepolia.infura.io/v3/${process.env.BLOCKCHAIN_INFURA_API_KEY}`;
+  constructor(
+    private readonly storageContractAbi: StorageContractAbi,
+    private readonly configService: ConfigEnvService
+  ) {
+    const nodeUrl = `https://sepolia.infura.io/v3/${this.configService.get(
+      'BLOCKCHAIN_INFURA_API_KEY'
+    )}`;
     this.web3 = new Web3(nodeUrl);
   }
 

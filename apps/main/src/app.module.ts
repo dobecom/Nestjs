@@ -27,7 +27,7 @@ import { BlockchainModule } from './blockchain/blockchain.module';
     {
       provide: APP_INTERCEPTOR,
       useClass: ClsInterceptor
-    }
+    },
   ]
 })
 export class AppModule {}

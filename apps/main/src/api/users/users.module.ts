@@ -3,7 +3,6 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { UserRepository } from './repositories/user.repository';
 import { RedisService } from '../../redis/redis.service';
-import { DateLibService } from '@app/common-lib/services/date-lib.service';
 import { ClsModule } from 'nestjs-cls';
 
 @Module({
@@ -14,6 +13,6 @@ import { ClsModule } from 'nestjs-cls';
     }),
   ],
   controllers: [UsersController],
-  providers: [UsersService, UserRepository, RedisService, DateLibService],
+  providers: [UsersService, UserRepository, RedisService],
 })
 export class UsersModule {}

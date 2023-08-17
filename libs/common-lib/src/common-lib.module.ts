@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { DateLibService } from './services/date-lib.service';
+import { ConfigModule } from './config/config.module';
 
 @Module({
-  providers: [DateLibService],
-  exports: [DateLibService],
+  imports: [ConfigModule],
 })
 export class CommonLibModule {}
