@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigEnvService } from 'libs/common/src/config/config-env.service';
 import { createClient, SetOptions } from 'redis';
 
 @Injectable()
 export class RedisService {
   private readonly redis = createClient({
-    url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+    url: `redis://${this.configService.get('REDIS_HOST')}:${this.configService.get('REDIS_PORT')}`,
   });
-
-  constructor() {
+  
+  constructor(private readonly configService: ConfigEnvService) {
     this.redis.connect();
   }
 

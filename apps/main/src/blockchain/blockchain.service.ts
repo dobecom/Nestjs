@@ -23,7 +23,7 @@ export class BlockchainService {
       // const blockNumber = await this.web3.eth.getBlockNumber();
       // console.log(`Current block number: ${blockNumber}`);
 
-      const pvKey = process.env.BLOCKCHAIN_ACCOUNT_PRIVATE_KEY;
+      const pvKey = this.configService.get('BLOCKCHAIN_ACCOUNT_PRIVATE_KEY');
       const account = await this.web3.eth.accounts.privateKeyToAccount(
         '0x' + pvKey
       );
@@ -31,34 +31,35 @@ export class BlockchainService {
 
       const contract = await new this.web3.eth.Contract(
         this.storageContractAbi.getAbi(),
-        process.env.BLOCKCHAIN_CONTRACT_ADDRESS
+        this.configService.get('BLOCKCHAIN_CONTRACT_ADDRESS')
       );
 
-      const functionData = await contract.methods
-        .store(request.value)
-        .encodeABI();
+      // const functionData = await contract.methods
+      //   .store(request.value)
+      //   .encodeABI();
 
-      const txObject = {
-        from: account.address,
-        to: process.env.BLOCKCHAIN_CONTRACT_ADDRESS,
-        data: functionData,
-        gas: 2000000, // Adjust gas limit as needed
-        gasPrice: this.web3.utils.toWei('100', 'gwei'), // Adjust gas price as needed
-        nonce: nonce,
-      };
+      // const txObject = {
+      //   from: account.address,
+      //   to: this.configService.get('BLOCKCHAIN_CONTRACT_ADDRESS')
 
-      const signedTx = await this.web3.eth.accounts.signTransaction(
-        txObject,
-        pvKey
-      );
+      //   data: functionData,
+      //   gas: 2000000, // Adjust gas limit as needed
+      //   gasPrice: this.web3.utils.toWei('100', 'gwei'), // Adjust gas price as needed
+      //   nonce: nonce,
+      // };
 
-      const receipt = await this.web3.eth.sendSignedTransaction(
-        signedTx.rawTransaction
-      );
+      // const signedTx = await this.web3.eth.accounts.signTransaction(
+      //   txObject,
+      //   pvKey
+      // );
 
-      // console.log('Transaction receipt:', receipt);
+      // const receipt = await this.web3.eth.sendSignedTransaction(
+      //   signedTx.rawTransaction
+      // );
 
-      return { transactionHash: receipt.transactionHash };
+      // // console.log('Transaction receipt:', receipt);
+
+      // return { transactionHash: receipt.transactionHash };
     } catch (err) {
       throw err;
     }
@@ -68,7 +69,7 @@ export class BlockchainService {
     try {
       const contract = await new this.web3.eth.Contract(
         await this.storageContractAbi.getAbi(),
-        process.env.BLOCKCHAIN_CONTRACT_ADDRESS
+        this.configService.get('BLOCKCHAIN_CONTRACT_ADDRESS')
       );
       // example 1 for exception filter & swagger
       if (!contract) {

@@ -6,6 +6,7 @@ import * as passport from 'passport';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { ConfigEnvService } from 'libs/common/src/config/config-env.service';
 
 // serializing for using passport-google-oauth to authenticate user
 // const serializeUser = () => {
@@ -20,6 +21,9 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  const configService = app.get(ConfigEnvService);
+
   const config = new DocumentBuilder()
     .setTitle('NestJS API')
     // .setDescription('NestJS 1.0')
@@ -27,12 +31,13 @@ async function bootstrap() {
     // .addTag('NestJS API Specification')
     .addBearerAuth()
     .build();
+    
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
   app.use(
     session({
-      secret: process.env.SESSION_SECRET,
+      secret: configService.get('SESSION_SECRET'),
       saveUninitialized: false,
       resave: false,
       cookie: {
@@ -56,11 +61,11 @@ async function bootstrap() {
     credentials: true,
   });
 
-  await app.listen(process.env.API_PORT);
+  await app.listen(configService.get('API_PORT'));
 
   console.log(
     `====== Application is running on: ${await app.getUrl()} as ${
-      process.env.STAGE
+      configService.get('STAGE')
     } ======`
   );
 }

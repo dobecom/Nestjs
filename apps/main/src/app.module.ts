@@ -9,6 +9,7 @@ import { ClsModule } from 'nestjs-cls';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ClsInterceptor } from './interceptors/cls.interceptor';
 import { BlockchainModule } from './blockchain/blockchain.module';
+import { ConfigEnvModule } from 'libs/common/src/config/config-env.module';
 
 @Module({
   imports: [
@@ -22,12 +23,13 @@ import { BlockchainModule } from './blockchain/blockchain.module';
       interceptor: { mount: false },
     }),
     BlockchainModule,
+    ConfigEnvModule
   ],
-  providers:[
+  providers: [
     {
       provide: APP_INTERCEPTOR,
-      useClass: ClsInterceptor
+      useClass: ClsInterceptor,
     },
-  ]
+  ],
 })
 export class AppModule {}
