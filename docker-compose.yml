@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  dev-db:
+  postgresql:
     container_name: pg-container
     image: postgres:latest
     ports:
@@ -9,6 +9,16 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234qwer!
       POSTGRES_DB: nest
+    networks:
+      - nest
+  redis:
+    container_name: redis-container
+    image: redis:latest
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis/data:/data
+      - ./redis/conf/redis.conf:/usr/local/conf/redis.conf
     networks:
       - nest
 networks:

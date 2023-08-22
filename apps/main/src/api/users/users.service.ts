@@ -10,7 +10,9 @@ export class UsersService {
   ) {}
 
   async findAllUsers() {
-    const res = await this.redisService.set('test-key', 'test-value', 30);
+    // const res = await this.redisService.set('test-key', 'test-value', 30);
+    // const value = await this.redisService.get('test-key');
+    // console.log(value)
     return this.userRepo.findAll();
   }
 }
