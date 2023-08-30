@@ -7,6 +7,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { EnvService } from '@app/common/env/env.service';
+import { Injectable, Logger } from '@nestjs/common';
 
 // serializing for using passport-google-oauth to authenticate user
 // const serializeUser = () => {
@@ -18,6 +19,7 @@ import { EnvService } from '@app/common/env/env.service';
 //     done(null, id);
 //   });
 // }
+const logger = new Logger('Main Application');
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -31,7 +33,7 @@ async function bootstrap() {
     // .addTag('NestJS API Specification')
     .addBearerAuth()
     .build();
-    
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
@@ -63,10 +65,10 @@ async function bootstrap() {
 
   await app.listen(envService.get('API_PORT'));
 
-  console.log(
-    `====== Application is running on: ${await app.getUrl()} as ${
-      envService.get('STAGE')
-    } ======`
+  logger.log(
+    `Application is running on: ${await app.getUrl()} as ${envService.get(
+      'STAGE'
+    )}}`
   );
 }
 bootstrap();
