@@ -5,15 +5,15 @@ import { JwtModule } from '@nestjs/jwt';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { UserRepository } from './repositories/user.repository';
 import { SessionSerializer } from './auth.serialize';
-import { ConfigEnvService } from 'libs/common/src/config/config-env.service';
+import { EnvService } from '@app/common/env/env.service';
 
 @Module({
   imports: [
     JwtModule.registerAsync({
-      inject: [ConfigEnvService],
-      useFactory: async (configService: ConfigEnvService) => ({
+      inject: [EnvService],
+      useFactory: async (envService: EnvService) => ({
         global: true,
-        secret: configService.get('JWT_SECRET'),
+        secret: envService.get('JWT_SECRET'),
         signOptions: { expiresIn: '7d' },
       })
     }),

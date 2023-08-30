@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
-import { ConfigEnvService } from 'libs/common/src/config/config-env.service';
+import { EnvService } from '@app/common/env/env.service';
 import { SchedulerModule } from './scheduler.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(SchedulerModule);
-  const configService = app.get(ConfigEnvService);
-  await app.listen(configService.get('SCHEDULER_PORT'));
-  console.log(`====== Application is running on: ${await app.getUrl()} as ${configService.get('STAGE')} ======`)
+  const envService = app.get(EnvService);
+  await app.listen(envService.get('SCHEDULER_PORT'));
+  console.log(`====== Application is running on: ${await app.getUrl()} as ${envService.get('STAGE')} ======`)
 }
 bootstrap();

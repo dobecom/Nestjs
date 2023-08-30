@@ -6,7 +6,7 @@ import * as passport from 'passport';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
-import { ConfigEnvService } from 'libs/common/src/config/config-env.service';
+import { EnvService } from '@app/common/env/env.service';
 
 // serializing for using passport-google-oauth to authenticate user
 // const serializeUser = () => {
@@ -22,7 +22,7 @@ import { ConfigEnvService } from 'libs/common/src/config/config-env.service';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  const configService = app.get(ConfigEnvService);
+  const envService = app.get(EnvService);
 
   const config = new DocumentBuilder()
     .setTitle('NestJS API')
@@ -37,7 +37,7 @@ async function bootstrap() {
 
   app.use(
     session({
-      secret: configService.get('SESSION_SECRET'),
+      secret: envService.get('SESSION_SECRET'),
       saveUninitialized: false,
       resave: false,
       cookie: {
@@ -61,11 +61,11 @@ async function bootstrap() {
     credentials: true,
   });
 
-  await app.listen(configService.get('API_PORT'));
+  await app.listen(envService.get('API_PORT'));
 
   console.log(
     `====== Application is running on: ${await app.getUrl()} as ${
-      configService.get('STAGE')
+      envService.get('STAGE')
     } ======`
   );
 }

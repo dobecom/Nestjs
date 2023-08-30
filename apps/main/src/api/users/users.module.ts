@@ -4,7 +4,7 @@ import { UsersController } from './users.controller';
 import { UserRepository } from './repositories/user.repository';
 import { RedisService } from '../../redis/redis.service';
 import { ClsModule } from 'nestjs-cls';
-import { ConfigEnvService } from 'libs/common/src/config/config-env.service';
+import { EnvService } from '@app/common/env/env.service';
 
 @Module({
   imports: [
@@ -14,6 +14,6 @@ import { ConfigEnvService } from 'libs/common/src/config/config-env.service';
     }),
   ],
   controllers: [UsersController],
-  providers: [UsersService, UserRepository, RedisService, ConfigEnvService],
+  providers: [UsersService, UserRepository, RedisService, EnvService],
 })
 export class UsersModule {}

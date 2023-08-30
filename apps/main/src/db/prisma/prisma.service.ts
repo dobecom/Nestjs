@@ -1,14 +1,14 @@
+import { EnvService } from '@app/common/env/env.service';
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class PrismaService extends PrismaClient {
-  constructor(config: ConfigService) {
+  constructor(envService: EnvService) {
     super({
       datasources: {
         db: {
-          url: config.get('DATABASE_URL'),
+          url: envService.get('DATABASE_URL'),
         },
       },
     });

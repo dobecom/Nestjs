@@ -7,9 +7,10 @@ import { RedisModule } from './redis/redis.module';
 import { PassportModule } from '@nestjs/passport';
 import { ClsModule } from 'nestjs-cls';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { ClsInterceptor } from './interceptors/cls.interceptor';
 import { BlockchainModule } from './blockchain/blockchain.module';
-import { ConfigEnvModule } from 'libs/common/src/config/config-env.module';
+import { EnvModule } from '@app/common/env/env.module';
+import { ContextInterceptor } from './interceptors/context.interceptor';
+import { RequestContextModule } from 'nestjs-request-context';
 
 @Module({
   imports: [
@@ -23,12 +24,13 @@ import { ConfigEnvModule } from 'libs/common/src/config/config-env.module';
       interceptor: { mount: false },
     }),
     BlockchainModule,
-    ConfigEnvModule
+    EnvModule,
+    RequestContextModule
   ],
   providers: [
     {
       provide: APP_INTERCEPTOR,
-      useClass: ClsInterceptor,
+      useClass: ContextInterceptor,
     },
   ],
 })

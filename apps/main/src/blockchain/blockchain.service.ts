@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { ConfigEnvService } from 'libs/common/src/config/config-env.service';
+import { EnvService } from '@app/common/env/env.service';
 import Web3 from 'web3';
 import { StorageContractAbi } from './abis/storage-contract.abi';
 import { ContractRequest } from './dto/request/contract.request.dto';
@@ -9,9 +9,9 @@ export class BlockchainService {
   private web3: Web3;
   constructor(
     private readonly storageContractAbi: StorageContractAbi,
-    private readonly configService: ConfigEnvService
+    private readonly envService: EnvService
   ) {
-    const nodeUrl = `https://sepolia.infura.io/v3/${this.configService.get(
+    const nodeUrl = `https://sepolia.infura.io/v3/${this.envService.get(
       'BLOCKCHAIN_INFURA_API_KEY'
     )}`;
     this.web3 = new Web3(nodeUrl);
@@ -23,7 +23,7 @@ export class BlockchainService {
       // const blockNumber = await this.web3.eth.getBlockNumber();
       // console.log(`Current block number: ${blockNumber}`);
 
-      const pvKey = this.configService.get('BLOCKCHAIN_ACCOUNT_PRIVATE_KEY');
+      const pvKey = this.envService.get('BLOCKCHAIN_ACCOUNT_PRIVATE_KEY');
       const account = await this.web3.eth.accounts.privateKeyToAccount(
         '0x' + pvKey
       );
@@ -31,7 +31,7 @@ export class BlockchainService {
 
       const contract = await new this.web3.eth.Contract(
         this.storageContractAbi.getAbi(),
-        this.configService.get('BLOCKCHAIN_CONTRACT_ADDRESS')
+        this.envService.get('BLOCKCHAIN_CONTRACT_ADDRESS')
       );
 
       // const functionData = await contract.methods
@@ -40,7 +40,7 @@ export class BlockchainService {
 
       // const txObject = {
       //   from: account.address,
-      //   to: this.configService.get('BLOCKCHAIN_CONTRACT_ADDRESS')
+      //   to: this.envService.get('BLOCKCHAIN_CONTRACT_ADDRESS')
 
       //   data: functionData,
       //   gas: 2000000, // Adjust gas limit as needed
@@ -69,7 +69,7 @@ export class BlockchainService {
     try {
       const contract = await new this.web3.eth.Contract(
         await this.storageContractAbi.getAbi(),
-        this.configService.get('BLOCKCHAIN_CONTRACT_ADDRESS')
+        this.envService.get('BLOCKCHAIN_CONTRACT_ADDRESS')
       );
       // example 1 for exception filter & swagger
       if (!contract) {

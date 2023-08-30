@@ -1,8 +1,8 @@
-import { Global, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 
 @Injectable()
-export class ConfigEnvService {
+export class EnvService {
   private readonly envConfig: Record<string, string>;
 
   constructor() {

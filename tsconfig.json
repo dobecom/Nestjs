@@ -18,11 +18,11 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/common-lib": [
-        "libs/common-lib/src"
+      "@app/common": [
+        "libs/common/src"
       ],
-      "@app/common-lib/*": [
-        "libs/common-lib/src/*"
+      "@app/common/*": [
+        "libs/common/src/*"
       ]
     }
   }
