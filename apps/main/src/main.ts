@@ -39,7 +39,7 @@ async function bootstrap() {
 
   app.use(
     session({
-      secret: envService.get('SESSION_SECRET'),
+      secret: envService.get('SESSION_SECRET') || 'default',
       saveUninitialized: false,
       resave: false,
       cookie: {

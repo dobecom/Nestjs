@@ -87,13 +87,13 @@ export class AuthService {
       email: email,
     };
     const accessToken = await this.jwtService.signAsync(payload, {
-      secret: this.envService.get('ACCESS_SECRET') || 'YOUR_SECRET',
-      expiresIn: this.envService.get('ACCESS_EXPIRES') || 'YOUR_EXPIRES',
+      secret: this.envService.get('ACCESS_SECRET') || 'default',
+      expiresIn: this.envService.get('ACCESS_EXPIRES') || 'default',
     });
 
     const refreshToken = await this.jwtService.signAsync(payload, {
-      secret: this.envService.get('REFRESH_SECRET') || 'YOUR_SECRET',
-      expiresIn: this.envService.get('REFRESH_EXPIRES') || 'YOUR_EXPIRES',
+      secret: this.envService.get('REFRESH_SECRET') || 'default',
+      expiresIn: this.envService.get('REFRESH_EXPIRES') || 'default',
     });
 
     return {
