@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { EnvService } from '@app/common/env/env.service';
 import Web3 from 'web3';
 import { StorageContractAbi } from './abis/storage-contract.abi';
-import { ContractRequest } from './dto/request/contract.request.dto';
+import { ContractRequest } from './dto/request/contract.request';
 
 @Injectable()
 export class BlockchainService {

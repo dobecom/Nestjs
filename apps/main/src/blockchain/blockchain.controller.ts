@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BlockchainService } from './blockchain.service';
-import { ContractRequest } from './dto/request/contract.request.dto';
+import { ContractRequest } from './dto/request/contract.request';
 import { SetContractResponse } from './dto/response/set-contract.response';
 
 @ApiTags('Blockchain')

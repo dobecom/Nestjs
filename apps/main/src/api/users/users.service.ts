@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '../../redis/redis.service';
 import { UserEntity } from './domain/user.entity';
-import { CreateUserRequest } from './dto/create-user.dto';
+import { CreateUserRequest } from './dto/request/create-user.request';
 import { UserRepository } from './repositories/user.repository';
 
 @Injectable()

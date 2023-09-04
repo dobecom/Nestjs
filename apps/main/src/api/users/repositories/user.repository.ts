@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { User } from '@prisma/client';
 import { PrismaService } from '../../../db/prisma/prisma.service';
 
 @Injectable()
@@ -12,11 +13,12 @@ export class UserRepository {
     });
   }
 
-  findAll() {
-    return this.prisma.user.findMany({
+  async findAll() : Promise<User[]>{
+    const result = await this.prisma.user.findMany({
       include: {
         records: true,
       },
     });
+    return result;
   }
 }
