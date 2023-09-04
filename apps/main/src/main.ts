@@ -59,16 +59,16 @@ async function bootstrap() {
   // serializeUser();
 
   app.enableCors({
-    origin: ['http://localhost:4000'],
+    origin: (envService.get('CORS_ORIGINS') as string).split('||') || [],
     credentials: true,
   });
 
-  await app.listen(envService.get('API_PORT'));
+  await app.listen(envService.get('API_PORT') || 3000);
 
   logger.log(
-    `Application is running on: ${await app.getUrl()} as ${envService.get(
-      'STAGE'
-    )}}`
+    `Application is running on: ${await app.getUrl()} as ${
+      envService.get('STAGE') || 'LOCAL'
+    }}`
   );
 }
 bootstrap();

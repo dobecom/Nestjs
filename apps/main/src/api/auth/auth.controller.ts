@@ -18,9 +18,9 @@ export class AuthController {
   @Post('login')
   async authLogin(@Body() req) {
     const result = await this.authService.signInGoogle(req.data.access_token);
+    
     return result;
   }
-
 
   // 2. using passport-google-oauth to authenticate user
   // @Get('google/login')

@@ -11,8 +11,10 @@ export type JwtPayload = {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(private readonly userRepo: UserRepository, 
-    private readonly envService: EnvService) {
+  constructor(
+    private readonly userRepo: UserRepository,
+    private readonly envService: EnvService
+  ) {
     const extractJwtFromCookie = (req) => {
       let token = null;
       if (req && req.cookies) {
@@ -23,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
     super({
       ignoreExpiration: false,
-      secretOrKey: envService.get('JWT_SECRET'),
+      secretOrKey: envService.get('ACCESS_SECRET') || 'YOUR_SECRET',
       jwtFromRequest: extractJwtFromCookie,
     });
   }

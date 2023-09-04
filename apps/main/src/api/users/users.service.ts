@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '../../redis/redis.service';
 import { UserEntity } from './domain/user.entity';
-import { CreateUserRequestDto } from './dto/create-user.dto';
+import { CreateUserRequest } from './dto/create-user.dto';
 import { UserRepository } from './repositories/user.repository';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class UsersService {
     return this.userRepo.findAll();
   }
 
-  create(req : CreateUserRequestDto) {
+  create(req : CreateUserRequest) {
     // const user = UserEntity.create({
     //   req
     // })

@@ -5,9 +5,11 @@ import { createClient, SetOptions } from 'redis';
 @Injectable()
 export class RedisService {
   private readonly redis = createClient({
-    url: `redis://${this.envService.get('REDIS_HOST')}:${this.envService.get('REDIS_PORT')}`,
+    url: `redis://${this.envService.get('REDIS_HOST') || 'localhost'}:${
+      this.envService.get('REDIS_PORT') || 6379
+    }`,
   });
-  
+
   constructor(private readonly envService: EnvService) {
     this.redis.connect();
   }
@@ -17,7 +19,9 @@ export class RedisService {
   }
 
   async set(key: string, value: string, expire?: number) {
-    return this.redis.set(key, value, { EX: expire ?? 10 } as SetOptions);
+    return this.redis.set(key, value, {
+      EX: expire ?? (this.envService.get('REDIS_TTL') || 10),
+    } as SetOptions);
   }
 
   async del(key: string): Promise<number> {

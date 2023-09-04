@@ -13,7 +13,7 @@ import { EnvService } from '@app/common/env/env.service';
       inject: [EnvService],
       useFactory: async (envService: EnvService) => ({
         global: true,
-        secret: envService.get('JWT_SECRET'),
+        secret: envService.get('ACCESS_SECRET') || 'YOUR_SECRET',
         signOptions: { expiresIn: '7d' },
       })
     }),

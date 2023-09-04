@@ -1,9 +1,12 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { EnvService } from '@app/common/env/env.service';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import axios from 'axios';
 import { ClsService } from 'nestjs-cls';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { UserRepository } from './repositories/user.repository';
 
 @Injectable()
@@ -11,14 +14,13 @@ export class AuthService {
   constructor(
     private jwtService: JwtService,
     private userRepo: UserRepository,
+    private envService: EnvService,
     private readonly cls: ClsService
   ) {}
 
-  generateJwt(payload) {
-    return this.jwtService.signAsync(payload);
-  }
-
-  async signInGoogle(token: string) {
+  async signInGoogle(
+    token: string
+  ): Promise<{ accessToken: string; refreshToken: string }> {
     try {
       const res = await axios.get(
         `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`
@@ -35,24 +37,18 @@ export class AuthService {
       };
       // console.log(user);
       if (!user) {
-        throw new BadRequestException('Unauthenticated');
+        throw new UnauthorizedException('Unauthorized');
       }
 
       const userExists = await this.userRepo.findUserByEmail(user.email);
       if (!userExists) {
         const createUser = await this.userRepo.registerUser(user);
-        return await this.generateJwt({
-          sub: createUser.id,
-          email: user.email,
-        });
+        return await this.generateToken(createUser.id, user.email);
       }
-      return this.generateJwt({
-        sub: userExists.id,
-        email: userExists.email,
-      });
+
+      return await this.generateToken(userExists.id, userExists.email);
     } catch (err) {
-      console.log('err');
-      console.log(err);
+      throw err;
     }
   }
 
@@ -66,18 +62,18 @@ export class AuthService {
 
       if (!userExists) {
         this.userRepo.registerUser(user);
-        return this.generateJwt({
+
+        return this.jwtService.signAsync({
           sub: user.providerId,
           email: user.email,
         });
       }
-      return this.generateJwt({
+      return this.jwtService.signAsync({
         sub: userExists.id,
         email: userExists.email,
       });
     } catch (err) {
-      console.log('err');
-      console.log(err);
+      throw err;
     }
   }
 
@@ -85,23 +81,24 @@ export class AuthService {
     return await this.userRepo.findOne(id);
   }
 
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+  private async generateToken(id: number, email: string) {
+    const payload = {
+      sub: id,
+      email: email,
+    };
+    const accessToken = await this.jwtService.signAsync(payload, {
+      secret: this.envService.get('ACCESS_SECRET') || 'YOUR_SECRET',
+      expiresIn: this.envService.get('ACCESS_EXPIRES') || 'YOUR_EXPIRES',
+    });
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+    const refreshToken = await this.jwtService.signAsync(payload, {
+      secret: this.envService.get('REFRESH_SECRET') || 'YOUR_SECRET',
+      expiresIn: this.envService.get('REFRESH_EXPIRES') || 'YOUR_EXPIRES',
+    });
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }

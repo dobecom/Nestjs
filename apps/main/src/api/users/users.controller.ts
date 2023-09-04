@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { CreateUserRequestDto } from './dto/create-user.dto';
+import { CreateUserRequest } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 
 @UseGuards()
@@ -14,7 +14,7 @@ export class UsersController {
   }
 
   @Post()
-  async create(@Body() request: CreateUserRequestDto) {
+  async create(@Body() request: CreateUserRequest) {
     const result = await this.usersService.create(request);
   }
 }
