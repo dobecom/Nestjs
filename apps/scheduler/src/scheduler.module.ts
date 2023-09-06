@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
-import { ConfigEnvModule } from '@app/common/env/env.module';
-import { PrismaModule } from './db/prisma/prisma.module';
+import { EnvModule } from '@app/common/env/env.module';
 import { SchedulerRepository } from './scheduler.repository';
 import { SchedulerService } from './scheduler.service';
+import { PrismaModule } from '@app/common/db/prisma/prisma.module';
 
 @Module({
   imports: [
     ScheduleModule.forRoot(),
     PrismaModule,
-    ConfigEnvModule
+    EnvModule
   ],
   providers: [SchedulerService, SchedulerRepository]
 })

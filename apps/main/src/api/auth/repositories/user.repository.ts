@@ -1,5 +1,6 @@
+import { PrismaService } from '@app/common/db/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../db/prisma/prisma.service';
+import { UserRoles } from '../../users/domain/user.types';
 
 @Injectable()
 export class UserRepository {
@@ -20,6 +21,7 @@ export class UserRepository {
         type: 'google',
         hash: '',
         name: user.name,
+        role: UserRoles.user
       },
     });
   }

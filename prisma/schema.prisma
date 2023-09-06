@@ -10,9 +10,10 @@ datasource db {
 model User {
   id         Int          @id @default(autoincrement())
   createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  updatedAt  DateTime     @default(now()) @updatedAt
   email      String       @unique
   type       String
+  role       String
   hash       String
   name       String?      @db.VarChar(20)
   sex        String?
@@ -26,7 +27,7 @@ model User {
 model Book {
   id        Int          @id @default(autoincrement())
   createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
+  updatedAt DateTime     @default(now()) @updatedAt
   name      String
   author    String
   records   BookRecord[]
@@ -35,7 +36,7 @@ model Book {
 model BookRecord {
   id         Int      @id @default(autoincrement())
   createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  updatedAt  DateTime @default(now()) @updatedAt
   userId     Int
   bookId     Int
   isFavorite Boolean
