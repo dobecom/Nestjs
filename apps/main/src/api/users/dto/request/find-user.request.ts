@@ -1,27 +1,38 @@
 import { PaginatedQueryRequest } from '@app/common/api/paginated-query.request';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsOptional, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEnum,
+  IsOptional,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+
+export enum Gender {
+  M = 'M',
+  F = 'F',
+}
 
 export class FindUserRequest extends PaginatedQueryRequest {
   @ApiProperty({
-    example: 'steve',
-    description: 'User name',
+    example: 'google',
+    description: 'Login type',
+    required: false,
   })
-  @MaxLength(100)
+  @MaxLength(30)
   @MinLength(5)
   @IsString()
   @IsOptional()
-  @Matches(/^[a-zA-Z0-9가-힣]*$/)
-  readonly name: string;
+  @Matches(/^[a-zA-Z]*$/)
+  readonly type: string;
 
   @ApiProperty({
-    example: 'steve@gmail.com',
-    description: 'User email address',
+    example: 'M',
+    description: 'User gender (M or F)',
+    required: false,
   })
-  @MaxLength(100)
-  @MinLength(5)
-  @IsEmail()
   @IsOptional()
-  @Matches(/^[a-zA-Z0-9@.]*$/)
-  readonly email: string;
+  @IsEnum(Gender)
+  gender: Gender;
 }

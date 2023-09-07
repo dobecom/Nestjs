@@ -26,7 +26,7 @@ export class UserRepository {
     });
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.prisma.user.findUnique({
       where: {
         id,

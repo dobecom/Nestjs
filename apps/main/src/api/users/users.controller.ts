@@ -1,4 +1,5 @@
 import { PaginatedQueryRequest } from '@app/common/api/paginated-query.request';
+import { ResponseBase } from '@app/common/api/response.base';
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserRequest } from './dto/request/create-user.request';
@@ -40,8 +41,15 @@ export class UsersController {
   ): Promise<UserPaginatedResponse> {
     const result = await this.usersService.findUsers(req);
 
-    return null;
-    // return this.usersService.findUsers(req, query);
+    // Whitelisting returned properties
+    return new UserPaginatedResponse({
+      ...result,
+      data: result.data.map((user) => ({
+        ...new ResponseBase(user),
+        email: user.email,
+        name: user.name,
+      })),
+    });
   }
 
   @Post()

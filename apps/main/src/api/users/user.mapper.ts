@@ -19,7 +19,7 @@ export class UserMapper
   toPersistence(entity: UserEntity): User {
     const copy = entity.getProps();
     const record: User = {
-      id: +copy.id,
+      id: copy.id,
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
       email: copy.email,
@@ -30,7 +30,7 @@ export class UserMapper
       type: '',
       hash: '',
       name: '',
-      sex: '',
+      gender: '',
       age: 0,
       phone: '',
       accessedAt: undefined,

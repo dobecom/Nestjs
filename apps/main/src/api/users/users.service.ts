@@ -25,7 +25,8 @@ export class UsersService {
   async findUsers(
     req: FindUserRequest,
   ): Promise<Paginated<User>> {
-    return this.userRepo.findUsers(req);
+    const res = await this.userRepo.findUsers(req);
+    return res;
   }
 
   create(req: CreateUserRequest) {

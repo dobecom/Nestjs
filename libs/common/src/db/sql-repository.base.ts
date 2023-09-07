@@ -1,18 +1,4 @@
-import { Inject } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-// import {
-//   DatabasePool,
-//   DatabaseTransactionConnection,
-//   IdentifierSqlToken,
-//   MixedRow,
-//   PrimitiveValueExpression,
-//   QueryResult,
-//   QueryResultRow,
-//   sql,
-//   SqlSqlToken,
-//   UniqueIntegrityConstraintViolationError,
-// } from 'slonik';
-import { ZodTypeAny, TypeOf, ZodObject } from 'zod';
 import { AggregateRoot, Mapper } from '../ddd';
 import {
   Paginated,
@@ -28,10 +14,6 @@ export abstract class SqlRepositoryBase<
   DbModel extends ObjectLiteral,
 > implements RepositoryPort<Aggregate>
 {
-  protected abstract tableName: string;
-
-  protected abstract schema: ZodObject<any>;
-
   protected constructor(
     protected readonly mapper: Mapper<Aggregate, DbModel>,
     protected readonly eventEmitter: EventEmitter2,

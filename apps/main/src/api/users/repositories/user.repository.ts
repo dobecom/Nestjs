@@ -6,6 +6,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { User } from '@prisma/client';
 import { ZodObject, UnknownKeysParam, ZodTypeAny } from 'zod';
 import { UserEntity } from '../domain/user.entity';
+import { FindUserRequest } from '../dto/request/find-user.request';
 import { UserMapper } from '../user.mapper';
 import { UserRepositoryPort } from './user.repository.port';
 
@@ -14,14 +15,6 @@ export class UserRepository
   extends SqlRepositoryBase<UserEntity, User>
   implements UserRepositoryPort
 {
-  protected tableName: string;
-  protected schema: ZodObject<
-    any,
-    UnknownKeysParam,
-    ZodTypeAny,
-    { [x: string]: any },
-    { [x: string]: any }
-  >;
   constructor(
     prisma: PrismaService,
     mapper: UserMapper,
@@ -54,17 +47,24 @@ export class UserRepository
   //   return result;
   // }
 
-  async findUsers(req): Promise<Paginated<User>> {
+  async findUsers(req: FindUserRequest): Promise<Paginated<User>> {
     const result = await this.prisma.user.findMany({
       include: {
         records: true,
       },
       where:{
-        email: req.email,
-        name: req.name
-      }
+        type:req.type,
+        gender: req.gender
+      },
+      skip: req.page,
+      take: req.limit
     });
-    console.log(result)
-    return null;
+
+    return new Paginated<User>({
+      data: result,
+      count:result.length,
+      limit:req.limit,
+      page:req.page,
+    });
   }
 }

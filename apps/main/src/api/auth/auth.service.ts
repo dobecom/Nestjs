@@ -77,11 +77,11 @@ export class AuthService {
     }
   }
 
-  async findUser(id: number) {
+  async findUser(id: string) {
     return await this.userRepo.findOne(id);
   }
 
-  private async generateToken(id: number, email: string) {
+  private async generateToken(id: string, email: string) {
     const payload = {
       sub: id,
       email: email,
