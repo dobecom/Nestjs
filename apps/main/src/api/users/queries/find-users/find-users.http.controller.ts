@@ -1,18 +1,18 @@
-import { PaginatedQueryRequest } from '@app/common/api/paginated-query.request';
 import { ResponseBase } from '@app/common/api/response.base';
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateUserRequest } from './dto/request/create-user.request';
-import { FindUserRequest } from './dto/request/find-user.request';
-import { UserPaginatedResponse } from './dto/response/user-paginated.response';
-import { UserResponse } from './dto/response/user.response';
-import { UsersService } from './users.service';
+import { FindUsersRequest } from '../../dto/request/find-users.request';
+import { UserPaginatedResponse } from '../../dto/response/user-paginated.response';
+import { UserResponse } from '../../dto/response/user.response';
+import { FindUsersQuery } from './find-users.query-handler';
+
 
 @UseGuards()
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly qBus: QueryBus) {}
 
   @ApiOperation({
     summary: 'Find all users',
@@ -24,7 +24,7 @@ export class UsersController {
   })
   @Get()
   findAll() {
-    return this.usersService.findAllUsers();
+    // return this.usersService.findAllUsers();
   }
 
   @ApiOperation({
@@ -35,11 +35,16 @@ export class UsersController {
     description: 'Success',
     type: UserResponse,
   })
-  @Post('find')
+  @Get('find')
   async findUsers(
-    @Query() req: FindUserRequest
+    @Query() req: FindUsersRequest
   ): Promise<UserPaginatedResponse> {
-    const result = await this.usersService.findUsers(req);
+    const query = new FindUsersQuery({
+      ...req,
+      limit: req.limit,
+      page: req.page,
+    })
+    const result = await this.qBus.execute(query);
 
     // Whitelisting returned properties
     return new UserPaginatedResponse({
@@ -50,10 +55,5 @@ export class UsersController {
         name: user.name,
       })),
     });
-  }
-
-  @Post()
-  async create(@Body() request: CreateUserRequest) {
-    const result = await this.usersService.create(request);
   }
 }

@@ -6,33 +6,28 @@ import {
   IsString,
   Matches,
   MaxLength,
-  MinLength,
 } from 'class-validator';
+import { Gender } from '../../domain/user.types';
 
-export enum Gender {
-  M = 'M',
-  F = 'F',
-}
-
-export class FindUserRequest extends PaginatedQueryRequest {
+export class FindUsersRequest extends PaginatedQueryRequest {
   @ApiProperty({
     example: 'google',
     description: 'Login type',
     required: false,
   })
   @MaxLength(30)
-  @MinLength(5)
   @IsString()
   @IsOptional()
-  @Matches(/^[a-zA-Z]*$/)
+  @Matches(/^[a-zA-Z ]*$/)
   readonly type: string;
 
   @ApiProperty({
     example: 'M',
     description: 'User gender (M or F)',
     required: false,
+    enum: Gender
   })
   @IsOptional()
   @IsEnum(Gender)
-  gender: Gender;
+  readonly gender: Gender;
 }

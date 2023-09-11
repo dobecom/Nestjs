@@ -6,7 +6,8 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { User } from '@prisma/client';
 import { ZodObject, UnknownKeysParam, ZodTypeAny } from 'zod';
 import { UserEntity } from '../domain/user.entity';
-import { FindUserRequest } from '../dto/request/find-user.request';
+import { FindUsersRequest } from '../dto/request/find-users.request';
+import { FindUsersQuery } from '../queries/find-users/find-users.query-handler';
 import { UserMapper } from '../user.mapper';
 import { UserRepositoryPort } from './user.repository.port';
 
@@ -20,12 +21,7 @@ export class UserRepository
     mapper: UserMapper,
     eventEmitter: EventEmitter2
   ) {
-    super(
-      mapper, 
-      eventEmitter, 
-      new Logger(UserRepository.name), 
-      prisma
-      );
+    super(mapper, eventEmitter, new Logger(UserRepository.name), prisma);
   }
   findOneByEmail(email: string): Promise<UserEntity> {
     throw new Error('Method not implemented.');
@@ -47,24 +43,24 @@ export class UserRepository
   //   return result;
   // }
 
-  async findUsers(req: FindUserRequest): Promise<Paginated<User>> {
+  async findUsers(query: FindUsersQuery): Promise<Paginated<User>> {
     const result = await this.prisma.user.findMany({
       include: {
         records: true,
       },
-      where:{
-        type:req.type,
-        gender: req.gender
+      where: {
+        type: query.type,
+        gender: query.gender,
       },
-      skip: req.page,
-      take: req.limit
+      skip: query.page,
+      take: query.limit,
     });
 
     return new Paginated<User>({
       data: result,
-      count:result.length,
-      limit:req.limit,
-      page:req.page,
+      count: result.length,
+      limit: query.limit,
+      page: query.page,
     });
   }
 }

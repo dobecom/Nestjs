@@ -4,10 +4,9 @@ import { AppModule } from './app.module';
 import * as session from 'express-session';
 import * as passport from 'passport';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { EnvService } from '@app/common/env/env.service';
-import { Injectable, Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 
 // serializing for using passport-google-oauth to authenticate user
 // const serializeUser = () => {

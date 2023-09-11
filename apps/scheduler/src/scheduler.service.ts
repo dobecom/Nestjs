@@ -10,7 +10,7 @@ export class SchedulerService {
   @Cron(CronExpression.EVERY_10_SECONDS)
   async test() {
     this.logger.log('HIT : EVERY_10_SECONDS');
-    const res = await this.schedulerRepo.findOne(1);
+    const res = await this.schedulerRepo.findOne('1');
     this.logger.log(`data : ${res.email}`);
   }
 

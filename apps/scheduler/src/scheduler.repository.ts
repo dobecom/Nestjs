@@ -1,10 +1,10 @@
+import { PrismaService } from '@app/common/db/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from './db/prisma/prisma.service';
 
 @Injectable()
 export class SchedulerRepository {
   constructor(private readonly prisma: PrismaService) {}
-  findOne(id: number) {
+  findOne(id: string) {
     return this.prisma.user.findUnique({
       where: {
         id,

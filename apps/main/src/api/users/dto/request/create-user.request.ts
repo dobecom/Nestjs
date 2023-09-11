@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsEnum, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import { Gender } from '../../domain/user.types';
 
 export class CreateUserRequest {
   @ApiProperty({
@@ -9,6 +10,7 @@ export class CreateUserRequest {
   @MaxLength(100)
   @MinLength(5)
   @IsString()
+  @Matches(/^[a-zA-Z가-힣]*$/)
   readonly name: string;
 
   @ApiProperty({
@@ -19,4 +21,15 @@ export class CreateUserRequest {
   @MinLength(5)
   @IsEmail()
   readonly email: string;
+
+  @ApiProperty({
+    example: 'M',
+    description: 'User gender (M or F)',
+    enum: Gender
+  })
+  @MaxLength(100)
+  @MinLength(5)
+  @IsEnum(Gender)
+  readonly gender: Gender;
 }
+

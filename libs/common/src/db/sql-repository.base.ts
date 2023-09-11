@@ -21,6 +21,21 @@ export abstract class SqlRepositoryBase<
     protected readonly prisma: PrismaService
   ) {}
 
+  // async findOneById(id: string): Promise<Aggregate> {
+  //   const result = await this.prisma.[''].findUnique({
+  //     where: {
+  //       id,
+  //     },
+  //   });
+
+  //   const query = sql.type(this.schema)`SELECT * FROM ${sql.identifier([
+  //     this.tableName,
+  //   ])} WHERE id = ${id}`;
+
+  //   const result = await this.pool.query(query);
+  //   return result.rows[0] ? Some(this.mapper.toDomain(result.rows[0])) : None;
+  // }
+
   insert(entity: Aggregate | Aggregate[]): Promise<void> {
     throw new Error('Method not implemented.');
   }
