@@ -1,3 +1,4 @@
+import { ExceptionResponse } from '@app/common/constants/exception-response.constant';
 import {
   ExceptionFilter,
   Catch,
@@ -9,18 +10,21 @@ import { Response } from 'express';
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
-    const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
-    const exceptionResponse = exception.getResponse();
-    const result = {};
+    console.log('http exception filter')
+    const response = host.switchToHttp().getResponse<Response>();
+    const status = exception.getStatus();
+    const exceptionResponse = exception.getResponse() as ExceptionResponse;
 
-    if (result['errorCode']) {
-      exceptionResponse['errorCode'] = result['errorCode'];
-    } else {
-      exceptionResponse['errorCode'] = 'Unhandled Error';
-    }
-    exceptionResponse['message'] = result['message'];
+    const errorCode = exceptionResponse.errorCode || 'Unhandled Error';
 
-    response.json(result);
+    const data = {
+      statusCode: status,
+      timestamp: new Date().toISOString(),
+      path: host.switchToHttp().getRequest().url,
+      errorCode,
+      message: exceptionResponse.message,
+    };
+    console.error(`Exception occured [${data.statusCode}] : ${JSON.stringify(data)}`);
+    return response.status(status).json(data);
   }
 }

@@ -63,4 +63,12 @@ export class UserRepository
       page: query.page,
     });
   }
+
+  async createUser(user: UserEntity): Promise<void> {
+    const record = this.mapper.toPersistence(user);
+    console.log(record)
+    await this.prisma.user.create({
+      data: record,
+    });
+  }
 }

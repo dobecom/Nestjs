@@ -3,7 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { UserResponse } from './dto/response/user.response';
 import { User } from '@prisma/client';
 import { Mapper } from '@app/common/ddd';
-import { UserRoles } from './domain/user.types';
+import { Gender, UserRoles } from './domain/user.types';
+import { Passports } from '@app/common/constants/passport.constant';
 
 /**
  * Mapper constructs objects that are used in different layers:
@@ -23,16 +24,13 @@ export class UserMapper
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
       email: copy.email,
-      // country: copy.address.country,
-      // postalCode: copy.address.postalCode,
-      // street: copy.address.street,
       role: copy.role,
-      type: '',
-      hash: '',
-      name: '',
-      gender: '',
-      age: 0,
-      phone: '',
+      type: copy.type,
+      hash: copy.hash,
+      name: copy.name,
+      gender: copy.gender,
+      age: copy.age,
+      phone: copy.phone,
       accessedAt: undefined,
       isDeleted: false
     };
@@ -48,6 +46,11 @@ export class UserMapper
         name: record.name,
         email: record.email,
         role: record.role as UserRoles,
+        type: record.type as Passports,
+        hash: record.hash,
+        age: record.age,
+        phone: record.phone,
+        gender: record.gender as Gender
         // address: new Address({
         //   street: record.street,
         //   postalCode: record.postalCode,

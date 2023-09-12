@@ -1,3 +1,4 @@
+import { Passports } from '@app/common/constants/passport.constant';
 import { PrismaService } from '@app/common/db/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { UserRoles } from '../../users/domain/user.types';
@@ -14,11 +15,11 @@ export class UserRepository {
     });
   }
 
-  registerUser(user: any) {
+  registerUser(user: any, passports: Passports) {
     return this.prisma.user.create({
       data: {
         email: user.email,
-        type: 'google',
+        type: passports,
         hash: '',
         name: user.name,
         role: UserRoles.user

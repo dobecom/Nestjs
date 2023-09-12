@@ -7,7 +7,7 @@ export class UserEntity extends AggregateRoot<UserProps> {
   protected readonly _id: AggregateID;
 
   public validate(): void {
-    throw new Error('Method not implemented.');
+    // entity business rules validation to protect it's invariant before saving entity to a database
   }
 
   static create(create: CreateUserProps): UserEntity {

@@ -1,4 +1,5 @@
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { User } from '@prisma/client';
 import { AggregateRoot, Mapper } from '../ddd';
 import {
   Paginated,
@@ -20,36 +21,23 @@ export abstract class SqlRepositoryBase<
     protected readonly logger: LoggerPort,
     protected readonly prisma: PrismaService
   ) {}
+  async insert(entity: Aggregate | Aggregate[]): Promise<void> {
+    const entities = Array.isArray(entity) ? entity : [entity];
+    const records = entities.map(this.mapper.toPersistence);
 
-  // async findOneById(id: string): Promise<Aggregate> {
-  //   const result = await this.prisma.[''].findUnique({
-  //     where: {
-  //       id,
-  //     },
-  //   });
+    // const query = this.generateInsertQuery(records);
 
-  //   const query = sql.type(this.schema)`SELECT * FROM ${sql.identifier([
-  //     this.tableName,
-  //   ])} WHERE id = ${id}`;
+    try {
+      // await this.writeQuery(query, entities);
+    } catch (error) {
+      // if (error instanceof UniqueIntegrityConstraintViolationError) {
+      
+      //   throw new ConflictException('Record already exists', error);
+      // }
+      throw error;
+    }
+  }
 
-  //   const result = await this.pool.query(query);
-  //   return result.rows[0] ? Some(this.mapper.toDomain(result.rows[0])) : None;
-  // }
-
-  insert(entity: Aggregate | Aggregate[]): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  findAll(): Promise<Aggregate[]> {
-    throw new Error('Method not implemented.');
-  }
-  findAllPaginated(
-    params: PaginatedQueryParams
-  ): Promise<Paginated<Aggregate>> {
-    throw new Error('Method not implemented.');
-  }
-  delete(entity: Aggregate): Promise<boolean> {
-    throw new Error('Method not implemented.');
-  }
   /**
    * start a global transaction to save
    * results of all event handlers in one operation

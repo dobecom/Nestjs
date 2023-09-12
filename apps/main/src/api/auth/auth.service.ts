@@ -1,3 +1,4 @@
+import { Passports } from '@app/common/constants/passport.constant';
 import { EnvService } from '@app/common/env/env.service';
 import {
   BadRequestException,
@@ -42,7 +43,7 @@ export class AuthService {
 
       const userExists = await this.userRepo.findUserByEmail(user.email);
       if (!userExists) {
-        const createUser = await this.userRepo.registerUser(user);
+        const createUser = await this.userRepo.registerUser(user, Passports.GOOGLE);
         return await this.generateToken(createUser.id, user.email);
       }
 
@@ -61,7 +62,7 @@ export class AuthService {
       const userExists = await this.userRepo.findUserByEmail(user.email);
 
       if (!userExists) {
-        this.userRepo.registerUser(user);
+        this.userRepo.registerUser(user, Passports.EMAIL);
 
         return this.jwtService.signAsync({
           sub: user.providerId,

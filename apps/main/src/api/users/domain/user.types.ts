@@ -1,3 +1,5 @@
+import { Passports } from "@app/common/constants/passport.constant";
+
 export enum Gender {
   M = 'M',
   F = 'F',
@@ -8,13 +10,16 @@ export enum UserRoles {
   user = 'user',
 }
 
-export interface UserProps {
-  role: UserRoles;
-  name: string;
-  email: string;
-}
-
 export interface CreateUserProps {
   name: string;
   email: string;
+  type: Passports;
+  age: number;
+  phone: string;
+  hash: string;
+  gender: Gender;
+}
+
+export interface UserProps extends CreateUserProps {
+  role: UserRoles;
 }

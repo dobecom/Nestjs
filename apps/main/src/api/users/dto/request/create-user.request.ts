@@ -1,5 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsEnum, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNumber,
+  IsPhoneNumber,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { Gender } from '../../domain/user.types';
 
 export class CreateUserRequest {
@@ -25,11 +34,32 @@ export class CreateUserRequest {
   @ApiProperty({
     example: 'M',
     description: 'User gender (M or F)',
-    enum: Gender
+    enum: Gender,
   })
-  @MaxLength(100)
-  @MinLength(5)
   @IsEnum(Gender)
   readonly gender: Gender;
-}
 
+  @ApiProperty({
+    example: 'password',
+    description: 'User password',
+  })
+  @MaxLength(20)
+  @MinLength(8)
+  @IsString()
+  readonly hash: string;
+
+  @ApiProperty({
+    example: '20',
+    description: 'User age',
+  })
+  @IsNumber()
+  readonly age: number;
+
+  @ApiProperty({
+    example: '010-1234-5678',
+    description: 'User phone number',
+  })
+  @MaxLength(20)
+  @IsString()
+  readonly phone: string;
+}

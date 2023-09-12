@@ -5,16 +5,23 @@ import { ClsModule } from 'nestjs-cls';
 import { EnvService } from '@app/common/env/env.service';
 import { UserMapper } from './user.mapper';
 import { PrismaService } from '@app/common/db/prisma/prisma.service';
-import { UsersController } from './queries/find-users/find-users.http.controller';
 import { FindUsersQueryHandler } from './queries/find-users/find-users.query-handler';
 import { CqrsModule } from '@nestjs/cqrs';
+import { CreateUserHttpController } from './commands/create-user/create-user.http.controller';
+import { FindUsersHttpController } from './queries/find-users/find-users.http.controller';
+import { CreateUserCommandHandler } from './commands/create-user/create-user.command';
 
-const httpControllers = [UsersController];
+const httpControllers = [CreateUserHttpController, FindUsersHttpController];
 
-const commandHandlers: Provider[] = [];
+const commandHandlers: Provider[] = [CreateUserCommandHandler];
 const queryHandlers: Provider[] = [FindUsersQueryHandler];
 
 const mappers: Provider[] = [UserMapper];
+
+const repositories: Provider[] = [{
+  provide: 'UserRepository',
+  useClass: UserRepository
+}];
 
 @Module({
   imports: [
@@ -31,8 +38,9 @@ const mappers: Provider[] = [UserMapper];
     RedisService,
     EnvService,
     ...mappers,
-    // ...commandHandlers,
+    ...commandHandlers,
     ...queryHandlers,
+    ...repositories
   ],
 })
 export class UsersModule {}

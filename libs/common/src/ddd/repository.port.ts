@@ -22,11 +22,12 @@ export type PaginatedQueryParams = {
 };
 
 export interface RepositoryPort<Entity> {
-  insert(entity: Entity | Entity[]): Promise<void>;
+  // It can't be used in PrismaORM because it doesn't recommend to use dynamic Prisma Client
+  // insert(entity: Entity | Entity[]): Promise<void>;
 //   findOneById(id: string): Promise<Option<Entity>>;
-  findAll(): Promise<Entity[]>;
-  findAllPaginated(params: PaginatedQueryParams): Promise<Paginated<Entity>>;
-  delete(entity: Entity): Promise<boolean>;
+  // findAll(): Promise<Entity[]>;
+  // findAllPaginated(params: PaginatedQueryParams): Promise<Paginated<Entity>>;
+  // delete(entity: Entity): Promise<boolean>;
 
   transaction<T>(handler: () => Promise<T>): Promise<T>;
 }

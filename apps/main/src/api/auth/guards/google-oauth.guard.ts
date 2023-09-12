@@ -1,8 +1,9 @@
+import { Passports } from '@app/common/constants/passport.constant';
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class GoogleOauthGuard extends AuthGuard('google') {
+export class GoogleOauthGuard extends AuthGuard(Passports.GOOGLE) {
   async canActivate(context: ExecutionContext) {
     const activate = (await super.canActivate(context)) as boolean;
     const request = context.switchToHttp().getRequest();
