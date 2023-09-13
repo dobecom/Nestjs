@@ -19,7 +19,7 @@ export class FindUsersHttpController {
   @ApiResponse({
     status: 200,
     description: 'Success',
-    type: UserResponse,
+    type: UserPaginatedResponse,
   })
   @Get('find')
   async findUsers(

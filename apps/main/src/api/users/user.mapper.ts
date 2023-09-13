@@ -20,17 +20,7 @@ export class UserMapper
   toPersistence(entity: UserEntity): User {
     const copy = entity.getProps();
     const record: User = {
-      id: copy.id,
-      createdAt: copy.createdAt,
-      updatedAt: copy.updatedAt,
-      email: copy.email,
-      role: copy.role,
-      type: copy.type,
-      hash: copy.hash,
-      name: copy.name,
-      gender: copy.gender,
-      age: copy.age,
-      phone: copy.phone,
+      ...copy,
       accessedAt: undefined,
       isDeleted: false
     };
@@ -43,19 +33,10 @@ export class UserMapper
       createdAt: new Date(record.createdAt),
       updatedAt: new Date(record.updatedAt),
       props: {
-        name: record.name,
-        email: record.email,
+        ...record,
         role: record.role as UserRoles,
         type: record.type as Passports,
-        hash: record.hash,
-        age: record.age,
-        phone: record.phone,
         gender: record.gender as Gender
-        // address: new Address({
-        //   street: record.street,
-        //   postalCode: record.postalCode,
-        //   country: record.country,
-        // }),
       },
     });
     return entity;

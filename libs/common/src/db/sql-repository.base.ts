@@ -1,15 +1,13 @@
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { User } from '@prisma/client';
 import { AggregateRoot, Mapper } from '../ddd';
 import {
-  Paginated,
-  PaginatedQueryParams,
   RepositoryPort,
 } from '../ddd/repository.port';
 import { LoggerPort } from '../ports/logger.port';
 import { ObjectLiteral } from '../types';
 import { PrismaService } from './prisma/prisma.service';
 
+// NOTE: This is a repository base class for Raw SQL queries *NOT ORM(Prisma)*
 export abstract class SqlRepositoryBase<
   Aggregate extends AggregateRoot<any>,
   DbModel extends ObjectLiteral,
@@ -21,6 +19,7 @@ export abstract class SqlRepositoryBase<
     protected readonly logger: LoggerPort,
     protected readonly prisma: PrismaService
   ) {}
+
   async insert(entity: Aggregate | Aggregate[]): Promise<void> {
     const entities = Array.isArray(entity) ? entity : [entity];
     const records = entities.map(this.mapper.toPersistence);
@@ -37,7 +36,7 @@ export abstract class SqlRepositoryBase<
       throw error;
     }
   }
-
+  
   /**
    * start a global transaction to save
    * results of all event handlers in one operation
