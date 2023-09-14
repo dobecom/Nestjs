@@ -21,7 +21,7 @@ export class CreateUserHttpController {
   })
   @Post()
   async create(@Body() request: CreateUserRequest): Promise<IdResponse> {
-    const command = await new CreateUserCommand(request);
+    const command = await new CreateUserCommand(request, );
     const result: AggregateID = await this.cBus.execute(command);
     return new IdResponse(result);
   }

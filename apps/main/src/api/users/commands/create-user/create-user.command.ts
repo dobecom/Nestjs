@@ -1,9 +1,11 @@
 import { Passports } from '@app/common/constants/passport.constant';
+import { PrismaService } from '@app/common/db/prisma/prisma.service';
 import { Command, CommandProps } from '@app/common/ddd';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UserEntity } from '../../domain/user.entity';
 import { Gender } from '../../domain/user.types';
 import { UserRepository } from '../../repositories/user.repository';
+import { UserMapper } from '../../user.mapper';
 
 export class CreateUserCommand extends Command {
   readonly email: string;
@@ -29,7 +31,9 @@ export class CreateUserCommand extends Command {
 @CommandHandler(CreateUserCommand)
 export class CreateUserCommandHandler implements ICommandHandler {
   constructor(
-    protected readonly userRepo: UserRepository
+    private readonly userRepo: UserRepository,
+    private readonly prisma: PrismaService,
+    private readonly mapper: UserMapper,
   ) {}
   async execute(command: CreateUserCommand) {
     const user = UserEntity.create({
@@ -42,12 +46,31 @@ export class CreateUserCommandHandler implements ICommandHandler {
       type: command.type,
     });
 
+    const user2 = UserEntity.create({
+      email: 'test@email.com',
+      hash: 'test',
+      name: '테스트',
+      age: 15,
+      phone: '010-1234-1234',
+      gender: Gender.M,
+      type: Passports.EMAIL,
+    });
+
     try {
-      await this.userRepo.transaction(async () => {
-        return this.userRepo.createUser(user);
-      });
-      return user.id;
+      // const res = await this.prisma.$transaction(async (tx) => {
+      //   const insertUser = await this.userRepo.createUser(tx, user);
+      //   const insertUser2 = await this.userRepo.createUser(tx, user2);
+      //   return insertUser2;
+      // })
+      const res = await this.prisma.$transaction([
+        await this.userRepo.createUser(user),
+        await this.userRepo.createUser(user2),
+      ])
+      console.log('res', res);
+      return res;
+      // return user.id;
     } catch (err) {
+      console.log('create user command error')
       throw err;
     }
   }

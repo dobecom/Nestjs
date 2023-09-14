@@ -43,11 +43,16 @@ export class UserRepository
     });
   }
 
-  async createUser(user: UserEntity): Promise<void> {
-    const record = this.mapper.toPersistence(user);
-    const res = await this.prisma.user.create({
-      data: record,
-    });
-    console.log(res)
+  async createUser(user: UserEntity) {
+    try{
+      const res = await this.prisma.user.create({
+        data: await this.mapper.toPersistence(user),
+      });
+      return res
+    }catch(err){
+      console.log('user repo error')
+      console.log(err)
+      return err;
+    }
   }
 }

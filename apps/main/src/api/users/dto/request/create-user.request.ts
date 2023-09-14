@@ -1,3 +1,4 @@
+import { Passports } from '@app/common/constants/passport.constant';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
@@ -62,4 +63,12 @@ export class CreateUserRequest {
   @MaxLength(20)
   @IsString()
   readonly phone: string;
+
+  @ApiProperty({
+    example: 'email',
+    description: 'User type (email, google, facebook, twitter, apple)',
+    enum: Passports
+  })
+  @IsEnum(Passports)
+  readonly type: Passports;
 }
