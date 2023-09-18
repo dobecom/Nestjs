@@ -4,13 +4,16 @@ import {
   Catch,
   ArgumentsHost,
   HttpException,
+  Logger,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { RequestContextService } from '../common/context/app-request.context';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
+  private readonly logger: Logger = new Logger(HttpExceptionFilter.name);
+
   catch(exception: HttpException, host: ArgumentsHost) {
-    console.log('http exception filter')
     const response = host.switchToHttp().getResponse<Response>();
     const status = exception.getStatus();
     const exceptionResponse = exception.getResponse() as ExceptionResponse;
@@ -23,8 +26,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
       path: host.switchToHttp().getRequest().url,
       errorCode,
       message: exceptionResponse.message,
+      correlationId: RequestContextService.getRequestId(),
     };
-    console.error(`Exception occured [${data.statusCode}] : ${JSON.stringify(data)}`);
+    this.logger.error(`Exception occured [${data.statusCode}] : ${JSON.stringify(data)}`);
     return response.status(status).json(data);
   }
 }

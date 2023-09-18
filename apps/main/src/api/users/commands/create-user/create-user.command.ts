@@ -46,31 +46,23 @@ export class CreateUserCommandHandler implements ICommandHandler {
       type: command.type,
     });
 
-    const user2 = UserEntity.create({
-      email: 'test@email.com',
-      hash: 'test',
-      name: '테스트',
-      age: 15,
-      phone: '010-1234-1234',
-      gender: Gender.M,
-      type: Passports.EMAIL,
-    });
+    // const user2 = UserEntity.create({
+    //   email: 'test@email.com',
+    //   hash: 'test',
+    //   name: '테스트',
+    //   age: 15,
+    //   phone: '010-1234-1234',
+    //   gender: Gender.M,
+    //   type: Passports.EMAIL,
+    // });
 
     try {
-      // const res = await this.prisma.$transaction(async (tx) => {
-      //   const insertUser = await this.userRepo.createUser(tx, user);
-      //   const insertUser2 = await this.userRepo.createUser(tx, user2);
-      //   return insertUser2;
-      // })
-      const res = await this.prisma.$transaction([
-        await this.userRepo.createUser(user),
-        await this.userRepo.createUser(user2),
+      const [res] = await this.prisma.$transaction([
+        this.userRepo.createUser(user),
+        // this.userRepo.createUser(user2),
       ])
-      console.log('res', res);
-      return res;
-      // return user.id;
+      return res.id;
     } catch (err) {
-      console.log('create user command error')
       throw err;
     }
   }
