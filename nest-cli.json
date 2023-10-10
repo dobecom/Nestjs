@@ -36,6 +36,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
+    },
+    "msa-findbook": {
+      "type": "application",
+      "root": "apps/msa-findbook",
+      "entryFile": "main",
+      "sourceRoot": "apps/msa-findbook/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/msa-findbook/tsconfig.app.json"
+      }
     }
   }
 }

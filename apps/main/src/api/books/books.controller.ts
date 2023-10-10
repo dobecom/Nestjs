@@ -1,34 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { BooksService } from './books.service';
-import { CreateBookDto } from './dto/create-book.dto';
-import { UpdateBookDto } from './dto/update-book.dto';
+import { Controller, Get, Inject } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Controller('books')
 export class BooksController {
-  constructor(private readonly booksService: BooksService) {}
+  constructor(@Inject('BOOK_SERVICE') private readonly client: ClientKafka) {}
+  async onModuleInit() {
+    // Kafka 서버에서 생성한 Topic들을 구독
+    const requestPatterns = ['test-event'];
 
-  @Post()
-  create(@Body() createBookDto: CreateBookDto) {
-    return this.booksService.create(createBookDto);
+    requestPatterns.forEach((pattern) => {
+      this.client.subscribeToResponseOf(pattern);
+    });
+    console.log('connecting to kafka');
+    await this.client.connect();
+    console.log('connected to kafka');
   }
 
-  @Get()
-  findAll() {
-    return this.booksService.findAll();
+  async onModuleDestroy() {
+    await this.client.close();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.booksService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
-    return this.booksService.update(+id, updateBookDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.booksService.remove(+id);
+  @Get('find')
+  find() {
+    const data = {
+      bookName: 'book1',
+      author: 'author1',
+    };
+    // Kafka Topic에 메시지를 전송
+    return this.client.emit('test-event', data);
   }
 }

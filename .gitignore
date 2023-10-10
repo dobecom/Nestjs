@@ -5,6 +5,8 @@ dist
 
 .DS_Store
 
+data
+
 ### Node ###
 # Logs
 logs
