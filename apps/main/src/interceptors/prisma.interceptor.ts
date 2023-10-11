@@ -10,7 +10,7 @@ import {
   PrismaClientUnknownRequestError,
   PrismaClientValidationError,
 } from '@prisma/client/runtime/library';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 
 @Injectable()
 export class PrismaErrorInterceptor implements NestInterceptor {
