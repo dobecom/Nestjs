@@ -1,4 +1,4 @@
-![image](https://github.com/dobecom/Nestjs/assets/90499822/ec0461a4-a40b-418c-ad47-db43d7e464b2)# Nestjs playground project
+# Nestjs playground project
 
 This is my Nestjs project for improvement skills
 
@@ -7,8 +7,7 @@ Here are the things that you could follow…
 1. Mono repository [ Main app, MSA, Task Scheduler, Common Library for Mono repo ]
 2. Blockchain [ Smart Contract ]
 3. DDD hexagonal (Simple Version, only applied for “users” module)
-https://github.com/Sairyss/domain-driven-hexagon/blob/master/assets/images/DomainDrivenHexagon.png![image](https://github.com/dobecom/Nestjs/assets/90499822/8e36e9e1-c78b-432c-931c-6a1dbbef50c3)
-
+![image](https://github.com/dobecom/Nestjs/assets/90499822/ec0461a4-a40b-418c-ad47-db43d7e464b2)
 4. Kafka (KRaft)
 5. Google OAuth
 6. Prisma ORM
