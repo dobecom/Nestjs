@@ -76,13 +76,13 @@ docker exec -it "container_id" /bin/bash
 bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092
 ```
 
-1. Run msa-findbook application
+2. Run msa-findbook application
 
 ```bash
 npm run start:msa-findbook
 ```
 
-1. Request a GET request to the main app’s controller (localhost:3333/books/find) 
+3. Request a GET request to the main app’s controller (localhost:3333/books/find) 
 - Reference
 
 [https://velog.io/@dobecom/Kafka-서버-구성하기](https://velog.io/@dobecom/Kafka-%EC%84%9C%EB%B2%84-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0)
@@ -105,10 +105,10 @@ Others are developed referred by Nestjs official documentation.
 
 https://github.com/Sairyss/domain-driven-hexagon
 
-1. Kafka
+2. Kafka
 
 https://kafka.apache.org/documentation/#quickstart
 
-1. My Blog
+3. My Blog
 
 https://velog.io/@dobecom
