@@ -89,7 +89,24 @@ npm run start:msa-findbook
 
 ## [Feature 2] Blockchain Smart Contract
 
-…
+1. Create your own Metamask wallet
+
+[https://metamask.io](https://metamask.io/)
+
+2. Get some free **SepoliaETH** into your wallet
+
+[https://sepoliafaucet.com](https://sepoliafaucet.com/)
+
+3. Deploy the example smart contract on Remix and get the contract address
+
+https://remix.ethereum.org/
+
+4. Set the .env property “BLOCKCHAIN_CONTRACT_ADDRESS” from your contract address
+5. Create your own Infura node
+
+[https://www.infura.io](https://www.infura.io/)
+
+6. Set the .env property “BLOCKCHAIN_INFURA_API_KEY” and “BLOCKCHAIN_ACCOUNT_PRIVATE_KEY” from your Infura node
 
 ## [Feature 3] …
 
