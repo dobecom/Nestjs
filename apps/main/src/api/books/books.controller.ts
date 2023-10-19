@@ -12,8 +12,9 @@ export class BooksController {
       this.client.subscribeToResponseOf(pattern);
     });
     console.log('connecting to kafka');
-    await this.client.connect();
-    console.log('connected to kafka');
+    // If Kafka server is ready, then connect to it.
+    // await this.client.connect();
+    // console.log('connected to kafka');
   }
 
   async onModuleDestroy() {

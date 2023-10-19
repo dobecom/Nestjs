@@ -21,7 +21,9 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 const logger = new Logger('Main Application');
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    snapshot: true,
+  });
 
   const envService = app.get(EnvService);
 
