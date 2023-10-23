@@ -13,13 +13,13 @@ import { RequestContextModule } from 'nestjs-request-context';
 import { PrismaModule } from '@app/common/db/prisma/prisma.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { PrismaErrorInterceptor } from './interceptors/prisma.interceptor';
-import { DevtoolsModule } from '@nestjs/devtools-integration';
 
 @Module({
   imports: [
-    DevtoolsModule.register({
-      http: process.env.STAGE !== 'production',
-    }),
+    // nestjs devtools
+    // DevtoolsModule.register({
+    //   http: process.env.STAGE !== 'production',
+    // }),
     EventEmitterModule.forRoot(),
     UsersModule,
     AuthModule,
