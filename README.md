@@ -1,6 +1,6 @@
 # Nestjs playground project
 
-This is my Nestjs project for improvement skills
+This is my NestJS project for skill improvement
 
 Here are the things that you could follow…
 
@@ -107,10 +107,6 @@ https://remix.ethereum.org/
 [https://www.infura.io](https://www.infura.io/)
 
 6. Set the .env property “BLOCKCHAIN_INFURA_API_KEY” and “BLOCKCHAIN_ACCOUNT_PRIVATE_KEY” from your Infura node
-
-## [Feature 3] …
-
-…
 
 ## Additional Information
 
