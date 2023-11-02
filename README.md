@@ -1,4 +1,4 @@
-# Nestjs playground project
+# Nestjs project
 
 This is my NestJS project for skill improvement
 
