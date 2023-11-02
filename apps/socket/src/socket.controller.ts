@@ -5,8 +5,9 @@ import { SocketService } from './socket.service';
 export class SocketController {
   constructor(private readonly socketService: SocketService) {}
 
+  // This is a test API to push messages to the client.
   @Get()
-  async getHello() {
-    return await this.socketService.getHello();
+  async pushMessages() {
+    return await this.socketService.pushMessages();
   }
 }

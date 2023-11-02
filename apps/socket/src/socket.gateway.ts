@@ -21,8 +21,11 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
       client.disconnect(true);
       return;
     }
-
+    console.log(`client(${client.id}) connected`);
     this.connectedClients[client.id] = true;
+    // createClient.connect().then(() => {});
+    console.log(this.connectedClients);
+    
   }
 
   handleDisconnect(client: Socket): void {
@@ -31,7 +34,7 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
     // 클라이언트 연결이 종료되면 해당 클라이언트가 속한 모든 방에서 유저를 제거
     Object.keys(this.roomUsers).forEach((room) => {
       const index = this.roomUsers[room]?.indexOf(
-        this.clientNickname[client.id],
+        this.clientNickname[client.id]
       );
       if (index !== -1) {
         this.roomUsers[room].splice(index, 1);
@@ -56,6 +59,11 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
       room: null,
       userList: Object.keys(this.connectedClients),
     });
+  }
+
+  @SubscribeMessage('events')
+  handleEvents(client: Socket, data: any): void {
+    console.log(`client : ${client.id}, data : ${data}`);
   }
 
   @SubscribeMessage('setUserNick')
@@ -133,9 +141,9 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('chatMessage')
   handleChatMessage(
     client: Socket,
-    data: { message: string; room: string },
+    data: { message: string; room: string }
   ): void {
-    console.log(data)
+    console.log(data);
     // 클라이언트가 보낸 채팅 메시지를 해당 방으로 전달
     this.server.to(data.room).emit('chatMessage', {
       userId: this.clientNickname[client.id],
