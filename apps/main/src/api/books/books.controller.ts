@@ -13,7 +13,7 @@ export class BooksController {
     });
     console.log('connecting to kafka');
     // If Kafka server is ready, then connect to it.
-    // await this.client.connect();
+    await this.client.connect();
     // console.log('connected to kafka');
   }
 
