@@ -2,7 +2,8 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=node
 
 # containers
-kafka_data
+containers/data/redis
+containers/data/kafka
 
 dist
 
