@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class PaymentService {
-  getHello(): string {
-    return 'Hello World!';
+  getPayment(data) {
+    const result = {
+      ...data,
+      payment: 'payment',
+    };
+    return result;
   }
 }
