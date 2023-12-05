@@ -7,11 +7,11 @@ export class UserController {
 
   @Post('signIn')
   signIn(@Body() req) {
-    return this.userCp.send('user-signIn', req.body);
+    return this.userCp.send('user-signIn', req);
   }
 
   @Post('signUp')
   signUp(@Body() req) {
-    return this.userCp.send('user-signUp', req.body);
+    return this.userCp.send('user-signUp', req);
   }
 }

@@ -25,7 +25,6 @@ import { UserEntity } from './entities/user.entity';
       },
       inject: [EnvService],
     }),
-    TypeOrmModule.forFeature([UserEntity]),
   ],
 })
 export class DbModule {}
