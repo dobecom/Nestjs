@@ -23,6 +23,18 @@
       ],
       "@app/common/*": [
         "libs/common/src/*"
+      ],
+      "@app/proxy": [
+        "libs/proxy/src"
+      ],
+      "@app/proxy/*": [
+        "libs/proxy/src/*"
+      ],
+      "@app/db": [
+        "libs/db/src"
+      ],
+      "@app/db/*": [
+        "libs/db/src/*"
       ]
     }
   }

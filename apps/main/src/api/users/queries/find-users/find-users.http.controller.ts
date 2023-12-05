@@ -1,4 +1,4 @@
-import { ResponseBase } from '@app/common/api/response.base';
+import { ResponseBase } from '@app/common/ddd/dto/response.base';
 import { Controller, Get, InternalServerErrorException, Post, Query, UseGuards } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';

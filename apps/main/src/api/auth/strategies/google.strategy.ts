@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { EnvService } from '@app/common/env/env.service';
 import { Strategy, VerifyCallback } from 'passport-google-oauth2';
-import { Passports } from '@app/common/constants/passport.constant';
+import { Passports } from '@app/common/presentations/enums/passport.constant';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, Passports.GOOGLE) {

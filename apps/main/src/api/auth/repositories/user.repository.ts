@@ -1,4 +1,4 @@
-import { Passports } from '@app/common/constants/passport.constant';
+import { Passports } from '@app/common/presentations/enums/passport.constant';
 import { PrismaService } from '@app/common/db/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { UserRoles } from '../../users/domain/user.types';

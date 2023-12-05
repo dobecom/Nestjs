@@ -1,4 +1,4 @@
-import { PaginatedResponse } from '@app/common/api/paginated.response';
+import { PaginatedResponse } from '@app/common/ddd/dto/paginated.response';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserResponse } from './user.response';
 

@@ -1,5 +1,5 @@
 import { PrismaService } from '@app/common/db/prisma/prisma.service';
-import { SqlRepositoryBase } from '@app/common/db/sql-repository.base';
+import { SqlRepositoryBase } from '@app/common/ddd/base/sql-repository.base';
 import { Paginated } from '@app/common/ddd/repository.port';
 import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';

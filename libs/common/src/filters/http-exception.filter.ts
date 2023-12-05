@@ -1,4 +1,4 @@
-import { ExceptionResponse } from '@app/common/constants/exception-response.constant';
+import { ExceptionResponse } from '@app/common/presentations/interfaces/exception-response.interface';
 import {
   ExceptionFilter,
   Catch,
@@ -6,8 +6,8 @@ import {
   HttpException,
   Logger,
 } from '@nestjs/common';
+import { RequestContextService } from 'apps/main/src/common/context/app-request.context';
 import { Response } from 'express';
-import { RequestContextService } from '../common/context/app-request.context';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {

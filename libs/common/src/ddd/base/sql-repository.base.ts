@@ -1,11 +1,10 @@
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { AggregateRoot, Mapper } from '../ddd';
-import {
-  RepositoryPort,
-} from '../ddd/repository.port';
-import { LoggerPort } from '../ports/logger.port';
 import { ObjectLiteral } from '../types';
-import { PrismaService } from './prisma/prisma.service';
+import { PrismaService } from '../../db/prisma/prisma.service';
+import { Mapper } from './mapper.interface';
+import { AggregateRoot } from './aggregate-root.base';
+import { RepositoryPort } from './repository.port';
+import { LoggerPort } from '@app/common/presentations/interfaces/logger-port.interface';
 
 // NOTE: This is a repository base class for Raw SQL queries *NOT ORM(Prisma)*
 export abstract class SqlRepositoryBase<

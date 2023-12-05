@@ -1,5 +1,5 @@
-import { PaginatedQueryRequest } from '@app/common/api/paginated-query.request';
-import { Passports } from '@app/common/constants/passport.constant';
+import { PaginatedQueryRequest } from '@app/common/ddd/dto/paginated-query.request';
+import { Passports } from '@app/common/presentations/enums/passport.constant';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsOptional } from 'class-validator';
 import { Gender } from '../../domain/user.types';

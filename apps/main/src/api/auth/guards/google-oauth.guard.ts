@@ -1,4 +1,4 @@
-import { Passports } from '@app/common/constants/passport.constant';
+import { Passports } from '@app/common/presentations/enums/passport.constant';
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 

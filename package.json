@@ -13,6 +13,7 @@
     "start:gateway": "nest start gateway swc --watch --type-check",
     "start:order": "nest start order swc --watch --type-check",
     "start:payment": "nest start payment swc --watch --type-check",
+    "start:user": "nest start user swc --watch --type-check",
     "start:scheduler": "nest start scheduler swc --type-check",
     "start:msa-findbook": "nest start msa-findbook swc --type-check",
     "start:socket": "nest start socket swc --type-check",
@@ -112,7 +113,9 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1"
+      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1",
+      "^@app/proxy(|/.*)$": "<rootDir>/libs/proxy/src/$1",
+      "^@app/db(|/.*)$": "<rootDir>/libs/db/src/$1"
     }
   }
 }

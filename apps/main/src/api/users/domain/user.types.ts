@@ -1,4 +1,4 @@
-import { Passports } from "@app/common/constants/passport.constant";
+import { Passports } from "@app/common/presentations/enums/passport.constant";
 
 export enum Gender {
   M = 'M',
