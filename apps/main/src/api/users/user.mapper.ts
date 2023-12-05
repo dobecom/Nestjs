@@ -4,7 +4,7 @@ import { UserResponse } from './dto/response/user.response';
 import { User } from '@prisma/client';
 import { Mapper } from '@app/common/ddd';
 import { Gender, UserRoles } from './domain/user.types';
-import { Passports } from '@app/common/presentations/enums/passport.constant';
+import { Passports } from '@app/common/presentations/enums/passport.enum';
 
 /**
  * Mapper constructs objects that are used in different layers:

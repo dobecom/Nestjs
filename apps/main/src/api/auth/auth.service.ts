@@ -1,4 +1,4 @@
-import { Passports } from '@app/common/presentations/enums/passport.constant';
+import { Passports } from '@app/common/presentations/enums/passport.enum';
 import { EnvService } from '@app/common/env/env.service';
 import {
   BadRequestException,

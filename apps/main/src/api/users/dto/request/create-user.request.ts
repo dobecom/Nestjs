@@ -1,4 +1,4 @@
-import { Passports } from '@app/common/presentations/enums/passport.constant';
+import { Passports } from '@app/common/presentations/enums/passport.enum';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,

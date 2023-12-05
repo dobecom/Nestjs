@@ -1,4 +1,4 @@
-import { Passports } from '@app/common/presentations/enums/passport.constant';
+import { Passports } from '@app/common/presentations/enums/passport.enum';
 import { PrismaService } from '@app/common/db/prisma/prisma.service';
 import { Command, CommandProps } from '@app/common/ddd';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
