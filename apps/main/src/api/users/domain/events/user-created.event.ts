@@ -1,4 +1,4 @@
-import { DomainEvent, DomainEventProps } from '@app/common/ddd';
+import { DomainEvent, DomainEventProps } from "@app/common/ddd/base";
 
 export class UserCreatedEvent extends DomainEvent {
   readonly name: string;

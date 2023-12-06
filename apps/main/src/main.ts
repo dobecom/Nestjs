@@ -4,9 +4,9 @@ import { AppModule } from './app.module';
 import * as session from 'express-session';
 import * as passport from 'passport';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { HttpExceptionFilter } from './filters/http-exception.filter';
-import { EnvService } from '@app/common/env/env.service';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from '@app/common/filters/http-exception.filter';
+import { ConfigService } from '@nestjs/config';
 
 // serializing for using passport-google-oauth to authenticate user
 // const serializeUser = () => {
@@ -25,10 +25,9 @@ async function bootstrap() {
     // true for nestjs devtools
     // snapshot: true,
   });
+  const config = app.get(ConfigService);
 
-  const envService = app.get(EnvService);
-
-  const config = new DocumentBuilder()
+  const option = new DocumentBuilder()
     .setTitle('NestJS API')
     // .setDescription('NestJS 1.0')
     // .setVersion('1.0')
@@ -36,12 +35,12 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, option);
   SwaggerModule.setup('docs', app, document);
 
   app.use(
     session({
-      secret: envService.get('SESSION_SECRET') || 'default',
+      secret: config.get('SESSION_SECRET') || 'default',
       saveUninitialized: false,
       resave: false,
       cookie: {
@@ -61,15 +60,15 @@ async function bootstrap() {
   // serializeUser();
 
   app.enableCors({
-    origin: (envService.get('CORS_ORIGINS') as string).split('||') || [],
+    origin: (config.get('CORS_ORIGINS') as string).split('||') || [],
     credentials: true,
   });
 
-  await app.listen(envService.get('API_PORT') || 3000);
+  await app.listen(config.get('API_PORT') || 3000);
 
   logger.log(
     `Application is running on: ${await app.getUrl()} as ${
-      envService.get('STAGE') || 'LOCAL'
+      config.get('STAGE') || 'LOCAL'
     }}`
   );
 }

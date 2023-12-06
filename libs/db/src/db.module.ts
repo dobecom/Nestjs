@@ -1,5 +1,5 @@
-import { EnvService } from '@app/common/env/env.service';
 import { Global, Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderEntity } from './entities/order.entity';
 import { UserEntity } from './entities/user.entity';
@@ -8,14 +8,14 @@ import { UserEntity } from './entities/user.entity';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      useFactory: (env: EnvService) => {
+      useFactory: (config: ConfigService) => {
         return {
           type: 'postgres',
-          host: env.get('DB_HOST') || 'localhost',
-          port: +env.get('DB_PORT') || 5432,
-          username: env.get('DB_USER') || 'postgres',
-          password: env.get('DB_PW') || 'postgres',
-          database: env.get('DB_NAME') || 'postgres',
+          host: config.get('DB_HOST') || 'localhost',
+          port: +config.get('DB_PORT') || 5432,
+          username: config.get('DB_USER') || 'postgres',
+          password: config.get('DB_PW') || 'postgres',
+          database: config.get('DB_NAME') || 'postgres',
           entities: [UserEntity, OrderEntity],
           synchronize: true,
           keepConnectionAlive: true,
@@ -23,7 +23,7 @@ import { UserEntity } from './entities/user.entity';
           retryDelay: 1000,
         };
       },
-      inject: [EnvService],
+      inject: [ConfigService],
     }),
   ],
 })

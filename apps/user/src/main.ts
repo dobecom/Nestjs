@@ -1,17 +1,17 @@
-import { EnvService } from '@app/common/env/env.service';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { UserModule } from './user.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(UserModule);
-  const env = app.get<EnvService>(EnvService);
+  const config = app.get(ConfigService);
 
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
       urls: [
-        `amqp://${env.get('RABBITMQ_USER')}:${env.get('RABBITMQ_PW')}@${env.get('BROKER_HOST')}:${env.get('BROKER_PORT')}`,
+        `amqp://${config.get('RABBITMQ_USER')}:${config.get('RABBITMQ_PW')}@${config.get('BROKER_HOST')}:${config.get('BROKER_PORT')}`,
       ],
       queue: 'user',
       noAck: true,

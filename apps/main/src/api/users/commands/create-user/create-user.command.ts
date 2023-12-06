@@ -1,11 +1,11 @@
 import { Passports } from '@app/common/presentations/enums/passport.enum';
 import { PrismaService } from '@app/common/db/prisma/prisma.service';
-import { Command, CommandProps } from '@app/common/ddd';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UserEntity } from '../../domain/user.entity';
 import { Gender } from '../../domain/user.types';
 import { UserRepository } from '../../repositories/user.repository';
 import { UserMapper } from '../../user.mapper';
+import { Command, CommandProps } from '@app/common/ddd/base';
 
 export class CreateUserCommand extends Command {
   readonly email: string;

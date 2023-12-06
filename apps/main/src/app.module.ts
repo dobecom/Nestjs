@@ -6,13 +6,13 @@ import { PassportModule } from '@nestjs/passport';
 import { ClsModule } from 'nestjs-cls';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { BlockchainModule } from './blockchain/blockchain.module';
-import { EnvModule } from '@app/common/env/env.module';
 import { RequestContextModule } from 'nestjs-request-context';
 import { PrismaModule } from '@app/common/db/prisma/prisma.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { RedisModule } from '@app/redis';
 import { ContextInterceptor } from '@app/common/interceptors/context.interceptor';
 import { PrismaErrorInterceptor } from '@app/common/interceptors/prisma.interceptor';
+import { CommonModule } from '@app/common';
 
 @Module({
   imports: [
@@ -31,7 +31,7 @@ import { PrismaErrorInterceptor } from '@app/common/interceptors/prisma.intercep
       interceptor: { mount: false },
     }),
     BlockchainModule,
-    EnvModule,
+    CommonModule,
     RequestContextModule,
   ],
   providers: [

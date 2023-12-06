@@ -2,9 +2,9 @@ import { UserEntity } from './domain/user.entity';
 import { Injectable } from '@nestjs/common';
 import { UserResponse } from './dto/response/user.response';
 import { User } from '@prisma/client';
-import { Mapper } from '@app/common/ddd';
 import { Gender, UserRoles } from './domain/user.types';
 import { Passports } from '@app/common/presentations/enums/passport.enum';
+import { Mapper } from '@app/common/ddd/base';
 
 /**
  * Mapper constructs objects that are used in different layers:

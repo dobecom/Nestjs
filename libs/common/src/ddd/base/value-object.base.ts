@@ -1,5 +1,5 @@
+import { Guard } from '@app/common/guard';
 import { ArgumentNotProvidedException } from '../exceptions';
-import { Guard } from '../guard';
 import { convertPropsToObject } from '../utils';
 
 /**

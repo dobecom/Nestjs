@@ -1,4 +1,4 @@
-import { EnvModule } from '@app/common/env/env.module';
+import { CommonModule } from '@app/common';
 import { DbModule } from '@app/db';
 import { UserEntity } from '@app/db/entities/user.entity';
 import { Module } from '@nestjs/common';
@@ -7,7 +7,7 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 
 @Module({
-  imports: [EnvModule, DbModule, TypeOrmModule.forFeature([UserEntity])],
+  imports: [CommonModule, DbModule, TypeOrmModule.forFeature([UserEntity])],
   controllers: [UserController],
   providers: [UserService],
 })

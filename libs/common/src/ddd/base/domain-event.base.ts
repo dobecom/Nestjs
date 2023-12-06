@@ -1,7 +1,7 @@
 import { ArgumentNotProvidedException } from '../exceptions';
-import { Guard } from '../guard';
 import { v4 } from 'uuid';
 import { RequestContextService } from 'apps/main/src/common/context/app-request.context';
+import { Guard } from '@app/common/guard';
 
 type DomainEventMetadata = {
   /** Timestamp when this domain event occurred */

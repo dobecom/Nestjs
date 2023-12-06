@@ -1,7 +1,7 @@
+import { Guard } from '@app/common/guard';
 import { RequestContextService } from 'apps/main/src/common/context/app-request.context';
 import { v4 } from 'uuid';
 import { ArgumentNotProvidedException } from '../exceptions';
-import { Guard } from '../guard';
 
 export type CommandProps<T> = Omit<T, 'id' | 'metadata'> & Partial<Command>;
 

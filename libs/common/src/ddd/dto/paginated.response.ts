@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Paginated } from '../ddd/repository.port';
+import { Paginated } from '../base/repository.port';
 
 export abstract class PaginatedResponse<T> extends Paginated<T> {
   @ApiProperty({

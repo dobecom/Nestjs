@@ -4,10 +4,10 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
+import { RequestContextService } from 'apps/main/src/common/context/app-request.context';
 import { nanoid } from 'nanoid';
 import { ClsService } from 'nestjs-cls';
 import { Observable } from 'rxjs';
-import { RequestContextService } from '../common/context/app-request.context';
 
 @Injectable()
 export class ContextInterceptor implements NestInterceptor {

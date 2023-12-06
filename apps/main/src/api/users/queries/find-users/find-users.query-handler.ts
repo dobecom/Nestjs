@@ -1,8 +1,6 @@
-import {
-  PaginatedParams,
-  PaginatedQueryBase,
-} from '@app/common/ddd/query.base';
-import { Paginated } from '@app/common/ddd/repository.port';
+
+import { PaginatedParams, PaginatedQueryBase } from '@app/common/ddd/base/query.base';
+import { Paginated } from '@app/common/ddd/base/repository.port';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { User } from '@prisma/client';
 import { UserRepository } from '../../repositories/user.repository';

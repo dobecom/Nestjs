@@ -1,9 +1,9 @@
+import { Guard } from '@app/common/guard';
 import {
   ArgumentNotProvidedException,
   ArgumentInvalidException,
   ArgumentOutOfRangeException,
 } from '../exceptions';
-import { Guard } from '../guard';
 import { convertPropsToObject } from '../utils';
 
 export type AggregateID = string;

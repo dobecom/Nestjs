@@ -1,10 +1,10 @@
 import { Passports } from '@app/common/presentations/enums/passport.enum';
-import { EnvService } from '@app/common/env/env.service';
 import {
   BadRequestException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import axios from 'axios';
 import { ClsService } from 'nestjs-cls';
@@ -15,7 +15,7 @@ export class AuthService {
   constructor(
     private jwtService: JwtService,
     private userRepo: UserRepository,
-    private envService: EnvService,
+    private config: ConfigService,
     private readonly cls: ClsService
   ) {}
 
@@ -88,13 +88,13 @@ export class AuthService {
       email: email,
     };
     const accessToken = await this.jwtService.signAsync(payload, {
-      secret: this.envService.get('ACCESS_SECRET') || 'default',
-      expiresIn: this.envService.get('ACCESS_EXPIRES') || 'default',
+      secret: this.config.get('ACCESS_SECRET') || 'default',
+      expiresIn: this.config.get('ACCESS_EXPIRES') || 'default',
     });
 
     const refreshToken = await this.jwtService.signAsync(payload, {
-      secret: this.envService.get('REFRESH_SECRET') || 'default',
-      expiresIn: this.envService.get('REFRESH_EXPIRES') || 'default',
+      secret: this.config.get('REFRESH_SECRET') || 'default',
+      expiresIn: this.config.get('REFRESH_EXPIRES') || 'default',
     });
 
     return {
