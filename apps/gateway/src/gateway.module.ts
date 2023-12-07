@@ -1,13 +1,26 @@
 import { CommonModule } from '@app/common';
-import { ORDER_SERVICE_PROXY, PAYMENT_SERVICE_PROXY, USER_SERVICE_PROXY } from '@app/common/proxy/services.proxy';
+import {
+  ORDER_SERVICE_PROXY,
+  PAYMENT_SERVICE_PROXY,
+  USER_SERVICE_PROXY,
+} from '@app/common/proxy/services.proxy';
+import { DbModule } from '@app/db';
+import { UserEntity } from '@app/db/entities/user.entity';
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthGuard } from './auth/guards/auth.guard';
 import { OrderController } from './controllers/order.controller';
 import { PaymentController } from './controllers/payment.controller';
 import { UserController } from './controllers/user.controller';
 import { GatewayController } from './gateway.controller';
 
 @Module({
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    DbModule,
+    TypeOrmModule.forFeature([UserEntity]),
+  ],
   controllers: [
     GatewayController,
     UserController,
@@ -15,9 +28,13 @@ import { GatewayController } from './gateway.controller';
     PaymentController,
   ],
   providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
     USER_SERVICE_PROXY,
     ORDER_SERVICE_PROXY,
-    PAYMENT_SERVICE_PROXY
+    PAYMENT_SERVICE_PROXY,
   ],
 })
 export class GatewayModule {}

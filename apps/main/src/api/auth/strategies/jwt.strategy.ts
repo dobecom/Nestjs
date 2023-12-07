@@ -2,7 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRepository } from '../repositories/user.repository';
-import { EnvService } from '@app/common/env/env.service';
+import { ConfigService } from '@nestjs/config';
 
 export type JwtPayload = {
   sub: string;
@@ -13,7 +13,7 @@ export type JwtPayload = {
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     private readonly userRepo: UserRepository,
-    private readonly envService: EnvService
+    private readonly config: ConfigService
   ) {
     const extractJwtFromCookie = (req) => {
       let token = null;
@@ -25,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
     super({
       ignoreExpiration: false,
-      secretOrKey: envService.get('ACCESS_SECRET') || 'default',
+      secretOrKey: config.get('JWT_ACCESS_TOKEN_SECRET') || 'default',
       jwtFromRequest: extractJwtFromCookie,
     });
   }

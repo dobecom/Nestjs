@@ -1,12 +1,9 @@
-import {Entity, PrimaryGeneratedColumn, Column, BeforeInsert, JoinTable, ManyToMany, OneToMany} from 'typeorm';
-import { IsEmail } from 'class-validator';
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
 import { OrderEntity } from './order.entity';
-import  bcrypt from 'bcrypt';
 import { CommonEntity } from './common.entity';
 
 @Entity('user')
 export class UserEntity extends CommonEntity {
-
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -14,23 +11,19 @@ export class UserEntity extends CommonEntity {
   username: string;
 
   @Column()
-  @IsEmail()
   email: string;
 
-  @Column({default: ''})
-  bio: string;
-
-  @Column({default: ''})
+  @Column({default: 'https://sample.png'})
   image: string;
 
   @Column()
   password: string;
 
-  @BeforeInsert()
-  async hashPassword() {
-    const salt = await bcrypt.genSalt();
-    this.password = await bcrypt.hash(this.password, salt);
-  }
+  // @BeforeInsert()
+  // async hashPassword() {
+  //   const salt = await bcrypt.genSalt();
+  //   this.password = await bcrypt.hash(this.password, salt);
+  // }
 
 //   @ManyToMany(type => ArticleEntity)
 //   @JoinTable()

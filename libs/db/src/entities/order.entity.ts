@@ -1,47 +1,33 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, OneToMany, JoinColumn, AfterUpdate, BeforeUpdate } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { CommonEntity } from './common.entity';
-// import { Comment } from './comment.entity';
 import { UserEntity } from './user.entity';
 
 @Entity('order')
-export class OrderEntity extends CommonEntity{
-
+export class OrderEntity extends CommonEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  slug: string;
-
-  @Column()
   title: string;
 
-  @Column({default: ''})
+  @Column({ nullable: true })
   description: string;
 
-  @Column({default: ''})
-  body: string;
+  // @BeforeUpdate()
+  // updateTimestamp() {
+  //   this.updated = new Date;
+  // }
 
-  @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP"})
-  created: Date;
+  // @Column('simple-array')
+  // tagList: string[];
 
-  @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP"})
-  updated: Date;
-
-  @BeforeUpdate()
-  updateTimestamp() {
-    this.updated = new Date;
-  }
-
-  @Column('simple-array')
-  tagList: string[];
-
-  @ManyToOne(type => UserEntity, user => user.orders)
+  @ManyToOne((type) => UserEntity, (user) => user.orders)
   buyer: UserEntity;
 
   // @OneToMany(type => Comment, comment => comment.article, {eager: true})
   // @JoinColumn()
   // comments: Comment[];
 
-  @Column({default: 0})
-  favoriteCount: number;
+  // @Column({default: 0})
+  // favoriteCount: number;
 }

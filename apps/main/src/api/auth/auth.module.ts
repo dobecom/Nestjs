@@ -5,15 +5,15 @@ import { JwtModule } from '@nestjs/jwt';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { UserRepository } from './repositories/user.repository';
 import { SessionSerializer } from './auth.serialize';
-import { EnvService } from '@app/common/env/env.service';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     JwtModule.registerAsync({
-      inject: [EnvService],
-      useFactory: async (envService: EnvService) => ({
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => ({
         global: true,
-        secret: envService.get('ACCESS_SECRET') || 'default',
+        secret: config.get('JWT_ACCESS_TOKEN_SECRET') || 'default',
         signOptions: { expiresIn: '7d' },
       })
     }),
