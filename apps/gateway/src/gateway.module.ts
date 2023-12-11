@@ -1,4 +1,5 @@
 import { CommonModule } from '@app/common';
+import { ContextInterceptor } from '@app/common/interceptors/context.interceptor';
 import {
   ORDER_SERVICE_PROXY,
   PAYMENT_SERVICE_PROXY,
@@ -7,20 +8,15 @@ import {
 import { DbModule } from '@app/db';
 import { UserEntity } from '@app/db/entities/user.entity';
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthGuard } from './auth/guards/auth.guard';
 import { OrderController } from './controllers/order.controller';
 import { PaymentController } from './controllers/payment.controller';
 import { UserController } from './controllers/user.controller';
 import { GatewayController } from './gateway.controller';
 
 @Module({
-  imports: [
-    CommonModule,
-    DbModule,
-    TypeOrmModule.forFeature([UserEntity]),
-  ],
+  imports: [CommonModule, DbModule, TypeOrmModule.forFeature([UserEntity])],
   controllers: [
     GatewayController,
     UserController,
@@ -29,8 +25,8 @@ import { GatewayController } from './gateway.controller';
   ],
   providers: [
     {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
+      provide: APP_INTERCEPTOR,
+      useClass: ContextInterceptor,
     },
     USER_SERVICE_PROXY,
     ORDER_SERVICE_PROXY,

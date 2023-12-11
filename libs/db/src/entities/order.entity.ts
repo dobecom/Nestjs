@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { CommonEntity } from './common.entity';
+import { PaymentEntity } from './payment.entity';
 import { UserEntity } from './user.entity';
 
 @Entity('order')
@@ -13,21 +14,9 @@ export class OrderEntity extends CommonEntity {
   @Column({ nullable: true })
   description: string;
 
-  // @BeforeUpdate()
-  // updateTimestamp() {
-  //   this.updated = new Date;
-  // }
-
-  // @Column('simple-array')
-  // tagList: string[];
-
   @ManyToOne((type) => UserEntity, (user) => user.orders)
-  buyer: UserEntity;
+  user: UserEntity;
 
-  // @OneToMany(type => Comment, comment => comment.article, {eager: true})
-  // @JoinColumn()
-  // comments: Comment[];
-
-  // @Column({default: 0})
-  // favoriteCount: number;
+  @ManyToOne((type) => PaymentEntity, (payment) => payment.orders)
+  payment: PaymentEntity;
 }

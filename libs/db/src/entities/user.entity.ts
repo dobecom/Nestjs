@@ -1,6 +1,12 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+} from 'typeorm';
 import { OrderEntity } from './order.entity';
 import { CommonEntity } from './common.entity';
+import { PaymentEntity } from './payment.entity';
 
 @Entity('user')
 export class UserEntity extends CommonEntity {
@@ -13,22 +19,15 @@ export class UserEntity extends CommonEntity {
   @Column()
   email: string;
 
-  @Column({default: 'https://sample.png'})
+  @Column({ default: 'https://sample.png' })
   image: string;
 
   @Column()
   password: string;
 
-  // @BeforeInsert()
-  // async hashPassword() {
-  //   const salt = await bcrypt.genSalt();
-  //   this.password = await bcrypt.hash(this.password, salt);
-  // }
-
-//   @ManyToMany(type => ArticleEntity)
-//   @JoinTable()
-//   favorites: ArticleEntity[];
-
-  @OneToMany(type => OrderEntity, order => order.buyer)
+  @OneToMany((type) => OrderEntity, (order) => order.user)
   orders: OrderEntity[];
+
+  @OneToMany((type) => PaymentEntity, (payment) => payment.user)
+  payments: PaymentEntity[];
 }

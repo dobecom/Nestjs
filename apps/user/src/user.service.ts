@@ -32,7 +32,7 @@ export class UserService {
     if (!result) {
       throw new UnauthorizedException();
     }
-    const payload = { username: user.username, sub: user.id };
+    const payload = { username: user.username, id: user.id };
     return {
       access_token: await this.jwtService.signAsync(payload, {
         secret: this.config.get('JWT_ACCESS_TOKEN_SECRET'),

@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { OrderEntity } from './entities/order.entity';
+import { PaymentEntity } from './entities/payment.entity';
 import { UserEntity } from './entities/user.entity';
 
 @Global()
@@ -17,7 +18,7 @@ import { UserEntity } from './entities/user.entity';
           username: config.get('DB_USER') || 'postgres',
           password: config.get('DB_PW') || 'postgres',
           database: config.get('DB_NAME') || 'postgres',
-          entities: [UserEntity, OrderEntity],
+          entities: [UserEntity, OrderEntity, PaymentEntity],
           synchronize: config.get('NODE_ENV') == 'LOCAL' ? true : false,
           keepConnectionAlive: true,
           retryAttempts: 2,

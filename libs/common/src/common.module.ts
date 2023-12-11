@@ -1,6 +1,8 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import { nanoid } from 'nanoid';
+import { ClsModule } from 'nestjs-cls';
 
 @Global()
 @Module({
@@ -16,6 +18,15 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
         secret: config.get('JWT_ACCESS_TOKEN_SECRET'),
         signOptions: { expiresIn: '1d' },
       }),
+    }),
+    ClsModule.forRoot({
+      global: true,
+      middleware: {
+        mount: true,
+        setup: (cls, req) => {
+          cls.set('requestId', nanoid(8));
+        },
+      },
     }),
   ],
   exports: [JwtService],
