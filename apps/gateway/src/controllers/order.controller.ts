@@ -7,6 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 import { AuthUser } from '../auth/decorators/auth.decorator';
 import { AuthGuard } from '../auth/guards/auth.guard';
 
@@ -16,23 +17,14 @@ export class OrderController {
   constructor(@Inject('ORDER_SERVICE') private orderCp: ClientProxy) {}
 
   @Post()
-  async createOrder(@AuthUser() user: any, @Body() req: any) {
+  createOrder(@AuthUser() user: any, @Body() req: any) {
     try {
-      const result = await this.orderCp.send('order-create', {
-        ...req,
-        userId: user.id,
-      });
-      const data = await new Promise((resolve, reject) => {
-        result.subscribe({
-          next: (data) => {
-            resolve(data);
-          },
-          error: (err) => {
-            reject(err);
-          },
-        });
-      });
-      return data;
+      return lastValueFrom(
+        this.orderCp.send('order-create', {
+          ...req,
+          userId: user.id,
+        })
+      );
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
