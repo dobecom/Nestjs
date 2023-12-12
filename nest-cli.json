@@ -10,22 +10,13 @@
     "webpack": true
   },
   "projects": {
-    "main": {
+    "gateway": {
       "type": "application",
-      "root": "apps/main",
+      "root": "apps/gateway",
       "entryFile": "main",
-      "sourceRoot": "apps/main/src",
+      "sourceRoot": "apps/gateway/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/main/tsconfig.app.json"
-      }
-    },
-    "scheduler": {
-      "type": "application",
-      "root": "apps/scheduler",
-      "entryFile": "main",
-      "sourceRoot": "apps/scheduler/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/scheduler/tsconfig.app.json"
+        "tsConfigPath": "apps/gateway/tsconfig.app.json"
       }
     },
     "common": {
@@ -37,13 +28,13 @@
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
     },
-    "msa-findbook": {
+    "scheduler": {
       "type": "application",
-      "root": "apps/msa-findbook",
+      "root": "apps/scheduler",
       "entryFile": "main",
-      "sourceRoot": "apps/msa-findbook/src",
+      "sourceRoot": "apps/scheduler/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/msa-findbook/tsconfig.app.json"
+        "tsConfigPath": "apps/scheduler/tsconfig.app.json"
       }
     },
     "socket": {
@@ -53,15 +44,6 @@
       "sourceRoot": "apps/socket/src",
       "compilerOptions": {
         "tsConfigPath": "apps/socket/tsconfig.app.json"
-      }
-    },
-    "gateway": {
-      "type": "application",
-      "root": "apps/gateway",
-      "entryFile": "main",
-      "sourceRoot": "apps/gateway/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/gateway/tsconfig.app.json"
       }
     },
     "order": {
@@ -107,6 +89,15 @@
       "sourceRoot": "libs/redis/src",
       "compilerOptions": {
         "tsConfigPath": "libs/redis/tsconfig.lib.json"
+      }
+    },
+    "blockchain": {
+      "type": "application",
+      "root": "apps/blockchain",
+      "entryFile": "main",
+      "sourceRoot": "apps/blockchain/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/blockchain/tsconfig.app.json"
       }
     }
   }
