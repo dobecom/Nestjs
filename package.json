@@ -13,6 +13,7 @@
     "start:order": "nest start order swc --watch --type-check",
     "start:payment": "nest start payment swc --watch --type-check",
     "start:user": "nest start user swc --watch --type-check",
+    "start:blockchain": "nest start blockchain swc --watch --type-check",
     "start:scheduler": "nest start scheduler swc --type-check",
     "start:socket": "nest start socket swc --type-check",
     "start:socket:dev": "nest start socket swc --watch --type-check",

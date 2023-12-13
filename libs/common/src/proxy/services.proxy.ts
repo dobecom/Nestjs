@@ -13,10 +13,11 @@ const USER_SERVICE_PROXY =  {
           )}@${config.get('BROKER_HOST')}:${config.get('BROKER_PORT')}`,
         ],
         queue: 'user',
-        noAck: true,
+        noAck: true, // true인 경우, Consumer의 메시지 수신응답을 받지 않음
         queueOptions: {
-          durable: true,
+          durable: true, // true인 경우, 브로커 서버가 재시작되어도 기존 Queue를 보존
         },
+				prefetchCount: 1 // 1인 경우, 연결된 Consumer는 동시에 1개의 작업만 처리할 수 있음
       },
     });
   },
@@ -67,7 +68,29 @@ const PAYMENT_SERVICE_PROXY =  {
   inject: [ConfigService],
 };
 
-export { USER_SERVICE_PROXY, ORDER_SERVICE_PROXY, PAYMENT_SERVICE_PROXY}
+const BLOCKCHAIN_SERVICE_PROXY =  {
+  provide: 'BLOCKCHAIN_SERVICE',
+  useFactory: (config: ConfigService) => {
+    return ClientProxyFactory.create({
+      transport: Transport.RMQ,
+      options: {
+        urls: [
+          `amqp://${config.get('RABBITMQ_USER')}:${config.get(
+            'RABBITMQ_PW'
+          )}@${config.get('BROKER_HOST')}:${config.get('BROKER_PORT')}`,
+        ],
+        queue: 'blockchain',
+        noAck: true,
+        queueOptions: {
+          durable: false,
+        },
+      },
+    });
+  },
+  inject: [ConfigService],
+};
+
+export { USER_SERVICE_PROXY, ORDER_SERVICE_PROXY, PAYMENT_SERVICE_PROXY, BLOCKCHAIN_SERVICE_PROXY}
 
 // export enum ProxyProvider {
 //   USER_SERVICE = 'USER_SERVICE',

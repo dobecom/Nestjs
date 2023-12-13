@@ -19,7 +19,7 @@ async function bootstrap() {
         queue: 'blockchain',
         noAck: true,
         queueOptions: {
-          durable: true,
+          durable: false,
         },
       },
     },

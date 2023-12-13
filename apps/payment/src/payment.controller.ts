@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { PaymentService } from './payment.service';
 
 @Controller()
@@ -9,6 +9,12 @@ export class PaymentController {
   @MessagePattern('payment-create')
   createPayment(@Payload() data) {
     return this.paymentService.createPayment(data);
+  }
+
+  @EventPattern('payment-list')
+  getListPayment(@Payload() data) {
+    console.log('payment-list')
+    return 'payment-list';
   }
 
   // delay() {

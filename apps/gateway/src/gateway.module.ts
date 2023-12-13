@@ -1,6 +1,7 @@
 import { CommonModule } from '@app/common';
 import { ContextInterceptor } from '@app/common/interceptors/context.interceptor';
 import {
+  BLOCKCHAIN_SERVICE_PROXY,
   ORDER_SERVICE_PROXY,
   PAYMENT_SERVICE_PROXY,
   USER_SERVICE_PROXY,
@@ -10,6 +11,7 @@ import { UserEntity } from '@app/db/entities/user.entity';
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BlockchainController } from './controllers/blockchain.controller';
 import { OrderController } from './controllers/order.controller';
 import { PaymentController } from './controllers/payment.controller';
 import { UserController } from './controllers/user.controller';
@@ -22,6 +24,7 @@ import { GatewayController } from './gateway.controller';
     UserController,
     OrderController,
     PaymentController,
+    BlockchainController
   ],
   providers: [
     {
@@ -31,6 +34,7 @@ import { GatewayController } from './gateway.controller';
     USER_SERVICE_PROXY,
     ORDER_SERVICE_PROXY,
     PAYMENT_SERVICE_PROXY,
+    BLOCKCHAIN_SERVICE_PROXY
   ],
 })
 export class GatewayModule {}
