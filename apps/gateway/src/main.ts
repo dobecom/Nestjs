@@ -12,7 +12,8 @@ async function bootstrap() {
       process.env.NODE_ENV === 'PROD' ? ['error'] : ['error', 'warn', 'log'],
   });
   const config = app.get(ConfigService);
-  app.useLogger(new Logger());
+  const logger = app.get(Logger);
+  app.useLogger(logger);
   app.useGlobalFilters(new HttpExceptionFilter(app.get(ClsService)));
   app.enableCors({
     origin: (config.get('CORS_ORIGINS') as string).split('||') || [],

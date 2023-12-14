@@ -8,7 +8,7 @@ import {
 } from '@app/common/proxy/services.proxy';
 import { DbModule } from '@app/db';
 import { UserEntity } from '@app/db/entities/user.entity';
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BlockchainController } from './controllers/blockchain.controller';
@@ -34,7 +34,8 @@ import { GatewayController } from './gateway.controller';
     USER_SERVICE_PROXY,
     ORDER_SERVICE_PROXY,
     PAYMENT_SERVICE_PROXY,
-    BLOCKCHAIN_SERVICE_PROXY
+    BLOCKCHAIN_SERVICE_PROXY,
+    Logger
   ],
 })
 export class GatewayModule {}
