@@ -7,7 +7,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { ClsService } from 'nestjs-cls';
-import { catchError, Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable()
 export class ContextInterceptor implements NestInterceptor {
@@ -29,7 +29,7 @@ export class ContextInterceptor implements NestInterceptor {
         if(error.response) {
           throw new HttpException(error.response, error.status);
         }
-        return error;
+        return throwError(() => error);
       }),
     );
   }
