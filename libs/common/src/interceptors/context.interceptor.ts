@@ -1,12 +1,13 @@
 import {
   CallHandler,
   ExecutionContext,
+  HttpException,
   Injectable,
   Logger,
   NestInterceptor,
 } from '@nestjs/common';
 import { ClsService } from 'nestjs-cls';
-import { Observable } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 
 @Injectable()
 export class ContextInterceptor implements NestInterceptor {
@@ -23,6 +24,13 @@ export class ContextInterceptor implements NestInterceptor {
     // Log
     this.logger.log(`Info : [${request.method}] ${request.url} From ${userIp}`);
 
-    return next.handle();
+    return next.handle().pipe(
+      catchError((error) => {
+        if(error.response) {
+          throw new HttpException(error.response, error.status);
+        }
+        return error;
+      }),
+    );
   }
 }

@@ -1,7 +1,7 @@
 import { OrderEntity } from '@app/db/entities/order.entity';
 import { PaymentEntity } from '@app/db/entities/payment.entity';
 import { UserEntity } from '@app/db/entities/user.entity';
-import { Inject, Injectable } from '@nestjs/common';
+import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { lastValueFrom } from 'rxjs';

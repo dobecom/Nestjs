@@ -18,14 +18,15 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus();
     const exceptionResponse = exception.getResponse() as ExceptionResponse;
 
-    const errorCode = exceptionResponse.errorCode || 'Unhandled Error';
-
+    const errorCode = exceptionResponse
+      ? exceptionResponse.errorCode
+      : 'Unhandled Error';
     const data = {
       statusCode: status,
       timestamp: new Date().toISOString(),
       path: host.switchToHttp().getRequest().url,
       errorCode,
-      message: exceptionResponse.message,
+      message: exceptionResponse ? exceptionResponse.message : 'message',
       requestId: this.cls.get('requestId'),
     };
     this.logger.error(

@@ -1,4 +1,3 @@
-import { RmqExceptionFilter } from '@app/common/filters/rpc-exception.filter';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
@@ -7,8 +6,6 @@ import { OrderModule } from './order.module';
 async function bootstrap() {
   const app = await NestFactory.create(OrderModule);
   const config = app.get(ConfigService);
-
-  app.useGlobalFilters(new RmqExceptionFilter());
 
   app.connectMicroservice<MicroserviceOptions>(
     {

@@ -1,13 +1,20 @@
 import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 @Controller('user')
 export class UserController {
   constructor(@Inject('USER_SERVICE') private userCp: ClientProxy) {}
 
   @Post('signIn')
-  signIn(@Body() req) {
-    return this.userCp.send('user-signIn', req);
+  async signIn(@Body() req) {
+    try {
+      return await lastValueFrom(
+        await this.userCp.send('user-signIn', req)
+      );
+    } catch (err) {
+      throw err;
+    }
   }
 
   @Post('signUp')
