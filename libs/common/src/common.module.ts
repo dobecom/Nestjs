@@ -1,6 +1,8 @@
-import { Global, Module } from '@nestjs/common';
+import { DbModule } from '@app/db';
+import { Global, Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { nanoid } from 'nanoid';
 import { ClsModule } from 'nestjs-cls';
 
@@ -11,6 +13,7 @@ import { ClsModule } from 'nestjs-cls';
       cache: true,
       isGlobal: true,
     }),
+    DbModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
@@ -29,7 +32,7 @@ import { ClsModule } from 'nestjs-cls';
       },
     }),
   ],
-  exports: [JwtService],
-  providers: [JwtService],
+  exports: [JwtService, Logger],
+  providers: [JwtService, Logger],
 })
 export class CommonModule {}

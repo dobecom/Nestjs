@@ -1,6 +1,6 @@
 import { CommonModule } from '@app/common';
 import { RpcExceptionInterceptor } from '@app/common/interceptors/rpc.interceptor';
-import { PAYMENT_SERVICE_PROXY } from '@app/common/proxy/services.proxy';
+import { PAYMENT_SERVICE_PROXY } from '@app/common/providers/proxy/services.proxy';
 import { DbModule } from '@app/db';
 import { OrderEntity } from '@app/db/entities/order.entity';
 import { Module } from '@nestjs/common';

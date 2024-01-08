@@ -1,4 +1,3 @@
-import { ExceptionResponse } from '@app/common/presentations/interfaces/exception-response.interface';
 import {
   ExceptionFilter,
   Catch,
@@ -9,6 +8,12 @@ import {
 import { Response } from 'express';
 import { ClsService } from 'nestjs-cls';
 
+interface ExceptionResponse {
+  code: string;
+  message: string;
+  cause?: any;
+}
+
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
   constructor(private cls: ClsService) {}
@@ -17,21 +22,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = host.switchToHttp().getResponse<Response>();
     const status = exception.getStatus();
     const exceptionResponse = exception.getResponse() as ExceptionResponse;
-
-    const errorCode = exceptionResponse
-      ? exceptionResponse.errorCode
-      : 'Unhandled Error';
-    const data = {
-      statusCode: status,
-      timestamp: new Date().toISOString(),
-      path: host.switchToHttp().getRequest().url,
-      errorCode,
-      message: exceptionResponse ? exceptionResponse.message : 'message',
-      requestId: this.cls.get('requestId'),
-    };
-    this.logger.error(
-      `Exception occured [${data.statusCode}] : ${JSON.stringify(data)}`
-    );
+    const data = {};
+    if(exceptionResponse.code) {
+      data['code'] = exceptionResponse.code;
+    }
+    if(exceptionResponse.cause){
+      data['cause'] = exceptionResponse.cause;
+    }
+    data['timestamp'] = new Date().getTime();
+    data['requestId'] = this.cls.get('requestId');
+    
     return response.status(status).json(data);
   }
 }

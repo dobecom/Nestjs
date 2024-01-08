@@ -3,6 +3,7 @@ import { Logger } from '@nestjs/common';
 
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ClsService } from 'nestjs-cls';
 import { GatewayModule } from './gateway.module';
 
@@ -13,6 +14,16 @@ async function bootstrap() {
   });
   const config = app.get(ConfigService);
   const logger = app.get(Logger);
+  const docs = new DocumentBuilder()
+    .setTitle("NestJS")
+    // .setDescription('NestJS 1.0')
+    // .setVersion('1.0')
+    // .addTag('NestJS API Specification')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, docs);
+  SwaggerModule.setup("docs", app, document);
+
   app.useLogger(logger);
   app.useGlobalFilters(new HttpExceptionFilter(app.get(ClsService)));
   app.enableCors({

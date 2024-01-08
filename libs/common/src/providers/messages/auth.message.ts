@@ -1,0 +1,8 @@
+export enum AuthMessage {
+    AUTH_SIGN_UP = 'AUTH_SIGN_UP',
+    AUTH_VERIFY = 'AUTH_VERIFY',
+    AUTH_RE_VERIFY = 'AUTH_RE_VERIFY',
+    AUTH_SIGN_IN = 'AUTH_SIGN_IN',
+    AUTH_SIGN_OUT = 'AUTH_SIGN_OUT',
+    AUTH_RE_SIGN = 'AUTH_RE_SIGN',
+}

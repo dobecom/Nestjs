@@ -1,9 +1,4 @@
-import {
-  CallHandler,
-  ExecutionContext,
-  Injectable,
-  NestInterceptor,
-} from '@nestjs/common';
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { catchError, Observable } from 'rxjs';
 import { RpcException } from '@nestjs/microservices';
 
@@ -14,7 +9,7 @@ export class RpcExceptionInterceptor implements NestInterceptor {
       return next.handle().pipe(
         catchError((error) => {
           throw new RpcException(error);
-        })
+        }),
       );
     }
   }
