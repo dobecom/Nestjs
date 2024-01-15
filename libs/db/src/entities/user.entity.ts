@@ -3,6 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
+  Index,
 } from 'typeorm';
 import { OrderEntity } from './order.entity';
 import { CommonEntity } from './common.entity';
@@ -16,6 +17,7 @@ export class UserEntity extends CommonEntity {
   @Column()
   username: string;
 
+  @Index({ unique: true})
   @Column()
   email: string;
 

@@ -1,5 +1,9 @@
 import { UserEntity } from '@app/db/entities/user.entity';
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,31 +17,30 @@ export class AuthService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private readonly config: ConfigService,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService
   ) {}
 
   async signUp(email: string, username: string, password: string) {
     const salt = await bcrypt.genSalt();
     const hash = await bcrypt.hash(password, salt);
-    const result = await this.userRepository.save({
+    return await this.userRepository.save({
       email,
       username,
-      password : hash,
+      password: hash,
     });
-    return result;
   }
 
   async signIn(email: string, password: string) {
     const user = await this.userRepository.findOneBy({ email });
-    if(!user){
+    if (!user) {
       throw new NotFoundException({
-        code: ErrorCodes.NF001
-      })
+        code: ErrorCodes.NF001,
+      });
     }
     const result = await bcrypt.compare(password, user.password);
     if (!result) {
       throw new UnauthorizedException({
-        code: ErrorCodes.UA003
+        code: ErrorCodes.UA003,
       });
     }
     const payload = { username: user.username, id: user.id };

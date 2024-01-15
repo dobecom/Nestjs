@@ -1,8 +1,8 @@
+import { AuthUser } from '@app/common/decorator/auth.decorator';
+import { AuthGuard } from '@app/common/guards/auth.guard';
 import { Body, Controller, Inject, Post, UseGuards } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-import { AuthUser } from '../auth/decorators/auth.decorator';
-import { AuthGuard } from '../auth/guards/auth.guard';
 
 @UseGuards(AuthGuard)
 @Controller('order')

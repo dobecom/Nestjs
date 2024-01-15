@@ -1,3 +1,5 @@
+import { AuthUser } from '@app/common/decorator/auth.decorator';
+import { AuthGuard } from '@app/common/guards/auth.guard';
 import {
   Controller,
   Get,
@@ -8,8 +10,6 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
-import { AuthUser } from '../auth/decorators/auth.decorator';
-import { AuthGuard } from '../auth/guards/auth.guard';
 import { nanoid } from 'nanoid';
 const amqp = require('amqplib/callback_api');
 
