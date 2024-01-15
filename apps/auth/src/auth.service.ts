@@ -1,10 +1,11 @@
 import { UserEntity } from '@app/db/entities/user.entity';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { ErrorCodes } from '@app/common/code/error.code';
 
 @Injectable()
 export class AuthService {
@@ -28,9 +29,16 @@ export class AuthService {
 
   async signIn(email: string, password: string) {
     const user = await this.userRepository.findOneBy({ email });
+    if(!user){
+      throw new NotFoundException({
+        code: ErrorCodes.NF001
+      })
+    }
     const result = await bcrypt.compare(password, user.password);
     if (!result) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException({
+        code: ErrorCodes.UA003
+      });
     }
     const payload = { username: user.username, id: user.id };
     return {

@@ -1,3 +1,4 @@
+import { AuthMessage } from '@app/common/providers/messages/auth.message';
 import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -9,30 +10,38 @@ export class AuthController {
   constructor(@Inject('AUTH_SERVICE') private authCp: ClientProxy) {}
 
   @ApiOperation({
-    summary: 'signIn',
+    summary: 'sign in',
   })
   @ApiResponse({
     status: 200,
-    description: 'signIn Success',
+    description: 'sign in success',
     // type: SuccessDtoResponse,
   })
   @ApiResponse({
     status: 500,
-    description: 'signIn failed',
+    description: 'sign in failed',
   })
-  @Post('signIn')
-  async signIn(@Body() req) {
-    try {
-      return await lastValueFrom(
-        await this.authCp.send('user-signIn', req)
-      );
-    } catch (err) {
-      throw err;
-    }
+  @Post('sign-in')
+  async signIn(@Body() req): Promise<any> {
+    return await lastValueFrom(
+      await this.authCp.send(AuthMessage.AUTH_SIGN_IN, req)
+    );
   }
 
-  @Post('signUp')
+  @ApiOperation({
+    summary: 'sign up',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'sign up success',
+    // type: SuccessDtoResponse,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'sign up failed',
+  })
+  @Post('sign-up')
   signUp(@Body() req) {
-    return this.authCp.send('user-signUp', req);
+    return this.authCp.send(AuthMessage.AUTH_SIGN_UP, req);
   }
 }

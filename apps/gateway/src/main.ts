@@ -1,4 +1,5 @@
 import { HttpExceptionFilter } from '@app/common/filters/http-exception.filter';
+import { GlIntc } from '@app/common/interceptors/gl.intc';
 import { Logger } from '@nestjs/common';
 
 import { ConfigService } from '@nestjs/config';
@@ -14,6 +15,8 @@ async function bootstrap() {
   });
   const config = app.get(ConfigService);
   const logger = app.get(Logger);
+  app.useGlobalInterceptors(new GlIntc(logger));
+
   const docs = new DocumentBuilder()
     .setTitle("NestJS")
     // .setDescription('NestJS 1.0')
