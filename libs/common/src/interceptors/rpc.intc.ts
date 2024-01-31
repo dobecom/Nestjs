@@ -17,6 +17,8 @@ export class RpcExceptionInterceptor implements NestInterceptor {
       return next.handle().pipe(
         catchError((err) => {
           if (err.driverError) {
+            // pg error code handling을 위한 함수
+            // https://www.postgresql.org/docs/current/errcodes-appendix.html
             switch (err.code) {
               case '23505':
                 // Unique Constraint
