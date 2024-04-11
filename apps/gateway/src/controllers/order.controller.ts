@@ -13,7 +13,7 @@ export class OrderController {
   async createOrder(@AuthUser() user: any, @Body() req: any) {
     try {
       return await lastValueFrom(
-        await this.orderCp.send('order-create', {
+        this.orderCp.send('order-create', {
           ...req,
           userId: user.id,
         })

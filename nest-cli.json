@@ -16,7 +16,15 @@
       "entryFile": "main",
       "sourceRoot": "apps/gateway/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/gateway/tsconfig.app.json"
+        "tsConfigPath": "apps/gateway/tsconfig.app.json",
+        "plugins": [
+          {
+            "name": "@nestjs/swagger",
+            "options": {
+              "classValidatorShim": true
+            }
+          }
+        ]
       }
     },
     "common": {

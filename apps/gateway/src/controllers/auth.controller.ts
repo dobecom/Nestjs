@@ -1,47 +1,28 @@
 import { AuthMessage } from '@app/common/providers/messages/auth.message';
 import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { lastValueFrom } from 'rxjs';
+import { SignInRequest } from '../open-api/dto/sign-in.dto';
+import {
+  SignInDecorator,
+  SignUpDecorator,
+} from '../open-api/swagger.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(@Inject('AUTH_SERVICE') private authCp: ClientProxy) {}
 
-  @ApiOperation({
-    summary: 'sign in',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'sign in success',
-    // type: SuccessDtoResponse,
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'sign in failed',
-  })
+  @SignInDecorator()
   @Post('sign-in')
-  async signIn(@Body() req): Promise<any> {
-    return await lastValueFrom(
-      await this.authCp.send(AuthMessage.AUTH_SIGN_IN, req)
-    );
+  async signIn(@Body() req: SignInRequest): Promise<any> {
+    return await lastValueFrom(this.authCp.send(AuthMessage.AUTH_SIGN_IN, req));
   }
 
-  @ApiOperation({
-    summary: 'sign up',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'sign up success',
-    // type: SuccessDtoResponse,
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'sign up failed',
-  })
+  @SignUpDecorator()
   @Post('sign-up')
-  signUp(@Body() req) {
-    return this.authCp.send(AuthMessage.AUTH_SIGN_UP, req);
+  async signUp(@Body() req: SignInRequest) {
+    return await lastValueFrom(this.authCp.send(AuthMessage.AUTH_SIGN_UP, req));
   }
 }

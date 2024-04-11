@@ -13,7 +13,7 @@ export class PaymentController {
         // requestId: uuid(),
         // userAgent: req.headers['user-agent'],
       };
-      return lastValueFrom(await this.paymentCp.send('payment-list', data));
+      return lastValueFrom(this.paymentCp.send('payment-list', data));
     } catch (err) {
       console.log(err);
       throw err;
