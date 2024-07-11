@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class WebhookAgentService {
   constructor(private readonly config: ConfigService) {}
+
   async sendTelegramMessage(params: any) {
     const url = `https://api.telegram.org/bot${this.config.get(
       'TELEGRAM_API_TOKEN'
