@@ -17,7 +17,6 @@ export class AiService {
     const response = await queryEngine.query({
       query: 'What did the author do in college?',
     });
-
     // Output response
     console.log(response.toString());
 
