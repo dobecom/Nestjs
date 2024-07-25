@@ -125,15 +125,6 @@
       "compilerOptions": {
         "tsConfigPath": "apps/ai/tsconfig.app.json"
       }
-    },
-    "webhook-agent": {
-      "type": "application",
-      "root": "apps/webhook-agent",
-      "entryFile": "main",
-      "sourceRoot": "apps/webhook-agent/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/webhook-agent/tsconfig.app.json"
-      }
     }
   }
 }
