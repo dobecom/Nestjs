@@ -10,8 +10,8 @@ import {
 } from 'typeorm';
 import { UserEntity } from './user.entity';
 
-@Entity('orders')
-export class OrderEntity {
+@Entity('pays')
+export class PayEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 

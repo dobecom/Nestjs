@@ -2,34 +2,39 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  CreateDateColumn,
+  UpdateDateColumn,
   OneToMany,
-  Index,
 } from 'typeorm';
 import { OrderEntity } from './order.entity';
-import { CommonEntity } from './common.entity';
-import { PaymentEntity } from './payment.entity';
+import { PayEntity } from './pay.entity';
 
-@Entity('user')
-export class UserEntity extends CommonEntity {
-  @PrimaryGeneratedColumn()
+@Entity('users')
+export class UserEntity {
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
-  username: string;
-
-  @Index({ unique: true})
-  @Column()
+  @Column({ type: 'varchar', unique: true })
   email: string;
 
-  @Column({ default: 'https://sample.png' })
-  image: string;
-
-  @Column()
+  @Column({ type: 'varchar', nullable: true })
   password: string;
 
-  @OneToMany((type) => OrderEntity, (order) => order.user)
+  @Column({ type: 'varchar', nullable: true })
+  name: string;
+
+  @Column({ type: 'smallint', default: 0 })
+  status: number;
+
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
+
+  @OneToMany(() => OrderEntity, (order) => order.user)
   orders: OrderEntity[];
 
-  @OneToMany((type) => PaymentEntity, (payment) => payment.user)
-  payments: PaymentEntity[];
+  @OneToMany(() => PayEntity, (pay) => pay.user)
+  pays: PayEntity[];
 }
