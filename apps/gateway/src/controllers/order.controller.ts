@@ -1,25 +1,44 @@
-import { AuthUser } from '@app/common/decorator/auth.decorator';
-import { AuthGuard } from '@app/common/guards/auth.guard';
-import { Body, Controller, Inject, Post, UseGuards } from '@nestjs/common';
+import { CreateOrderRequest } from '@app/common/open-api/order/create-order.dto';
+import { CreateOrderDecorator } from '@app/common/open-api/swagger.decorator';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Inject,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
+import { ApiTags } from '@nestjs/swagger';
+import { lastValueFrom, timeout } from 'rxjs';
+import { AuthGuard } from '../auth/auth.guard';
+import { AuthUser } from '../auth/auth.decorator';
+import { AuthPipe } from '../auth/auth.pipe';
 
 @UseGuards(AuthGuard)
+@ApiTags('Order')
 @Controller('order')
 export class OrderController {
-  constructor(@Inject('ORDER_SERVICE') private orderCp: ClientProxy) {}
+  constructor(
+    @Inject('ORDER_SERVICE') private orderCp: ClientProxy,
+    private readonly config: ConfigService
+  ) {}
 
+  @CreateOrderDecorator()
+  @HttpCode(200)
   @Post()
-  async createOrder(@AuthUser() user: any, @Body() req: any) {
-    try {
-      return await lastValueFrom(
-        this.orderCp.send('order-create', {
-          ...req,
-          userId: user.id,
+  async createOrder(
+    @AuthUser(AuthPipe) user: any,
+    @Body('orders') orders: CreateOrderRequest
+  ) {
+    return await lastValueFrom(
+      this.orderCp
+        .send('order-create', {
+          orders,
+          user,
         })
-      );
-    } catch (err) {
-      throw err;
-    }
+        .pipe(timeout(this.config.get('APPS_TIMEOUT')))
+    );
   }
 }

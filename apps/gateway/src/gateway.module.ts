@@ -12,16 +12,20 @@ import { UserEntity } from '@app/db/entities/user.entity';
 import { Module } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthController } from './controllers/auth.controller';
 import { BlockchainController } from './controllers/blockchain.controller';
 import { OrderController } from './controllers/order.controller';
 import { PaymentController } from './controllers/payment.controller';
 import { UserController } from './controllers/user.controller';
+import { RedisModule } from '@app/redis';
 
 @Module({
-  imports: [CommonModule, DbModule, TypeOrmModule.forFeature([UserEntity])],
+  imports: [
+    CommonModule,
+    DbModule,
+    RedisModule,
+    TypeOrmModule.forFeature([UserEntity]),
+  ],
   controllers: [
-    AuthController,
     UserController,
     OrderController,
     PaymentController,

@@ -1,16 +1,39 @@
 import { CommonModule } from '@app/common';
-import { RpcExceptionInterceptor } from '@app/common/interceptors/rpc.interceptor';
 import { PAYMENT_SERVICE_PROXY } from '@app/common/providers/proxy/services.proxy';
-import { DbModule } from '@app/db';
-import { OrderEntity } from '@app/db/entities/order.entity';
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
+import { RpcExceptionInterceptor } from '@app/common/interceptors/rpc.intc';
+import { ConfigService } from '@nestjs/config';
+import { OrderEntity } from './models/entities/order.entity';
+import { OrderRepository } from './order.repository';
 
 @Module({
-  imports: [CommonModule, DbModule, TypeOrmModule.forFeature([OrderEntity])],
+  imports: [
+    CommonModule,
+    TypeOrmModule.forRootAsync({
+      useFactory: (config: ConfigService) => {
+        return {
+          type: 'postgres',
+          host: config.get('DB_HOST') || 'localhost',
+          port: +config.get('DB_PORT') || 5432,
+          username: config.get('DB_USER') || 'postgres',
+          password: config.get('DB_PW') || 'postgres',
+          database: config.get('DB_NAME') || 'postgres',
+          entities: [OrderEntity],
+          // synchronize: config.get('NODE_ENV') == 'LOCAL' ? true : false,
+          keepConnectionAlive: true,
+          retryAttempts: 2,
+          retryDelay: 1000,
+          logging: true,
+        };
+      },
+      inject: [ConfigService],
+    }),
+    TypeOrmModule.forFeature([OrderEntity]),
+  ],
   controllers: [OrderController],
   providers: [
     {
@@ -18,6 +41,7 @@ import { OrderService } from './order.service';
       useClass: RpcExceptionInterceptor,
     },
     OrderService,
+    OrderRepository,
     PAYMENT_SERVICE_PROXY,
   ],
 })

@@ -1,5 +1,3 @@
-import { AuthUser } from '@app/common/decorator/auth.decorator';
-import { AuthGuard } from '@app/common/guards/auth.guard';
 import {
   Controller,
   Get,
@@ -11,6 +9,8 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { nanoid } from 'nanoid';
+import { AuthGuard } from '../auth/auth.guard';
+import { AuthUser } from '../auth/auth.decorator';
 const amqp = require('amqplib/callback_api');
 
 // rmq exchange type
