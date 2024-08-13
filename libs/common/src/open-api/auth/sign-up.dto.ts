@@ -3,7 +3,7 @@ import { IsString } from 'class-validator';
 
 export class SignUpRequest {
   @ApiProperty({
-    example: 'test@gmail.com',
+    example: 'test1@gmail.com',
   })
   @IsString()
   email: string;
@@ -23,7 +23,7 @@ export class SignUpRequest {
 
 export class SignUpResponse {
   @ApiProperty({
-    example: 'test@gmail.com',
+    example: 'test1@gmail.com',
   })
   @IsString()
   email: string;

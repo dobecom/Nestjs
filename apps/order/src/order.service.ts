@@ -1,6 +1,3 @@
-import { OrderEntity } from '@app/db/entities/order.entity';
-import { PayEntity } from '@app/db/entities/pay.entity';
-import { UserEntity } from '@app/db/entities/user.entity';
 import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';

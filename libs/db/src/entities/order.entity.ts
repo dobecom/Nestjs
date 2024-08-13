@@ -1,40 +1,40 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-  Index,
-  JoinColumn,
-} from 'typeorm';
-import { UserEntity } from './user.entity';
+// import {
+//   Entity,
+//   PrimaryGeneratedColumn,
+//   Column,
+//   CreateDateColumn,
+//   UpdateDateColumn,
+//   ManyToOne,
+//   Index,
+//   JoinColumn,
+// } from 'typeorm';
+// import { UserEntity } from './user.entity';
 
-@Entity('orders')
-export class OrderEntity {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
+// @Entity('orders')
+// export class OrderEntity {
+//   @PrimaryGeneratedColumn('increment')
+//   id: number;
 
-  @Column({ type: 'int8' })
-  userId: number;
+//   @Column({ type: 'int8' })
+//   userId: number;
 
-  @Column({ type: 'varchar' })
-  name: string;
+//   @Column({ type: 'varchar' })
+//   name: string;
 
-  @Index()
-  @Column({ type: 'smallint', default: 0 })
-  status: number;
+//   @Index()
+//   @Column({ type: 'smallint', default: 0 })
+//   status: number;
 
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+//   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+//   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
+//   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+//   updatedAt: Date;
 
-  @ManyToOne(() => UserEntity, (user) => user.pays, {
-    nullable: false,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'user_id' })
-  user: UserEntity;
-}
+//   @ManyToOne(() => UserEntity, (user) => user.pays, {
+//     nullable: false,
+//     onDelete: 'CASCADE',
+//   })
+//   @JoinColumn({ name: 'user_id' })
+//   user: UserEntity;
+// }

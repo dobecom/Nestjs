@@ -7,7 +7,7 @@ import { UserMessage } from '@app/common/providers/messages/user.message';
 import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, timeout } from 'rxjs';
 
 @Controller('user')
 export class UserController {
@@ -19,11 +19,13 @@ export class UserController {
   @SignInDecorator()
   @Post('sign-in')
   async signIn(@Body() req: SignInRequest): Promise<any> {
-    console.log('this.config.get');
-    console.log(this.config.get('APPS_TIMEOUT'));
     return await lastValueFrom(
-      this.userCp.send(UserMessage.USER_SIGN_IN, req)
-      // .pipe(timeout(this.config.get('APPS_TIMEOUT')
+      this.userCp.send(UserMessage.USER_SIGN_IN, req).pipe(
+        timeout(
+          // this.config.get('APPS_TIMEOUT')
+          5000
+        )
+      )
     );
   }
 

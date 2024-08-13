@@ -1,4 +1,3 @@
-import { UserEntity } from '@app/db/entities/user.entity';
 import {
   Injectable,
   NotFoundException,
@@ -10,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ErrorCodes } from '@app/common/code/error.code';
 import * as bcrypt from 'bcrypt';
+import { UserEntity } from './models/entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -32,10 +32,7 @@ export class UserService {
 
   async signIn(email: string, password: string) {
     try {
-      console.log(this.userRepository.target);
       const user = await this.userRepository.findOneBy({ email });
-      console.log('user');
-      console.log(user);
       if (!user) {
         throw new NotFoundException({
           code: ErrorCodes.NF001,
@@ -48,12 +45,13 @@ export class UserService {
         });
       }
       const payload = { name: user.name, id: user.id };
-      return {
-        accessToken: await this.jwtService.signAsync(payload, {
-          secret: this.config.get('JWT_ACCESS_TOKEN_SECRET'),
-          expiresIn: '1d',
-        }),
-      };
+      return payload;
+      // return {
+      //   accessToken: await this.jwtService.signAsync(payload, {
+      //     secret: this.config.get('JWT_ACCESS_TOKEN_SECRET'),
+      //     expiresIn: '1d',
+      //   }),
+      // };
     } catch (err) {
       console.log(err);
     }
