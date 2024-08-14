@@ -7,40 +7,35 @@ import { RpcExceptionInterceptor } from '@app/common/interceptors/rpc.intc';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { UserEntity } from './models/entities/user.entity';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
     CommonModule,
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        global: true,
+        secret: config.get('JWT_ACCESS_TOKEN_SECRET'),
+        signOptions: { expiresIn: '1d' },
+      }),
+    }),
     TypeOrmModule.forRootAsync({
       useFactory: (config: ConfigService) => {
         return {
           type: 'postgres',
-          host: '127.0.0.1',
-          port: 5444,
-          username: 'dobecom',
-          password: 'custompassword',
-          database: 'do_pg_db',
+          host: config.get('DB_HOST') || 'localhost',
+          port: +config.get('DB_PORT') || 5432,
+          username: config.get('DB_USER') || 'postgres',
+          password: config.get('DB_PW') || 'postgres',
+          database: config.get('DB_NAME') || 'postgres',
           entities: [UserEntity],
-          // synchronize: true,
+          // synchronize: config.get('NODE_ENV') == 'LOCAL' ? true : false,
           keepConnectionAlive: true,
           retryAttempts: 2,
           retryDelay: 1000,
           logging: true,
         };
-        // return {
-        //   type: 'postgres',
-        //   host: config.get('DB_HOST') || 'localhost',
-        //   port: +config.get('DB_PORT') || 5432,
-        //   username: config.get('DB_USER') || 'postgres',
-        //   password: config.get('DB_PW') || 'postgres',
-        //   database: config.get('DB_NAME') || 'postgres',
-        //   // entities: [UserEntity],
-        //   // synchronize: config.get('NODE_ENV') == 'LOCAL' ? true : false,
-        //   keepConnectionAlive: true,
-        //   retryAttempts: 2,
-        //   retryDelay: 1000,
-        //   logging: true,
-        // };
       },
       inject: [ConfigService],
     }),

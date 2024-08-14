@@ -1,6 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CreateOrderResponseType } from './order/create-order.dto';
+import { CreateOrderResponse } from './order/create-order.dto';
+import { SignInResponse } from './auth/sign-in.dto';
 
 export { SignInDecorator, SignUpDecorator, CreateOrderDecorator };
 
@@ -12,7 +13,7 @@ const CreateOrderDecorator = () => {
     ApiResponse({
       status: 200,
       description: 'Success',
-      type: CreateOrderResponseType,
+      type: CreateOrderResponse,
     }),
     ApiResponse({
       status: 400,
@@ -30,6 +31,7 @@ const SignInDecorator = () => {
     ApiResponse({
       status: 200,
       description: 'Success',
+      type: SignInResponse,
     })
     // ApiResponse({ status: 403, description: 'Forbidden.' })
   );

@@ -4,28 +4,37 @@ import {
   SignUpDecorator,
 } from '@app/common/open-api/swagger.decorator';
 import { UserMessage } from '@app/common/providers/messages/user.message';
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Inject, Post } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
+import { ClsService } from 'nestjs-cls';
 import { lastValueFrom, timeout } from 'rxjs';
+import { nanoid } from 'nanoid';
 
 @Controller('user')
 export class UserController {
   constructor(
     @Inject('USER_SERVICE') private userCp: ClientProxy,
-    private readonly config: ConfigService
+    private readonly config: ConfigService,
+    private cls: ClsService
   ) {}
 
   @SignInDecorator()
+  @HttpCode(200)
   @Post('sign-in')
   async signIn(@Body() req: SignInRequest): Promise<any> {
     return await lastValueFrom(
-      this.userCp.send(UserMessage.USER_SIGN_IN, req).pipe(
-        timeout(
-          // this.config.get('APPS_TIMEOUT')
-          5000
+      this.userCp
+        .send(UserMessage.USER_SIGN_IN, {
+          users: req.users,
+          requestId: this.cls.get('requestId'),
+        })
+        .pipe(
+          timeout(
+            // this.config.get('APPS_TIMEOUT')
+            5000
+          )
         )
-      )
     );
   }
 

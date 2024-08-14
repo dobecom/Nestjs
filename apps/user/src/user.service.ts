@@ -45,15 +45,37 @@ export class UserService {
         });
       }
       const payload = { name: user.name, id: user.id };
-      return payload;
-      // return {
-      //   accessToken: await this.jwtService.signAsync(payload, {
-      //     secret: this.config.get('JWT_ACCESS_TOKEN_SECRET'),
-      //     expiresIn: '1d',
-      //   }),
-      // };
+      // return payload;
+      return {
+        accessToken: await this.jwtService.signAsync(payload, {
+          secret: this.config.get('JWT_ACCESS_TOKEN_SECRET'),
+          expiresIn: '1d',
+        }),
+      };
     } catch (err) {
       console.log(err);
     }
   }
+
+  // private async successSignIn(pMembers: Members) {
+  //   // SignIn Success
+  //   // - Combine Payload
+  //   const payload = { id: pMembers.id, uid: pMembers.uid };
+  //   // - Create Token
+  //   const { accessToken, refreshToken } = await this.generateToken(payload);
+  //   const expiresOn = Date.now() + parseInt(this.authConf.sign.expires) * 1000;
+  //   // - Set Session Store
+  //   await this.limitSessionStore(pMembers.uid);
+  //   const setStore = await this.setSessionStore(
+  //     accessToken,
+  //     refreshToken,
+  //     pMembers
+  //   );
+  //   if (!setStore) {
+  //     throw new InternalServerErrorException({
+  //       code: ErrorCodes.IS003,
+  //     });
+  //   }
+  //   return { accessToken, refreshToken, expiresOn };
+  // }
 }

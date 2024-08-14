@@ -1,4 +1,11 @@
-import { CallHandler, ExecutionContext, HttpException, Injectable, Logger, NestInterceptor } from '@nestjs/common';
+import {
+  CallHandler,
+  ExecutionContext,
+  HttpException,
+  Injectable,
+  Logger,
+  NestInterceptor,
+} from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
@@ -13,8 +20,11 @@ export class GlIntc implements NestInterceptor {
         // Request Logging
         this.logger.log(
           null,
-          [`Headers\n${JSON.stringify(req.headers, null, 2)}`, `Body\n${JSON.stringify(req.body, null, 2)}`],
-          `REQ-${now.toString()}`,
+          [
+            `Headers\n${JSON.stringify(req.headers, null, 2)}`,
+            `Body\n${JSON.stringify(req.body, null, 2)}`,
+          ],
+          `REQ-${now.toString()}`
         );
         return value === null ? '' : value;
       }),
@@ -22,8 +32,12 @@ export class GlIntc implements NestInterceptor {
         // Response Logging
         this.logger.log(
           null,
-          [`StatusCode : ${res.statusCode}`, `Body\n${JSON.stringify(value, null, 2)}`, `Time : ${Date.now() - now}ms`],
-          `RES-${now.toString()}`,
+          [
+            `StatusCode : ${res.statusCode}`,
+            `Body\n${JSON.stringify(value, null, 2)}`,
+            `Time : ${Date.now() - now}ms`,
+          ],
+          `RES-${now.toString()}`
         );
       }),
       catchError((err) => {
@@ -36,14 +50,14 @@ export class GlIntc implements NestInterceptor {
             `Body(Res)\n${JSON.stringify(err.response, null, 2)}`,
             `ErrorTrace\n${err.stack}`,
           ],
-          `ERR-${now.toString()}`,
+          `ERR-${now.toString()}`
         );
         if (err.response) {
           throw new HttpException(err.response, err.status);
         } else {
           return throwError(() => err);
         }
-      }),
+      })
     );
   }
 }

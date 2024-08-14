@@ -13,26 +13,8 @@ import { ClsModule } from 'nestjs-cls';
       cache: true,
       isGlobal: true,
     }),
-    DbModule,
-    JwtModule.registerAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        global: true,
-        secret: config.get('JWT_ACCESS_TOKEN_SECRET'),
-        signOptions: { expiresIn: '1d' },
-      }),
-    }),
-    ClsModule.forRoot({
-      global: true,
-      middleware: {
-        mount: true,
-        setup: (cls, req) => {
-          cls.set('requestId', nanoid(8));
-        },
-      },
-    }),
   ],
-  exports: [JwtService, Logger],
+  exports: [Logger],
   providers: [JwtService, Logger],
 })
 export class CommonModule {}

@@ -23,15 +23,15 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus();
     const exceptionResponse = exception.getResponse() as ExceptionResponse;
     const data = {};
-    if(exceptionResponse.code) {
+    if (exceptionResponse.code) {
       data['code'] = exceptionResponse.code;
     }
-    if(exceptionResponse.cause){
+    if (exceptionResponse.cause) {
       data['cause'] = exceptionResponse.cause;
     }
     data['timestamp'] = new Date().getTime();
     data['requestId'] = this.cls.get('requestId');
-    
+
     return response.status(status).json(data);
   }
 }
