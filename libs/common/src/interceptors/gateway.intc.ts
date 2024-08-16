@@ -55,6 +55,7 @@ export class GatewayInterceptor implements NestInterceptor {
               ...err.response,
               status: err.status,
             },
+            duration: `${Date.now() - startTime}ms`,
           },
           `Err-${this.cls.get('requestId')}`
         );
