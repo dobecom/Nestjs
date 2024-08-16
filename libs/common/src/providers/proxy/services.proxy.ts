@@ -1,8 +1,16 @@
 import { ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 
-const AUTH_SERVICE_PROXY = {
-  provide: 'AUTH_SERVICE',
+export {
+  SAGA_SERVICE_PROXY,
+  USER_SERVICE_PROXY,
+  ORDER_SERVICE_PROXY,
+  PAYMENT_SERVICE_PROXY,
+  BLOCKCHAIN_SERVICE_PROXY,
+};
+
+const SAGA_SERVICE_PROXY = {
+  provide: 'SAGA_SERVICE',
   useFactory: (config: ConfigService) => {
     return ClientProxyFactory.create({
       transport: Transport.RMQ,
@@ -12,7 +20,7 @@ const AUTH_SERVICE_PROXY = {
             'RABBITMQ_PW'
           )}@${config.get('BROKER_HOST')}:${config.get('BROKER_PORT')}`,
         ],
-        queue: 'auth',
+        queue: 'saga',
         noAck: true, // true인 경우, Consumer의 메시지 수신응답을 받지 않음
         queueOptions: {
           durable: true, // true인 경우, 브로커 서버가 재시작되어도 기존 Queue를 보존
@@ -111,14 +119,6 @@ const BLOCKCHAIN_SERVICE_PROXY = {
     });
   },
   inject: [ConfigService],
-};
-
-export {
-  AUTH_SERVICE_PROXY,
-  USER_SERVICE_PROXY,
-  ORDER_SERVICE_PROXY,
-  PAYMENT_SERVICE_PROXY,
-  BLOCKCHAIN_SERVICE_PROXY,
 };
 
 // export enum ProxyProvider {

@@ -1,7 +1,6 @@
 import { CommonModule } from '@app/common';
 import { HttpExceptionFilter } from '@app/common/filters/http-exception.filter';
 import {
-  AUTH_SERVICE_PROXY,
   BLOCKCHAIN_SERVICE_PROXY,
   ORDER_SERVICE_PROXY,
   PAYMENT_SERVICE_PROXY,
@@ -68,7 +67,6 @@ import { AuthAdminStrategy } from './auth/auth.admin.strategy';
       provide: APP_INTERCEPTOR,
       useClass: GatewayInterceptor,
     },
-    AUTH_SERVICE_PROXY,
     USER_SERVICE_PROXY,
     ORDER_SERVICE_PROXY,
     PAYMENT_SERVICE_PROXY,

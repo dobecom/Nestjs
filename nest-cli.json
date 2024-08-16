@@ -116,6 +116,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/ai/tsconfig.app.json"
       }
+    },
+    "saga": {
+      "type": "application",
+      "root": "apps/saga",
+      "entryFile": "main",
+      "sourceRoot": "apps/saga/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/saga/tsconfig.app.json"
+      }
     }
   }
 }
