@@ -9,11 +9,11 @@ export class CreateOrderRequestType {
   @IsString()
   name: string;
 
-  @ApiProperty({
-    example: 1,
-  })
-  @IsNumber()
-  userId: number;
+  // @ApiProperty({
+  //   example: 1,
+  // })
+  // @IsNumber()
+  // userId: number;
 }
 
 export class CreateOrderResponseType {

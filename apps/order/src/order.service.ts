@@ -1,9 +1,7 @@
-import { ConflictException, Inject, Injectable } from '@nestjs/common';
-import { ClientProxy, RpcException } from '@nestjs/microservices';
-import { InjectRepository } from '@nestjs/typeorm';
-import { lastValueFrom } from 'rxjs';
-import { DataSource, Repository } from 'typeorm';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import { OrderRepository } from './order.repository';
+import { Orders } from './models/domains/orders.domain';
 
 @Injectable()
 export class OrderService {
@@ -13,15 +11,13 @@ export class OrderService {
     private readonly repository: OrderRepository
   ) {}
 
-  async addOrder(data) {
-    const userId = 1;
+  async addOrder(orders: Orders) {
     const orderList = [];
-    const paymentRequest = await this.paymentCp.send('payment-create', {
-      userId,
-      orderList,
-    });
-    const paymentResult = await lastValueFrom(paymentRequest);
-    this.repository.saveOrder(data);
-    return null;
+    // const paymentRequest = await this.paymentCp.send('payment-create', {
+    //   userId,
+    //   orderList,
+    // });
+    // const paymentResult = await lastValueFrom(paymentRequest);
+    return await this.repository.saveOrder(orders);
   }
 }

@@ -9,10 +9,20 @@ import { RpcExceptionInterceptor } from '@app/common/interceptors/rpc.intc';
 import { ConfigService } from '@nestjs/config';
 import { OrderEntity } from './models/entities/order.entity';
 import { OrderRepository } from './order.repository';
+import { ClsModule } from 'nestjs-cls';
 
 @Module({
   imports: [
     CommonModule,
+    ClsModule.forRoot({
+      global: true,
+      interceptor: {
+        mount: true,
+        setup: (cls, context) => {
+          cls.set('requestId', context.switchToRpc().getData().requestId);
+        },
+      },
+    }),
     TypeOrmModule.forRootAsync({
       useFactory: (config: ConfigService) => {
         return {

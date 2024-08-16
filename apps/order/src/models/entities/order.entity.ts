@@ -12,7 +12,7 @@ export class OrderEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'int8' })
+  @Column({ name: 'user_id', type: 'int8' })
   userId: number;
 
   @Column({ type: 'varchar' })
@@ -22,9 +22,17 @@ export class OrderEntity {
   @Column({ type: 'smallint', default: 0 })
   status: number;
 
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   updatedAt: Date;
 }
