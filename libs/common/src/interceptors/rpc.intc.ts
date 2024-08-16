@@ -1,43 +1,53 @@
 import {
   CallHandler,
-  ConflictException,
   ExecutionContext,
   Injectable,
   InternalServerErrorException,
+  Logger,
   NestInterceptor,
 } from '@nestjs/common';
 import { catchError, Observable } from 'rxjs';
 import { RpcException } from '@nestjs/microservices';
+import { ClsService } from 'nestjs-cls';
 import { ErrorCodes } from '../code/error.code';
 
 @Injectable()
 export class RpcExceptionInterceptor implements NestInterceptor {
+  constructor(
+    private logger: Logger,
+    private cls: ClsService
+  ) {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const [req, res] = context.getArgs();
+    const requestData = { ...req };
+    delete requestData.requestId;
+    const startTime = Date.now();
     if (context.getType() === 'rpc') {
       return next.handle().pipe(
         catchError((err) => {
-          if (err.driverError) {
-            // pg error code handling을 위한 함수
-            // https://www.postgresql.org/docs/current/errcodes-appendix.html
-            switch (err.code) {
-              case '23505':
-                // Unique Constraint
-                throw new RpcException(
-                  new ConflictException({
-                    code: ErrorCodes.CF001,
-                  })
-                );
-              default:
-                console.log('unhandled DB error')
-                console.log(err.code)
-                throw new RpcException(
-                  new InternalServerErrorException({
-                    code: ErrorCodes.IS001,
-                  })
-                );
-            }
+          this.logger.error(
+            {
+              // from: req.headers.host,
+              to: res.args[2],
+              data: requestData,
+              timestamp: new Date(startTime).toISOString(),
+              error: {
+                ...err.response,
+                status: err.status,
+              },
+            },
+            `Err-${this.cls.get('requestId')}`
+          );
+          if (err.status) {
+            throw new RpcException(err);
+          } else {
+            throw new RpcException(
+              new InternalServerErrorException({
+                code: ErrorCodes.BR001,
+                cause: err.name,
+              })
+            );
           }
-          throw new RpcException(err);
         })
       );
     }

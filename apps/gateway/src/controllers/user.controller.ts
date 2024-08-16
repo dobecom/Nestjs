@@ -9,7 +9,6 @@ import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { ClsService } from 'nestjs-cls';
 import { lastValueFrom, timeout } from 'rxjs';
-import { nanoid } from 'nanoid';
 
 @Controller('user')
 export class UserController {
@@ -29,12 +28,7 @@ export class UserController {
           users: req.users,
           requestId: this.cls.get('requestId'),
         })
-        .pipe(
-          timeout(
-            // this.config.get('APPS_TIMEOUT')
-            5000
-          )
-        )
+        .pipe(timeout(+this.config.get('APPS_TIMEOUT')))
     );
   }
 

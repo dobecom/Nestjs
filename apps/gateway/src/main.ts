@@ -1,5 +1,4 @@
 import { HttpExceptionFilter } from '@app/common/filters/http-exception.filter';
-import { GlIntc } from '@app/common/interceptors/gl.intc';
 import { Logger } from '@nestjs/common';
 
 import { ConfigService } from '@nestjs/config';
@@ -15,17 +14,16 @@ async function bootstrap() {
   });
   const config = app.get(ConfigService);
   const logger = app.get(Logger);
-  app.useGlobalInterceptors(new GlIntc(logger));
 
   const docs = new DocumentBuilder()
-    .setTitle("NestJS")
+    .setTitle('NestJS')
     // .setDescription('NestJS 1.0')
     // .setVersion('1.0')
     // .addTag('NestJS API Specification')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, docs);
-  SwaggerModule.setup("docs", app, document);
+  SwaggerModule.setup('docs', app, document);
 
   app.useLogger(logger);
   app.useGlobalFilters(new HttpExceptionFilter(app.get(ClsService)));

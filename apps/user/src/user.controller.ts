@@ -10,8 +10,7 @@ export class UserController {
 
   @MessagePattern(UserMessage.USER_SIGN_IN)
   async signIn(@Payload('users') users: Users) {
-    const { email, password } = users;
-    return await this.userService.signIn(email, password);
+    return await this.userService.signIn(users);
   }
 
   @MessagePattern(UserMessage.USER_SIGN_UP)

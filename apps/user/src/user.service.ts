@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ErrorCodes } from '@app/common/code/error.code';
 import * as bcrypt from 'bcrypt';
 import { UserEntity } from './models/entities/user.entity';
+import { Users } from './models/domains/users.domain';
 
 @Injectable()
 export class UserService {
@@ -30,30 +31,34 @@ export class UserService {
     });
   }
 
-  async signIn(email: string, password: string) {
+  async signIn(users: Users) {
     try {
-      const user = await this.userRepository.findOneBy({ email });
+      const user = await this.userRepository.findOneBy({ email: users.email });
       if (!user) {
         throw new NotFoundException({
           code: ErrorCodes.NF001,
         });
       }
-      const result = await bcrypt.compare(password, user.password);
-      if (!result) {
+      const isValid = await bcrypt.compare(users.password, user.password);
+      if (!isValid) {
         throw new UnauthorizedException({
           code: ErrorCodes.UA003,
         });
       }
       const payload = { name: user.name, id: user.id };
       // return payload;
+      const result = await this.jwtService.signAsync(payload, {
+        secret: this.config.get('JWT_ACCESS_TOKEN_SECRET'),
+        expiresIn: '1d',
+      });
+
       return {
-        accessToken: await this.jwtService.signAsync(payload, {
-          secret: this.config.get('JWT_ACCESS_TOKEN_SECRET'),
-          expiresIn: '1d',
-        }),
+        users: {
+          accessToken: result,
+        },
       };
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   }
 

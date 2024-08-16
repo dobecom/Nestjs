@@ -8,7 +8,7 @@ import {
   USER_SERVICE_PROXY,
 } from '@app/common/providers/proxy/services.proxy';
 import { Module } from '@nestjs/common';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { BlockchainController } from './controllers/blockchain.controller';
 import { OrderController } from './controllers/order.controller';
 import { PaymentController } from './controllers/payment.controller';
@@ -18,6 +18,7 @@ import { ClsModule } from 'nestjs-cls';
 import { nanoid } from 'nanoid';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { GatewayInterceptor } from '@app/common/interceptors/gateway.intc';
 
 @Module({
   imports: [
@@ -41,15 +42,6 @@ import { ConfigService } from '@nestjs/config';
         signOptions: { expiresIn: '1d' },
       }),
     }),
-    ClsModule.forRoot({
-      global: true,
-      middleware: {
-        mount: true,
-        setup: (cls, req) => {
-          cls.set('requestId', nanoid());
-        },
-      },
-    }),
   ],
   controllers: [
     UserController,
@@ -61,6 +53,10 @@ import { ConfigService } from '@nestjs/config';
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: GatewayInterceptor,
     },
     AUTH_SERVICE_PROXY,
     USER_SERVICE_PROXY,

@@ -8,6 +8,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { UserEntity } from './models/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
+import { ClsModule } from 'nestjs-cls';
 
 @Module({
   imports: [
@@ -34,10 +35,19 @@ import { JwtModule } from '@nestjs/jwt';
           keepConnectionAlive: true,
           retryAttempts: 2,
           retryDelay: 1000,
-          logging: true,
+          // logging: true,
         };
       },
       inject: [ConfigService],
+    }),
+    ClsModule.forRoot({
+      global: true,
+      interceptor: {
+        mount: true,
+        setup: (cls, context) => {
+          cls.set('requestId', context.switchToRpc().getData().requestId);
+        },
+      },
     }),
     TypeOrmModule.forFeature([UserEntity]),
   ],
