@@ -30,7 +30,7 @@ export class GatewayInterceptor implements NestInterceptor {
             data: req.body,
             timestamp: new Date(startTime).toISOString(),
           },
-          `Req-${this.cls.get('requestId')}`
+          `REQ-${this.cls.get('requestId')}`
         );
         return value === null ? '' : value;
       }),
@@ -41,7 +41,7 @@ export class GatewayInterceptor implements NestInterceptor {
             data: value,
             duration: `${Date.now() - startTime}ms`,
           },
-          `Res-${this.cls.get('requestId')}`
+          `RES-${this.cls.get('requestId')}`
         );
       }),
       catchError((err) => {
@@ -58,7 +58,7 @@ export class GatewayInterceptor implements NestInterceptor {
             },
             duration: `${Date.now() - startTime}ms`,
           },
-          `Err-${this.cls.get('requestId')}`
+          `ERR-${this.cls.get('requestId')}`
         );
         if (err.response) {
           throw new HttpException(err.response, err.status);

@@ -1,15 +1,14 @@
-import { Inject } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { ClsService } from 'nestjs-cls';
 import { lastValueFrom, timeout } from 'rxjs';
-// import { appConfig } from '../configs';
 
+@Injectable()
 export class MessageSender {
   constructor(
-    // @Inject(appConfig.KEY)
-    // private appConf: ConfigType<typeof appConfig>,
-    private cls: ClsService
+    private cls: ClsService,
+    private config: ConfigService
   ) {}
   async send(
     clientProxy: ClientProxy,
@@ -26,10 +25,7 @@ export class MessageSender {
         .pipe(
           customTimeout
             ? timeout(customTimeout)
-            : timeout(
-                //+this.appConf.AppsTimeout
-                5000
-              )
+            : timeout(+this.config.get('APPS_TIMEOUT') || 5000)
         )
     );
   }
