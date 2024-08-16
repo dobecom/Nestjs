@@ -9,6 +9,7 @@ import {
 import { ClsService } from 'nestjs-cls';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { ErrorCodes } from '../code/error.code';
 
 @Injectable()
 export class GatewayInterceptor implements NestInterceptor {
@@ -62,7 +63,11 @@ export class GatewayInterceptor implements NestInterceptor {
         if (err.response) {
           throw new HttpException(err.response, err.status);
         } else {
-          return throwError(() => err);
+          if (err.message === 'Timeout has occurred') {
+            throw new HttpException({ code: ErrorCodes.IS999 }, 500);
+          } else {
+            return throwError(() => err);
+          }
         }
       })
     );
