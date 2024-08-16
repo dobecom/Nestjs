@@ -7,9 +7,11 @@ import { UserMessage } from '@app/common/providers/messages/user.message';
 import { Body, Controller, HttpCode, Inject, Post } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
+import { ApiTags } from '@nestjs/swagger';
 import { ClsService } from 'nestjs-cls';
 import { lastValueFrom, timeout } from 'rxjs';
 
+@ApiTags('User')
 @Controller('user')
 export class UserController {
   constructor(

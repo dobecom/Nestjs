@@ -9,7 +9,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { nanoid } from 'nanoid';
-import { AuthGuard } from '../auth/auth.guard';
+// import { AuthGuard } from '../auth/auth.user.guard';
 import { AuthUser } from '../auth/auth.decorator';
 const amqp = require('amqplib/callback_api');
 
@@ -21,7 +21,7 @@ enum ExchangeType {
   HEADERS = 'headers',
 }
 
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @Controller('blockchain')
 export class BlockchainController {
   constructor(

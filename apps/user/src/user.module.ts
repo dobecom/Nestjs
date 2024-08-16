@@ -9,10 +9,12 @@ import { ConfigService } from '@nestjs/config';
 import { UserEntity } from './models/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ClsModule } from 'nestjs-cls';
+import { RedisModule } from '@app/redis';
 
 @Module({
   imports: [
     CommonModule,
+    RedisModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
