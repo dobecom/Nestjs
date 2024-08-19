@@ -1,5 +1,5 @@
-import { OrderEntity } from '../entities/order.entity';
+import { OrdersEntity } from '../entities/orders.entity';
 
-export class Orders extends OrderEntity {
+export class Orders extends OrdersEntity {
   //
 }

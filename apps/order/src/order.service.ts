@@ -8,8 +8,6 @@ import { Orders } from '@app/common/models/domains/orders.domain';
 @Injectable()
 export class OrderService {
   constructor(
-    @Inject('PAYMENT_SERVICE')
-    private readonly paymentCp: ClientProxy,
     @Inject('SAGA_SERVICE')
     private readonly sagaCp: ClientProxy,
     private readonly sender: MessageSender,
@@ -17,15 +15,18 @@ export class OrderService {
   ) {}
 
   async addOrder(orders: Orders) {
-    const orderList = [];
-    // const paymentRequest = await this.paymentCp.send('payment-create', {
-    //   userId,
-    //   orderList,
-    // });
-    // const paymentResult = await lastValueFrom(paymentRequest);
-    return await this.repository.saveOrder(orders);
-    // return this.sender.send(this.sagaCp, SagaMessage.SAGA_ORDER_PAY_CREATE, {
-    //   orders,
-    // });
+    // const result = await this.repository.saveOrder(orders);
+    // return {
+    //   orders: {
+    //     id: result.id,
+    //   },
+    // };
+    return await this.sender.send(
+      this.sagaCp,
+      SagaMessage.SAGA_ORDER_PAY_CREATE,
+      {
+        orders,
+      }
+    );
   }
 }

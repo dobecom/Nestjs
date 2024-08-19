@@ -9,8 +9,9 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { RpcExceptionInterceptor } from '@app/common/interceptors/rpc.intc';
 import { SagaRepository } from './saga.repository';
 import { SAGA_SERVICE_PROXY } from '@app/common/providers/proxy/services.proxy';
-import { UserEntity } from '@app/common/models/entities/user.entity';
-import { OrderEntity } from '@app/common/models/entities/order.entity';
+import { UsersEntity } from '@app/common/models/entities/users.entity';
+import { OrdersEntity } from '@app/common/models/entities/orders.entity';
+import { PaysEntity } from '@app/common/models/entities/pays.entity';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { OrderEntity } from '@app/common/models/entities/order.entity';
           username: config.get('DB_USER') || 'postgres',
           password: config.get('DB_PW') || 'postgres',
           database: config.get('DB_NAME') || 'postgres',
-          entities: [UserEntity, OrderEntity],
+          entities: [UsersEntity, OrdersEntity, PaysEntity],
           // synchronize: config.get('NODE_ENV') == 'LOCAL' ? true : false,
           keepConnectionAlive: true,
           retryAttempts: 2,
@@ -43,7 +44,6 @@ import { OrderEntity } from '@app/common/models/entities/order.entity';
       },
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([OrderEntity]),
   ],
   controllers: [SagaController],
   providers: [

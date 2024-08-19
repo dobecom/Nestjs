@@ -1,8 +1,5 @@
 import { CommonModule } from '@app/common';
-import {
-  PAYMENT_SERVICE_PROXY,
-  SAGA_SERVICE_PROXY,
-} from '@app/common/providers/proxy/services.proxy';
+import { SAGA_SERVICE_PROXY } from '@app/common/providers/proxy/services.proxy';
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,7 +9,7 @@ import { RpcExceptionInterceptor } from '@app/common/interceptors/rpc.intc';
 import { ConfigService } from '@nestjs/config';
 import { OrderRepository } from './order.repository';
 import { ClsModule } from 'nestjs-cls';
-import { OrderEntity } from '@app/common/models/entities/order.entity';
+import { OrdersEntity } from '@app/common/models/entities/orders.entity';
 import { MessageSender } from '@app/common/utils/message.sender';
 
 @Module({
@@ -36,7 +33,7 @@ import { MessageSender } from '@app/common/utils/message.sender';
           username: config.get('DB_USER') || 'postgres',
           password: config.get('DB_PW') || 'postgres',
           database: config.get('DB_NAME') || 'postgres',
-          entities: [OrderEntity],
+          entities: [OrdersEntity],
           // synchronize: config.get('NODE_ENV') == 'LOCAL' ? true : false,
           keepConnectionAlive: true,
           retryAttempts: 2,
@@ -46,7 +43,7 @@ import { MessageSender } from '@app/common/utils/message.sender';
       },
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([OrderEntity]),
+    TypeOrmModule.forFeature([OrdersEntity]),
   ],
   controllers: [OrderController],
   providers: [
@@ -57,7 +54,6 @@ import { MessageSender } from '@app/common/utils/message.sender';
     OrderService,
     OrderRepository,
     MessageSender,
-    PAYMENT_SERVICE_PROXY,
     SAGA_SERVICE_PROXY,
   ],
 })

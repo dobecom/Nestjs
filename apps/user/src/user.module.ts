@@ -9,7 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { ClsModule } from 'nestjs-cls';
 import { RedisModule } from '@app/redis';
-import { UserEntity } from '@app/common/models/entities/user.entity';
+import { UsersEntity } from '@app/common/models/entities/users.entity';
 
 @Module({
   imports: [
@@ -32,7 +32,7 @@ import { UserEntity } from '@app/common/models/entities/user.entity';
           username: config.get('DB_USER') || 'postgres',
           password: config.get('DB_PW') || 'postgres',
           database: config.get('DB_NAME') || 'postgres',
-          entities: [UserEntity],
+          entities: [UsersEntity],
           // synchronize: config.get('NODE_ENV') == 'LOCAL' ? true : false,
           keepConnectionAlive: true,
           retryAttempts: 2,
@@ -51,7 +51,7 @@ import { UserEntity } from '@app/common/models/entities/user.entity';
         },
       },
     }),
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UsersEntity]),
   ],
   controllers: [UserController],
   providers: [

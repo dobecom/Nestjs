@@ -11,14 +11,14 @@ import { JwtService } from '@nestjs/jwt';
 import { ErrorCodes } from '@app/common/code/error.code';
 import * as bcrypt from 'bcrypt';
 import { RedisService } from '@app/redis';
-import { UserEntity } from '@app/common/models/entities/user.entity';
+import { UsersEntity } from '@app/common/models/entities/users.entity';
 import { Users } from '@app/common/models/domains/users.domain';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(UsersEntity)
+    private readonly userRepository: Repository<UsersEntity>,
     private readonly config: ConfigService,
     private readonly jwtService: JwtService,
     private readonly redis: RedisService

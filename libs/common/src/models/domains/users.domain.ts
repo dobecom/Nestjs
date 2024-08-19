@@ -1,6 +1,6 @@
-import { UserEntity } from '../entities/user.entity';
+import { UsersEntity } from '../entities/users.entity';
 
-export class Users extends UserEntity {
+export class Users extends UsersEntity {
   static readonly keyAt = 'members:at:';
   // static readonly keyRt = 'members:rt:';
   // static readonly keySess = 'members:session:';
