@@ -2,8 +2,32 @@ import { applyDecorators } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateOrderResponse } from './order/create-order.dto';
 import { SignInResponse } from './auth/sign-in.dto';
+import { UpdateOrderResponse } from './order/update-order.dto';
 
-export { SignInDecorator, SignUpDecorator, CreateOrderDecorator };
+export {
+  UpdateOrderDecorator,
+  SignInDecorator,
+  SignUpDecorator,
+  CreateOrderDecorator,
+};
+
+const UpdateOrderDecorator = () => {
+  return applyDecorators(
+    ApiOperation({
+      summary: 'Update Order',
+    }),
+    ApiResponse({
+      status: 200,
+      description: 'Success',
+      type: UpdateOrderResponse,
+    }),
+    ApiResponse({
+      status: 400,
+      description: 'invalid',
+    })
+    // ApiResponse({ status: 403, description: 'Forbidden.' })
+  );
+};
 
 const CreateOrderDecorator = () => {
   return applyDecorators(

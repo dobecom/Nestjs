@@ -1,21 +1,23 @@
 import { Controller } from '@nestjs/common';
-import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { PaymentService } from './payment.service';
+import { PayMessage } from '@app/common/providers/messages/pay.message';
+import { Pays } from '@app/common/models/domains/pays.domain';
 
 @Controller()
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
-  @MessagePattern('payment-create')
-  createPayment(@Payload() data) {
-    return this.paymentService.createPayment(data);
+  @MessagePattern(PayMessage.PAY_UPDATE)
+  async modifyPay(@Payload('pays') pays: Pays): Promise<any> {
+    return await this.paymentService.modifyPay(pays);
   }
 
-  @EventPattern('payment-list')
-  getListPayment(@Payload() data) {
-    console.log('payment-list')
-    return 'payment-list';
-  }
+  // @EventPattern('payment-list')
+  // getListPayment(@Payload() data) {
+  //   console.log('payment-list');
+  //   return 'payment-list';
+  // }
 
   // delay() {
   //   return new Promise((resolve, reject) => {

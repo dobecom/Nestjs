@@ -1,5 +1,8 @@
 import { CommonModule } from '@app/common';
-import { SAGA_SERVICE_PROXY } from '@app/common/providers/proxy/services.proxy';
+import {
+  PAYMENT_SERVICE_PROXY,
+  SAGA_SERVICE_PROXY,
+} from '@app/common/providers/proxy/services.proxy';
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -55,6 +58,7 @@ import { MessageSender } from '@app/common/utils/message.sender';
     OrderRepository,
     MessageSender,
     SAGA_SERVICE_PROXY,
+    PAYMENT_SERVICE_PROXY,
   ],
 })
 export class OrderModule {}

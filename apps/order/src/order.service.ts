@@ -4,12 +4,15 @@ import { OrderRepository } from './order.repository';
 import { MessageSender } from '@app/common/utils/message.sender';
 import { SagaMessage } from '@app/common/providers/messages/saga.message';
 import { Orders } from '@app/common/models/domains/orders.domain';
+import { PayMessage } from '@app/common/providers/messages/pay.message';
 
 @Injectable()
 export class OrderService {
   constructor(
     @Inject('SAGA_SERVICE')
     private readonly sagaCp: ClientProxy,
+    @Inject('PAYMENT_SERVICE')
+    private readonly payCp: ClientProxy,
     private readonly sender: MessageSender,
     private readonly repository: OrderRepository
   ) {}
@@ -28,5 +31,29 @@ export class OrderService {
         orders,
       }
     );
+  }
+
+  async modifyOrder(orders: Orders) {
+    try {
+      const result = await this.repository.updateOrder(orders);
+      const pays = {
+        ...orders,
+      };
+      const payResult = await this.sender.send(
+        this.payCp,
+        PayMessage.PAY_UPDATE,
+        {
+          pays,
+        }
+      );
+      return {
+        orders: {
+          id: result,
+        },
+        ...payResult,
+      };
+    } catch (err) {
+      throw err;
+    }
   }
 }

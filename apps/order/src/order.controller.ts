@@ -16,4 +16,13 @@ export class OrderController {
     orders.userId = user.id;
     return await this.orderService.addOrder(orders);
   }
+
+  @MessagePattern(OrderMessage.ORDER_UPDATE)
+  async modifyOrder(
+    @Payload('orders') orders: Orders,
+    @Payload('user') user: any
+  ): Promise<any> {
+    orders.userId = user.id;
+    return await this.orderService.modifyOrder(orders);
+  }
 }
