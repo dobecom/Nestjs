@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UserService } from './user.service';
 import { UserMessage } from '@app/common/providers/messages/user.message';
-import { Users } from './models/domains/users.domain';
+import { Users } from '@app/common/models/domains/users.domain';
 
 @Controller()
 export class UserController {

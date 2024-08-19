@@ -10,9 +10,9 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ErrorCodes } from '@app/common/code/error.code';
 import * as bcrypt from 'bcrypt';
-import { UserEntity } from './models/entities/user.entity';
-import { Users } from './models/domains/users.domain';
 import { RedisService } from '@app/redis';
+import { UserEntity } from '@app/common/models/entities/user.entity';
+import { Users } from '@app/common/models/domains/users.domain';
 
 @Injectable()
 export class UserService {

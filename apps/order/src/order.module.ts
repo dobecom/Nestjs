@@ -1,5 +1,8 @@
 import { CommonModule } from '@app/common';
-import { PAYMENT_SERVICE_PROXY } from '@app/common/providers/proxy/services.proxy';
+import {
+  PAYMENT_SERVICE_PROXY,
+  SAGA_SERVICE_PROXY,
+} from '@app/common/providers/proxy/services.proxy';
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -7,9 +10,10 @@ import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 import { RpcExceptionInterceptor } from '@app/common/interceptors/rpc.intc';
 import { ConfigService } from '@nestjs/config';
-import { OrderEntity } from './models/entities/order.entity';
 import { OrderRepository } from './order.repository';
 import { ClsModule } from 'nestjs-cls';
+import { OrderEntity } from '@app/common/models/entities/order.entity';
+import { MessageSender } from '@app/common/utils/message.sender';
 
 @Module({
   imports: [
@@ -52,7 +56,9 @@ import { ClsModule } from 'nestjs-cls';
     },
     OrderService,
     OrderRepository,
+    MessageSender,
     PAYMENT_SERVICE_PROXY,
+    SAGA_SERVICE_PROXY,
   ],
 })
 export class OrderModule {}

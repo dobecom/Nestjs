@@ -6,10 +6,10 @@ import { UserService } from './user.service';
 import { RpcExceptionInterceptor } from '@app/common/interceptors/rpc.intc';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import { UserEntity } from './models/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ClsModule } from 'nestjs-cls';
 import { RedisModule } from '@app/redis';
+import { UserEntity } from '@app/common/models/entities/user.entity';
 
 @Module({
   imports: [

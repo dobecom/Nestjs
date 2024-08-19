@@ -5,12 +5,12 @@ import { CommonModule } from '@app/common';
 import { ClsModule } from 'nestjs-cls';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { OrderEntity } from 'apps/order/src/models/entities/order.entity';
-import { UserEntity } from 'apps/user/src/models/entities/user.entity';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { RpcExceptionInterceptor } from '@app/common/interceptors/rpc.intc';
 import { SagaRepository } from './saga.repository';
 import { SAGA_SERVICE_PROXY } from '@app/common/providers/proxy/services.proxy';
+import { UserEntity } from '@app/common/models/entities/user.entity';
+import { OrderEntity } from '@app/common/models/entities/order.entity';
 
 @Module({
   imports: [

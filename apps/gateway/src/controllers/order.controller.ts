@@ -8,7 +8,6 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthUser } from '../auth/auth.decorator';
@@ -16,6 +15,7 @@ import { AuthPipe } from '../auth/auth.pipe';
 import { MessageSender } from '@app/common/utils/message.sender';
 import { OrderMessage } from '@app/common/providers/messages/order.message';
 import { AuthUserGuard } from '../auth/auth.user.guard';
+import { ClsService } from 'nestjs-cls';
 
 @ApiBearerAuth()
 @UseGuards(AuthUserGuard)
@@ -24,8 +24,8 @@ import { AuthUserGuard } from '../auth/auth.user.guard';
 export class OrderController {
   constructor(
     @Inject('ORDER_SERVICE') private orderCp: ClientProxy,
-    private readonly config: ConfigService,
-    private readonly sender: MessageSender
+    private readonly sender: MessageSender,
+    private cls: ClsService
   ) {}
 
   @CreateOrderDecorator()
@@ -35,7 +35,7 @@ export class OrderController {
     @AuthUser(AuthPipe) user: any,
     @Body() req: CreateOrderRequest
   ) {
-    return this.sender.send(this.orderCp, OrderMessage.ORDER_CREATE, {
+    return await this.sender.send(this.orderCp, OrderMessage.ORDER_CREATE, {
       orders: req.orders,
       user,
     });

@@ -1,3 +1,3 @@
 export enum SagaMessage {
-  SAGA_TEMP = 'SAGA_TEMP',
+  SAGA_ORDER_PAY_CREATE = 'SAGA_ORDER_PAY_CREATE',
 }

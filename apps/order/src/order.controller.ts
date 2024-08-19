@@ -2,7 +2,7 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { OrderService } from './order.service';
 import { OrderMessage } from '@app/common/providers/messages/order.message';
-import { Orders } from './models/domains/orders.domain';
+import { Orders } from '@app/common/models/domains/orders.domain';
 
 @Controller()
 export class OrderController {
