@@ -34,8 +34,8 @@ export class OrderService {
   }
 
   async modifyOrder(orders: Orders) {
+    let isSuccess = [false, false];
     try {
-      const result = await this.repository.updateOrder(orders);
       const pays = {
         ...orders,
       };
@@ -46,6 +46,19 @@ export class OrderService {
           pays,
         }
       );
+      if (payResult && payResult.pays && payResult.pays.id === 0) {
+        // pay transaction failed
+        return 'failed';
+      } else {
+        isSuccess[0] = true;
+      }
+
+      const result = await this.repository.updateOrder(orders);
+      if (result === 0) {
+        // update failed
+        this.cancelPayUpdate(orders);
+      }
+
       return {
         orders: {
           id: result,
@@ -53,7 +66,18 @@ export class OrderService {
         ...payResult,
       };
     } catch (err) {
+      if (isSuccess[0]) {
+        // compensation transaction
+        this.cancelPayUpdate(orders);
+      }
       throw err;
     }
+  }
+
+  async cancelPayUpdate(pays: any) {
+    pays.status = -pays.status;
+    return await this.sender.send(this.payCp, PayMessage.PAY_UPDATE_CANCEL, {
+      pays,
+    });
   }
 }

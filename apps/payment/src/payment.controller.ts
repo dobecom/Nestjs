@@ -13,6 +13,11 @@ export class PaymentController {
     return await this.paymentService.modifyPay(pays);
   }
 
+  @MessagePattern(PayMessage.PAY_UPDATE_CANCEL)
+  async modifyCancelPay(@Payload('pays') pays: Pays): Promise<any> {
+    return await this.paymentService.modifyCancelPay(pays);
+  }
+
   // @EventPattern('payment-list')
   // getListPayment(@Payload() data) {
   //   console.log('payment-list');

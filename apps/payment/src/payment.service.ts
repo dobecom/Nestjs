@@ -37,4 +37,13 @@ export class PaymentService {
       },
     };
   }
+
+  async modifyCancelPay(pays: Pays) {
+    const result = await this.repository.updateCancelPay(pays);
+    return {
+      pays: {
+        id: result,
+      },
+    };
+  }
 }
