@@ -116,6 +116,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/saga/tsconfig.app.json"
       }
+    },
+    "gql": {
+      "type": "application",
+      "root": "apps/gql",
+      "entryFile": "main",
+      "sourceRoot": "apps/gql/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/gql/tsconfig.app.json"
+      }
     }
   }
 }
