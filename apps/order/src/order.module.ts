@@ -23,27 +23,27 @@ import { MessageSender } from '@app/common/utils/message.sender';
       interceptor: {
         mount: true,
         setup: (cls, context) => {
-          cls.set('requestId', context.switchToRpc().getData().requestId);
+          cls.set(
+            'requestId',
+            context.switchToRpc().getData()?.requestId || null
+          );
         },
       },
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: (config: ConfigService) => {
-        return {
-          type: 'postgres',
-          host: config.get('DB_HOST') || 'localhost',
-          port: +config.get('DB_PORT') || 5432,
-          username: config.get('DB_USER') || 'postgres',
-          password: config.get('DB_PW') || 'postgres',
-          database: config.get('DB_NAME') || 'postgres',
-          entities: [OrdersEntity],
-          // synchronize: config.get('NODE_ENV') == 'LOCAL' ? true : false,
-          keepConnectionAlive: true,
-          retryAttempts: 2,
-          retryDelay: 1000,
-          logging: true,
-        };
-      },
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+        host: config.get('DB_HOST', 'localhost'),
+        port: +config.get<number>('DB_PORT', 5432),
+        username: config.get('DB_USER', 'postgres'),
+        password: config.get('DB_PW', 'postgres'),
+        database: config.get('DB_NAME', 'postgres'),
+        entities: [OrdersEntity],
+        keepConnectionAlive: true,
+        retryAttempts: 2,
+        retryDelay: 1000,
+        logging: true,
+      }),
       inject: [ConfigService],
     }),
     TypeOrmModule.forFeature([OrdersEntity]),

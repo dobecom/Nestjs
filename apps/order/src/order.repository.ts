@@ -1,6 +1,5 @@
 import { Orders } from '@app/common/models/domains/orders.domain';
 import { OrdersEntity } from '@app/common/models/entities/orders.entity';
-import { PaysEntity } from '@app/common/models/entities/pays.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,20 +11,9 @@ export class OrderRepository {
     private readonly orderRepository: Repository<OrdersEntity>
   ) {}
 
-  // async saveOrder(orders: Orders) {
-  //   return await this.orderRepository.save({
-  //     userId: orders.userId,
-  //     name: orders.name,
-  //   });
-  // }
-
-  async updateOrder(orders: Orders) {
+  async updateOrder(orders: Orders): Promise<number> {
     try {
-      const ordersEntity = new OrdersEntity();
-      ordersEntity.id = orders.id;
-      ordersEntity.name = orders.name;
-
-      const queryBuilder = this.orderRepository
+      const result = await this.orderRepository
         .createQueryBuilder()
         .update(OrdersEntity)
         .set({
@@ -35,13 +23,12 @@ export class OrderRepository {
           }),
         })
         .where('id = :id', { id: orders.id })
-        .returning('id');
-      const result = await queryBuilder.execute();
-      const updatedId = result.raw[0] !== undefined ? result.raw[0].id : 0;
+        .returning('id')
+        .execute();
 
-      return +updatedId;
+      return result.raw[0]?.id || 0;
     } catch (err) {
-      throw err;
+      throw new Error('Failed to update order');
     }
   }
 }
