@@ -16,16 +16,6 @@ import { UsersRepository } from './users/users.repository';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
-      // transformSchema: schema => upperDirectiveTransformer(schema, 'upper'),
-      // installSubscriptionHandlers: true,
-      // buildSchemaOptions: {
-      //   directives: [
-      //     new GraphQLDirective({
-      //       name: 'upper',
-      //       locations: [DirectiveLocation.FIELD_DEFINITION],
-      //     }),
-      //   ],
-      // },
     }),
     TypeOrmModule.forRootAsync({
       useFactory: (config: ConfigService) => {
@@ -46,10 +36,6 @@ import { UsersRepository } from './users/users.repository';
       },
       inject: [ConfigService],
     }),
-  ],
-  controllers: [
-    // UsersController,
-    // UsersResolver,
   ],
   providers: [UsersResolver, UsersService, ConfigService, UsersRepository],
 })
