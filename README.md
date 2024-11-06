@@ -52,7 +52,8 @@ Instructions for downloading and running the project in a local environment.
 2. Your Nestjs server will be running at `http://localhost:3333`.
 
 ## [Feature 1] Microservice Architecture
-<img width="812" alt="image" src="https://github.com/user-attachments/assets/b0137801-9e79-4cae-96da-95bed921f842">
+<img width="782" alt="image" src="https://github.com/user-attachments/assets/5b9a76dd-9bcc-48a9-a399-80ef4b20e95a">
+
 1. Run gateway and microservices application
 
 ```bash
