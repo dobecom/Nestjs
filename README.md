@@ -51,7 +51,8 @@ Instructions for downloading and running the project in a local environment.
     
 2. Your Nestjs server will be running at `http://localhost:3333`.
 
-## [Feature 1] RabbitMQ for MSA
+## [Feature 1] Microservice Architecture
+<img width="812" alt="image" src="https://github.com/user-attachments/assets/b0137801-9e79-4cae-96da-95bed921f842">
 1. Run gateway and microservices application
 
 ```bash
