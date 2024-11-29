@@ -6,9 +6,10 @@ import {
   UpdateDateColumn,
   Index,
 } from 'typeorm';
+import { Pays } from '../interfaces/pay.interface';
 
 @Entity('pays')
-export class PaysEntity {
+export class PaysEntity implements Pays {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -32,7 +33,7 @@ export class PaysEntity {
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
+    nullable: true,
   })
   updatedAt: Date;
 }

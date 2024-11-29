@@ -7,6 +7,11 @@ import { MessageEvent } from '@app/common/ext-http/http.service';
 export class AiController {
   constructor(private readonly aiService: AiService) {}
 
+  @Post('llama/generate')
+  async getGenMessage(@Body('ai') ai) {
+    return this.aiService.asyncGenerateMessage(ai.prompt);
+  }
+
   @Sse('generate/llama')
   generateMessage(@Body('ai') ai): Observable<MessageEvent> {
     return this.aiService.generateMessage(ai.prompt);
