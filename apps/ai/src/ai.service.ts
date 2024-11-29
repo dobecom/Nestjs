@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Document, VectorStoreIndex } from 'llamaindex';
 import { ChatOpenAI } from '@langchain/openai';
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { ChatAnthropic } from '@langchain/anthropic';
 import { ChatVertexAI } from '@langchain/google-vertexai';
 import { request } from 'http';
-import { Observable } from 'rxjs';
+import { lastValueFrom, map, Observable, reduce } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { HttpService, MessageEvent } from '@app/common/ext-http/http.service';
 
@@ -15,6 +14,43 @@ export class AiService {
     private readonly config: ConfigService,
     private readonly httpService: HttpService
   ) {}
+
+  async asyncGenerateMessage(prompt: string): Promise<string> {
+    const options = {
+      hostname: this.config.get('OLLAMA_HOST'),
+      port: this.config.get('OLLAMA_PORT'),
+      path: '/api/generate',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    const data = JSON.stringify({
+      model: this.config.get('OLLAMA_MODEL'),
+      prompt,
+      stream: false,
+      options: {
+        max_tokens: 50,
+      },
+    });
+
+    // Handling Observable
+    try {
+      const response$ = this.httpService.request(options, data).pipe(
+        // get response from each chunk
+        map((event: { data: string }) => {
+          const parsedChunk = JSON.parse(event.data as string);
+          return parsedChunk.response || '';
+        }),
+        reduce((acc, chunk) => acc + chunk, '')
+      );
+
+      const result = await lastValueFrom(response$);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
 
   generateMessage(prompt: string): Observable<MessageEvent> {
     const options = {
