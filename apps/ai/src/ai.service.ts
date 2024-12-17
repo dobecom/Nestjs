@@ -7,12 +7,17 @@ import { request } from 'http';
 import { lastValueFrom, map, Observable, reduce } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { HttpService, MessageEvent } from '@app/common/ext-http/http.service';
+import { KnexOracleProvider } from '@app/database/clients/knex/knex.oracle.provider';
+import { Knex } from 'knex';
+import { KnexPgsqlProvider } from '@app/database/clients/knex/knex.pgsql.provider';
 
 @Injectable()
 export class AiService {
   constructor(
     private readonly config: ConfigService,
-    private readonly httpService: HttpService
+    private readonly httpService: HttpService,
+    private readonly oracleProvider: KnexOracleProvider,
+    private readonly pgsqlProvider: KnexPgsqlProvider
   ) {}
 
   async asyncGenerateMessage(prompt: string): Promise<string> {
@@ -153,5 +158,14 @@ export class AiService {
     };
 
     makeRequest();
+  }
+
+  private get client(): Knex {
+    return this.pgsqlProvider.client;
+  }
+  async test() {
+    const result = await this.client('users').select('*');
+    console.log(result);
+    return 'Hello world';
   }
 }
